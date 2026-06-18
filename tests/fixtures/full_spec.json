@@ -1,0 +1,77 @@
+{
+  "version": "1.0",
+  "template": "analytics_report_v1",
+  "theme": "limetray_green",
+  "metadata": {
+    "entity_name": "Pind Punjab",
+    "report_title": "Weekly Performance Report",
+    "period": "11 Jun - 17 Jun 2026",
+    "generated_at": "2026-06-17",
+    "powered_by": "Limetray",
+    "confidential": true
+  },
+  "page": {
+    "size": "A4",
+    "orientation": "portrait",
+    "margins": {
+      "left_cm": 1.5,
+      "right_cm": 1.5,
+      "top_cm": 2.0,
+      "bottom_cm": 2.0
+    }
+  },
+  "header": {
+    "enabled": true,
+    "variant": "default"
+  },
+  "footer": {
+    "enabled": true,
+    "show_page_number": true
+  },
+  "blocks": [
+    {
+      "type": "title",
+      "entity": "Pind Punjab",
+      "title": "Weekly Performance Report",
+      "subtitle": "11 Jun - 17 Jun 2026",
+      "right_text": "Powered by Limetray"
+    },
+    {
+      "type": "section_header",
+      "number": "1",
+      "title": "Key Performance Indicators"
+    },
+    {
+      "type": "kpi_grid",
+      "title": "Brand KPI Summary",
+      "columns": 3,
+      "items": [
+        {"label": "Total Orders", "value": "3,743", "sub": "This Week", "tone": "primary"},
+        {"label": "Net Sales", "value": "\u20b919,62,261", "sub": "\u2193 -12% vs LW", "tone": "danger"},
+        {"label": "AOV", "value": "\u20b9525", "sub": "Stable", "tone": "success"}
+      ]
+    },
+    {
+      "type": "callout",
+      "tone": "danger",
+      "title": "Brand-Wide Decline",
+      "text": "Order volume is down 12.3% WoW, 29% MoM, and 43.2% QoQ."
+    },
+    {
+      "type": "table",
+      "title": "Source Mix Analysis",
+      "style": "striped",
+      "columns": [
+        {"key": "source", "label": "Source", "width": 0.25},
+        {"key": "orders", "label": "Orders", "width": 0.2},
+        {"key": "share", "label": "Share", "width": 0.15},
+        {"key": "revenue", "label": "Revenue", "width": 0.2},
+        {"key": "assessment", "label": "Assessment", "width": 0.2}
+      ],
+      "rows": [
+        {"source": "Swiggy", "orders": "2,269", "share": "60.6%", "revenue": "\u20b910,72,625", "assessment": "High dependency"},
+        {"source": "Zomato", "orders": "1,474", "share": "39.4%", "revenue": "\u20b98,89,636", "assessment": "Moderate"}
+      ]
+    }
+  ]
+}

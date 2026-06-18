@@ -15,6 +15,7 @@ authors = [
 dependencies = [
     "reportlab>=4.0,<5",
     "matplotlib>=3.8,<4",
+    "pydantic>=2.0,<3",
 ]
 
 [project.optional-dependencies]
