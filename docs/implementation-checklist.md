@@ -140,14 +140,14 @@ Each block renderer must have:
 
 ---
 
-## Phase 11 — Documentation & Packaging
+## Phase 11 — Documentation & Packaging ✅
 
-- [ ] Update `README.md` — problem, install, quick-start, API usage, CLI usage, JSON contract overview, extending with custom blocks/themes/templates
-- [ ] Update `AGENTS.md` if conventions change
-- [ ] Add `docs/json-schema.md` — human-readable JSON contract reference
-- [ ] Add `docs/custom-blocks.md` — guide for extending with new block types
-- [ ] Add `docs/custom-themes.md` — guide for creating new themes
-- [ ] Add `docs/custom-templates.md` — guide for creating new templates
+- [x] Update `README.md` — problem, install, quick-start, API usage, CLI usage, JSON contract overview, extending with custom blocks/themes/templates
+- [x] Update `AGENTS.md` if conventions change
+- [x] Add `docs/json-schema.md` — human-readable JSON contract reference
+- [x] Add `docs/custom-blocks.md` — guide for extending with new block types
+- [x] Add `docs/custom-themes.md` — guide for creating new themes
+- [x] Add `docs/custom-templates.md` — guide for creating new templates
 - [ ] Package for PyPI (or internal registry) if applicable
 
 ---

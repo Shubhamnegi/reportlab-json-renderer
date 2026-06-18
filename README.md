@@ -36,16 +36,66 @@ print(result["path"], result["pages"])
 ### CLI
 
 ```bash
-# Render
+# Render a spec to PDF
 pdf-renderer render --input report.json --output report.pdf
 
-# Validate only
+# Validate without rendering
 pdf-renderer validate --input report.json
+
+# Export the JSON Schema
+pdf-renderer schema --output schema.json
+
+# List available templates
+pdf-renderer templates
+
+# List registered block types
+pdf-renderer blocks
+
+# Generate a sample spec
+pdf-renderer sample --output sample.json
+```
+
+## Python API Reference
+
+### `render_pdf(spec, output_path=None)`
+
+Render a PDF from a validated JSON specification.
+
+**Parameters:**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `spec` | `dict` | JSON specification conforming to the report schema. |
+| `output_path` | `str \| None` | Filesystem path for the generated PDF. If `None`, returns bytes only. |
+
+**Returns** `dict` with keys:
+
+| Key | Type | Description |
+|-----|------|-------------|
+| `success` | `bool` | `True` if rendering completed without errors. |
+| `path` | `str \| None` | Output file path, if written. |
+| `bytes` | `bytes \| None` | Raw PDF bytes when no `output_path` given. |
+| `pages` | `int` | Number of pages in the generated PDF. |
+| `warnings` | `list[str]` | Non-fatal warnings collected during render. |
+| `metadata` | `dict` | Echo of template and theme used. |
+
+**Raises** `ValidationError` if the spec fails validation.
+
+```python
+from reportlab_json_renderer import render_pdf
+
+# Write to file
+result = render_pdf(spec, output_path="/tmp/report.pdf")
+
+# Bytes-only (no file written)
+result = render_pdf(spec)
+pdf_bytes = result["bytes"]
 ```
 
 ## JSON Contract
 
 See [`pdf-generator.md`](pdf-generator.md) for the full specification.
+See [`docs/json-schema.md`](docs/json-schema.md) for a human-readable field reference.
 
 Minimal example:
 
@@ -75,6 +125,39 @@ Minimal example:
 }
 ```
 
+## Built-in Templates
+
+| Template | Description |
+|----------|-------------|
+| `analytics_report_v1` | Full-featured analytics report with charts, KPIs, and tables |
+| `business_report_v1` | Professional business document with structured sections |
+| `compact_report_v1` | Dense layout for data-heavy reports with minimal whitespace |
+| `invoice_v1` | Compact invoice layout with tables and totals (limited block types) |
+| `proposal_v1` | Sales proposal with hero sections and call-to-action blocks |
+
+## Built-in Themes
+
+| Theme | Description |
+|-------|-------------|
+| `limetray_green` | Lime green brand colours with dark text |
+| `neutral` | Professional grayscale palette |
+| `dark` | Dark background with light text |
+
+## Block Types (19)
+
+`title`, `section_header`, `paragraph`, `rich_text`, `kpi_grid`, `callout`,
+`callout_group`, `table`, `matrix_table`, `insight_list`, `recommendations`,
+`image`, `chart`, `two_column`, `page_break`, `spacer`, `divider`, `badge`,
+`summary_box`
+
+## Extending
+
+This library is designed to be extended with custom blocks, themes, and templates.
+
+- **Custom blocks**: Subclass `BaseBlock` and register via the block registry. See [`docs/custom-blocks.md`](docs/custom-blocks.md).
+- **Custom themes**: Create a `Theme` dataclass and register via the theme registry. See [`docs/custom-themes.md`](docs/custom-themes.md).
+- **Custom templates**: Create a `Template` dataclass and register via the template registry. See [`docs/custom-templates.md`](docs/custom-templates.md).
+
 ## Development
 
 ```bash
@@ -98,12 +181,20 @@ reportlab_json_renderer/
 ├── __init__.py          # Public API: render_pdf()
 ├── renderer.py          # Core rendering pipeline
 ├── cli.py               # CLI entry point
-├── schema/              # JSON Schema & validators
-├── templates/           # Report templates
-├── themes/              # Colour/font themes
-├── blocks/              # Block type renderers
+├── schema/              # Pydantic models & validators
+│   ├── base.py          # ReportSpec, Block types, enums
+│   └── validators.py    # validate_spec, generate_schema_json
+├── templates/           # Report templates (5 built-in)
+│   ├── base.py          # Template, PageSpec, build_template
+│   └── registry.py      # get_template, register_template, list_templates
+├── themes/              # Colour/font themes (3 built-in)
+│   ├── base.py          # Theme, build_theme, DEFAULT_TONES
+│   └── registry.py      # get_theme, register_theme, list_themes
+├── blocks/              # Block type renderers (19 built-in)
+│   ├── base.py          # BaseBlock ABC
+│   └── registry.py      # render_block, register, list_registered
 ├── assets/              # Fonts, logos
-├── utils/               # Colours, units, text, errors
+├── utils/               # Colours, units, text, charts, images, errors
 └── tests/
     └── fixtures/        # Test JSON files
 ```
