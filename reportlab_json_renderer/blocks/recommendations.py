@@ -9,6 +9,7 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.platypus import Flowable, Paragraph, Spacer, Table, TableStyle
 
 from reportlab_json_renderer.blocks.base import BaseBlock
+from reportlab_json_renderer.utils.text import safe_paragraph_text
 
 
 class RecommendationsBlock(BaseBlock):
@@ -24,7 +25,7 @@ class RecommendationsBlock(BaseBlock):
         template: Any,
         available_width: float,
     ) -> list[Flowable]:
-        title = block.get("title", "")
+        title = safe_paragraph_text(str(block.get("title", "")))
         items = block.get("items", [])
         flowables: list[Flowable] = []
 
@@ -57,10 +58,10 @@ class RecommendationsBlock(BaseBlock):
         header = [Paragraph(f"<b>{h}</b>", header_style) for h in headers]
         data_rows = [
             [
-                Paragraph(str(item.get("priority", "")), cell_style),
-                Paragraph(str(item.get("action", "")), cell_style),
-                Paragraph(str(item.get("owner", "")), cell_style),
-                Paragraph(str(item.get("impact", "")), cell_style),
+                Paragraph(safe_paragraph_text(str(item.get("priority", ""))), cell_style),
+                Paragraph(safe_paragraph_text(str(item.get("action", ""))), cell_style),
+                Paragraph(safe_paragraph_text(str(item.get("owner", ""))), cell_style),
+                Paragraph(safe_paragraph_text(str(item.get("impact", ""))), cell_style),
             ]
             for item in items
         ]

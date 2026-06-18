@@ -13,7 +13,7 @@ Human-readable field reference for the report specification JSON contract.
 | `page` | `object` | No | See below | Page size, orientation, and margins. |
 | `header` | `object` | No | `{ "enabled": true }` | Header configuration. |
 | `footer` | `object` | No | `{ "enabled": true }` | Footer configuration. |
-| `blocks` | `array` | No | `[]` | Ordered list of content blocks. |
+| `blocks` | `array` | No | `[]` | Ordered list of content blocks. An empty list is valid and renders a single-page PDF. |
 
 ---
 

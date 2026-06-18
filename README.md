@@ -137,6 +137,9 @@ Minimal example:
 }
 ```
 
+An empty `blocks` list is valid and produces a single-page PDF with header and
+footer only.
+
 ## Built-in Templates
 
 | Template | Description |

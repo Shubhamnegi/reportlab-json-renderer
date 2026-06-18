@@ -9,6 +9,7 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.platypus import Flowable, Paragraph, Spacer
 
 from reportlab_json_renderer.blocks.base import BaseBlock
+from reportlab_json_renderer.utils.text import safe_paragraph_text
 
 
 class SectionHeaderBlock(BaseBlock):
@@ -24,8 +25,8 @@ class SectionHeaderBlock(BaseBlock):
         template: Any,
         available_width: float,
     ) -> list[Flowable]:
-        number = block.get("number", "")
-        title = block.get("title", "")
+        number = safe_paragraph_text(str(block.get("number", "")))
+        title = safe_paragraph_text(str(block.get("title", "")))
         flowables: list[Flowable] = []
 
         spacing = template.section_spacing if template else 18.0

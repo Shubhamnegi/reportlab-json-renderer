@@ -101,13 +101,14 @@ class TestEdgeCases:
     """Edge-case fixture rendering tests."""
 
     def test_empty_blocks(self, tmp_path: Path) -> None:
-        """A spec with zero blocks renders as a valid PDF."""
+        """A spec with zero blocks renders as a single-page valid PDF."""
         spec = _load("edge_empty_blocks")
         out = tmp_path / "empty.pdf"
 
         result = build_pdf(spec, output_path=str(out))
 
         assert result["success"] is True
+        assert result["pages"] == 1
         assert out.exists()
         assert out.stat().st_size > 0
 

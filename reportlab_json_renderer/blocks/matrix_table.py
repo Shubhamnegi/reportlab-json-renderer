@@ -9,6 +9,7 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.platypus import Flowable, Paragraph, Spacer, Table, TableStyle
 
 from reportlab_json_renderer.blocks.base import BaseBlock
+from reportlab_json_renderer.utils.text import safe_paragraph_text
 
 
 class MatrixTableBlock(BaseBlock):
@@ -24,7 +25,7 @@ class MatrixTableBlock(BaseBlock):
         template: Any,
         available_width: float,
     ) -> list[Flowable]:
-        title = block.get("title", "")
+        title = safe_paragraph_text(str(block.get("title", "")))
         col_headers = block.get("columns", [])
         rows = block.get("rows", [])
         flowables: list[Flowable] = []
@@ -54,9 +55,9 @@ class MatrixTableBlock(BaseBlock):
             leading=12,
         )
 
-        header = [Paragraph(f"<b>{h}</b>", header_style) for h in col_headers]
+        header = [Paragraph(f"<b>{safe_paragraph_text(str(h))}</b>", header_style) for h in col_headers]
         data_rows = [
-            [Paragraph(str(cell), cell_style) for cell in row]
+            [Paragraph(safe_paragraph_text(str(cell)), cell_style) for cell in row]
             for row in rows
         ]
 

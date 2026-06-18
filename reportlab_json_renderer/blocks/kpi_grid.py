@@ -9,6 +9,7 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.platypus import Flowable, Paragraph, Spacer, Table, TableStyle
 
 from reportlab_json_renderer.blocks.base import BaseBlock
+from reportlab_json_renderer.utils.text import safe_paragraph_text
 
 
 class KPIGridBlock(BaseBlock):
@@ -24,7 +25,7 @@ class KPIGridBlock(BaseBlock):
         template: Any,
         available_width: float,
     ) -> list[Flowable]:
-        title = block.get("title", "")
+        title = safe_paragraph_text(str(block.get("title", "")))
         num_cols = block.get("columns", 4)
         items = block.get("items", [])
         flowables: list[Flowable] = []
@@ -79,9 +80,9 @@ class KPIGridBlock(BaseBlock):
         return flowables
 
     def _build_cell(self, item: dict, theme: Any, cell_width: float) -> Paragraph:
-        label = item.get("label", "")
-        value = item.get("value", "")
-        sub = item.get("sub", "")
+        label = safe_paragraph_text(str(item.get("label", "")))
+        value = safe_paragraph_text(str(item.get("value", "")))
+        sub = safe_paragraph_text(str(item.get("sub", "")))
         tone = item.get("tone")
 
         value_color = theme.resolve_tone(tone) if theme and tone else (

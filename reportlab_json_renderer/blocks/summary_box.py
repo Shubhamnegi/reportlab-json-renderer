@@ -9,6 +9,7 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.platypus import Flowable, Paragraph, Spacer, Table, TableStyle
 
 from reportlab_json_renderer.blocks.base import BaseBlock
+from reportlab_json_renderer.utils.text import safe_paragraph_text
 
 
 class SummaryBoxBlock(BaseBlock):
@@ -24,8 +25,8 @@ class SummaryBoxBlock(BaseBlock):
         template: Any,
         available_width: float,
     ) -> list[Flowable]:
-        title = block.get("title", "")
-        text = block.get("text", "")
+        title = safe_paragraph_text(str(block.get("title", "")))
+        text = safe_paragraph_text(str(block.get("text", ""))).replace("\n", "<br/>")
         tone = block.get("tone", "primary")
 
         border_color = theme.resolve_tone(tone) if theme else "#7CB518"

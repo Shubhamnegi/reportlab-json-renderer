@@ -9,6 +9,7 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.platypus import Flowable, Paragraph, Spacer, Table, TableStyle
 
 from reportlab_json_renderer.blocks.base import BaseBlock
+from reportlab_json_renderer.utils.text import safe_paragraph_text
 
 
 class CalloutBlock(BaseBlock):
@@ -25,8 +26,8 @@ class CalloutBlock(BaseBlock):
         available_width: float,
     ) -> list[Flowable]:
         tone = block.get("tone", "primary")
-        title = block.get("title", "")
-        text = block.get("text", "")
+        title = safe_paragraph_text(str(block.get("title", "")))
+        text = safe_paragraph_text(str(block.get("text", ""))).replace("\n", "<br/>")
 
         border_color = theme.resolve_tone(tone) if theme else "#7CB518"
         bg_color = theme.resolve_tone("light") if theme else "#F5F5F5"

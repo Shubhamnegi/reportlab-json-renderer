@@ -594,6 +594,9 @@ pdf-renderer render \
   --input report.json \
   --output report.pdf
 
+An empty `blocks` array is valid. It should still produce a single-page PDF so
+callers do not get a zero-page success result.
+
 Validate only:
 
 pdf-renderer validate --input report.json

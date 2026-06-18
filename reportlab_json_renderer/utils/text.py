@@ -87,10 +87,16 @@ def escape_xml(text: str) -> str:
     )
 
 
+def safe_paragraph_text(text: str) -> str:
+    """Normalize, sanitize, and XML-escape user text for Paragraph content."""
+    return escape_xml(sanitize(normalize_line_breaks(text)))
+
+
 __all__ = [
     "escape_xml",
     "normalize_line_breaks",
     "normalize_whitespace",
+    "safe_paragraph_text",
     "sanitize",
     "truncate",
 ]

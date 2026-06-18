@@ -8,6 +8,7 @@ from reportlab_json_renderer.utils.text import (
     escape_xml,
     normalize_line_breaks,
     normalize_whitespace,
+    safe_paragraph_text,
     sanitize,
     truncate,
 )
@@ -106,3 +107,14 @@ class TestEscapeXml:
 
     def test_combined(self) -> None:
         assert escape_xml("<a&b>") == "&lt;a&amp;b&gt;"
+
+
+class TestSafeParagraphText:
+    def test_escapes_markup(self) -> None:
+        assert safe_paragraph_text("<b>x</b>") == "&lt;b&gt;x&lt;/b&gt;"
+
+    def test_preserves_newlines(self) -> None:
+        assert safe_paragraph_text("a\r\nb") == "a\nb"
+
+    def test_removes_control_chars(self) -> None:
+        assert safe_paragraph_text("a\x00<b>b</b>") == "a&lt;b&gt;b&lt;/b&gt;"

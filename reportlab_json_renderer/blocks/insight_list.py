@@ -9,6 +9,7 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.platypus import Flowable, Paragraph
 
 from reportlab_json_renderer.blocks.base import BaseBlock
+from reportlab_json_renderer.utils.text import safe_paragraph_text
 
 
 class InsightListBlock(BaseBlock):
@@ -24,7 +25,7 @@ class InsightListBlock(BaseBlock):
         template: Any,
         available_width: float,
     ) -> list[Flowable]:
-        title = block.get("title", "")
+        title = safe_paragraph_text(str(block.get("title", "")))
         items = block.get("items", [])
         flowables: list[Flowable] = []
 
@@ -39,8 +40,8 @@ class InsightListBlock(BaseBlock):
             flowables.append(Paragraph(title, title_style))
 
         for idx, item in enumerate(items, 1):
-            item_title = item.get("title", "")
-            item_text = item.get("text", "")
+            item_title = safe_paragraph_text(str(item.get("title", "")))
+            item_text = safe_paragraph_text(str(item.get("text", ""))).replace("\n", "<br/>")
 
             html_parts = [f'<b>{idx}. {item_title}</b>']
             if item_text:

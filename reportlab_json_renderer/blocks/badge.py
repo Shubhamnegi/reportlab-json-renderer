@@ -9,6 +9,7 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.platypus import Flowable, Paragraph
 
 from reportlab_json_renderer.blocks.base import BaseBlock
+from reportlab_json_renderer.utils.text import safe_paragraph_text
 
 
 class BadgeBlock(BaseBlock):
@@ -24,7 +25,7 @@ class BadgeBlock(BaseBlock):
         template: Any,
         available_width: float,
     ) -> list[Flowable]:
-        label = block.get("label", "")
+        label = safe_paragraph_text(str(block.get("label", "")))
         tone = block.get("tone", "primary")
 
         bg_color = theme.resolve_tone(tone) if theme else "#7CB518"

@@ -23,7 +23,7 @@ def minimal_spec() -> dict[str, Any]:
 
     This is the canonical "hello world" spec that exercises the root
     schema contract: version, template, theme, metadata, page, and an
-    empty block list.
+    empty block list. Rendering it should still produce a single-page PDF.
     """
     return {
         "version": "1.0",

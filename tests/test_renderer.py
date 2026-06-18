@@ -61,6 +61,7 @@ class TestRenderPDFMinimal:
         assert result["path"] is None
         assert result["bytes"] is not None
         assert len(result["bytes"]) > 0
+        assert result["pages"] == 1
         assert result["warnings"] == []
         assert result["metadata"]["template"] == "analytics_report_v1"
         assert result["metadata"]["theme"] == "green"
@@ -71,6 +72,7 @@ class TestRenderPDFMinimal:
         assert result["success"] is True
         assert result["path"] == str(out)
         assert result["bytes"] is None
+        assert result["pages"] == 1
         assert out.exists()
         assert out.stat().st_size > 0
 

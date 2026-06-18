@@ -14,6 +14,7 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.platypus import Flowable, Paragraph, Spacer
 
 from reportlab_json_renderer.blocks.base import BaseBlock
+from reportlab_json_renderer.utils.text import safe_paragraph_text
 
 
 class TitleBlock(BaseBlock):
@@ -29,10 +30,10 @@ class TitleBlock(BaseBlock):
         template: Any,
         available_width: float,
     ) -> list[Flowable]:
-        entity = block.get("entity", "")
-        title = block.get("title", "")
-        subtitle = block.get("subtitle", "")
-        right_text = block.get("right_text", "")
+        entity = safe_paragraph_text(str(block.get("entity", "")))
+        title = safe_paragraph_text(str(block.get("title", "")))
+        subtitle = safe_paragraph_text(str(block.get("subtitle", "")))
+        right_text = safe_paragraph_text(str(block.get("right_text", "")))
         flowables: list[Flowable] = []
 
         # Entity name (small, muted)

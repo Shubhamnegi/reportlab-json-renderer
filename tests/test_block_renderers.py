@@ -8,7 +8,7 @@ from __future__ import annotations
 from typing import ClassVar
 
 import pytest
-from reportlab.platypus import Flowable, PageBreak, Spacer
+from reportlab.platypus import Flowable, PageBreak, Paragraph, Spacer
 
 from reportlab_json_renderer.blocks.badge import BadgeBlock
 from reportlab_json_renderer.blocks.callout import CalloutBlock
@@ -119,6 +119,16 @@ class TestParagraphBlock:
         )
         assert len(result) == 1
 
+    def test_escapes_markup_in_text(self) -> None:
+        r = ParagraphBlock()
+        result = r.render(
+            {"type": "paragraph", "text": "<b>unsafe</b> & text", "style": "body"},
+            theme=_theme, template=_template, available_width=_width,
+        )
+        para = result[0]
+        assert isinstance(para, Paragraph)
+        assert para.getPlainText() == "<b>unsafe</b> & text"
+
 
 # ── Rich Text Block ─────────────────────────────────────────────────
 
@@ -147,6 +157,16 @@ class TestRichTextBlock:
             theme=_theme, template=_template, available_width=_width,
         )
         assert len(result) == 1
+
+    def test_escapes_markup_inside_runs(self) -> None:
+        r = RichTextBlock()
+        result = r.render(
+            {"type": "rich_text", "runs": [{"text": "<b>unsafe</b> & text", "style": "bold"}]},
+            theme=_theme, template=_template, available_width=_width,
+        )
+        para = result[0]
+        assert isinstance(para, Paragraph)
+        assert para.getPlainText() == "<b>unsafe</b> & text"
 
 
 # ── KPI Grid Block ──────────────────────────────────────────────────

@@ -15,6 +15,7 @@ from reportlab.platypus import (
     Frame,
     PageTemplate,
     SimpleDocTemplate,
+    Spacer,
 )
 
 from reportlab_json_renderer.blocks.registry import render_block
@@ -130,6 +131,9 @@ def build_pdf(
                 continue
             raise RenderError(message) from exc
 
+    if not flowables:
+        flowables.append(Spacer(1, 1))
+
     # ── 6. Build PDF ─────────────────────────────────────────────────
     if output_path is not None:
         buf: io.BytesIO | str = str(output_path)
@@ -225,8 +229,8 @@ def _build_document(
             canvas.setFillColor(
                 _hex_color(theme.resolve_tone("muted") if theme else "#757575")
             )
-            entity = metadata.entity_name if metadata else ""
-            period = metadata.period if metadata else ""
+            entity = metadata.entity_name if metadata and metadata.entity_name else ""
+            period = metadata.period if metadata and metadata.period else ""
             canvas.drawString(left_margin, page_h - top_margin + 10, entity)
             canvas.drawRightString(page_w - right_margin, page_h - top_margin + 10, period)
 
@@ -244,7 +248,7 @@ def _build_document(
             if show_page_num:
                 canvas.drawCentredString(page_w / 2, bottom_margin - 10, f"Page {canvas.getPageNumber()}")
 
-            powered_by = metadata.powered_by if metadata else ""
+            powered_by = metadata.powered_by if metadata and metadata.powered_by else ""
             if powered_by:
                 canvas.drawRightString(page_w - right_margin, bottom_margin - 10, powered_by)
 

@@ -9,6 +9,7 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.platypus import Flowable, Paragraph
 
 from reportlab_json_renderer.blocks.base import BaseBlock
+from reportlab_json_renderer.utils.text import safe_paragraph_text
 
 _STYLE_MAP = {
     "normal": ("", False, False),
@@ -40,7 +41,7 @@ class RichTextBlock(BaseBlock):
 
         xml_parts: list[str] = []
         for run in runs:
-            text = run.get("text", "")
+            text = safe_paragraph_text(str(run.get("text", "")))
             style = run.get("style", "normal")
             suffix, is_bold, _is_italic = _STYLE_MAP.get(style, ("", False, False))
             if run.get("bold") is True:

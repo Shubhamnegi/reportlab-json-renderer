@@ -9,6 +9,7 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.platypus import Flowable, Paragraph, Spacer, Table, TableStyle
 
 from reportlab_json_renderer.blocks.base import BaseBlock
+from reportlab_json_renderer.utils.text import safe_paragraph_text
 
 
 class TableBlock(BaseBlock):
@@ -24,7 +25,7 @@ class TableBlock(BaseBlock):
         template: Any,
         available_width: float,
     ) -> list[Flowable]:
-        title = block.get("title", "")
+        title = safe_paragraph_text(str(block.get("title", "")))
         style = block.get("style", "standard")
         columns = block.get("columns", [])
         rows = block.get("rows", [])
@@ -46,7 +47,7 @@ class TableBlock(BaseBlock):
         # Build header row.
         header = [
             Paragraph(
-                f"<b>{col.get('label', '')}</b>",
+                f"<b>{safe_paragraph_text(str(col.get('label', '')))}</b>",
                 ParagraphStyle(
                     "TableHeader",
                     fontName=theme.font_bold if theme else "Helvetica-Bold",
@@ -67,7 +68,10 @@ class TableBlock(BaseBlock):
         )
         for row in rows:
             data_rows.append([
-                Paragraph(str(row.get(col.get("key", ""), "")), cell_style)
+                Paragraph(
+                    safe_paragraph_text(str(row.get(col.get("key", ""), ""))),
+                    cell_style,
+                )
                 for col in columns
             ])
 
