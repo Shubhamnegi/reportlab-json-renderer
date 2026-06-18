@@ -1,0 +1,25 @@
+repos:
+  # ── Linting & formatting ────────────────────────────────────────────
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.4.8
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  # ── Tests & coverage ────────────────────────────────────────────────
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: pytest
+        language: system
+        pass_filenames: false
+        always_run: true
+
+      - id: coverage
+        name: coverage check
+        entry: pytest --cov --cov-report=term-missing --cov-fail-under=90
+        language: system
+        pass_filenames: false
+        always_run: true

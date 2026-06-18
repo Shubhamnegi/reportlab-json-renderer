@@ -1,0 +1,76 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "reportlab-json-renderer"
+version = "0.1.0"
+description = "JSON-driven PDF generation over ReportLab"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [
+    { name = "LimeTray" },
+]
+dependencies = [
+    "reportlab>=4.0,<5",
+    "matplotlib>=3.8,<4",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0,<9",
+    "pytest-cov>=5.0,<6",
+    "ruff>=0.4,<1",
+    "pre-commit>=3.7,<4",
+]
+
+[project.scripts]
+pdf-renderer = "reportlab_json_renderer.cli:main"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 99
+src = ["reportlab_json_renderer", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort
+    "N",    # pep8-naming
+    "UP",   # pyupgrade
+    "B",    # flake8-bugbear
+    "SIM",  # flake8-simplify
+    "RUF",  # ruff-specific
+]
+ignore = [
+    "E501",  # line-too-long (handled by formatter)
+    "RUF001",  # ambiguous unicode — intentional en-dash in report strings
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["reportlab_json_renderer"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = [
+    "--strict-markers",
+    "--tb=short",
+    "-v",
+]
+
+[tool.coverage.run]
+source = ["reportlab_json_renderer"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 90
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.",
+    "raise NotImplementedError",
+    "\\.\\.\\.",
+]

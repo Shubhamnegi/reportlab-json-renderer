@@ -1,0 +1,32 @@
+{
+  "version": "1.0",
+  "template": "analytics_report_v1",
+  "theme": "limetray_green",
+  "metadata": {
+    "entity_name": "Test Entity",
+    "report_title": "Test Report",
+    "period": "1 Jan – 7 Jan 2026",
+    "generated_at": "2026-01-07",
+    "powered_by": "Limetray",
+    "confidential": true
+  },
+  "page": {
+    "size": "A4",
+    "orientation": "portrait",
+    "margins": {
+      "left_cm": 1.5,
+      "right_cm": 1.5,
+      "top_cm": 2.2,
+      "bottom_cm": 2.0
+    }
+  },
+  "header": {
+    "enabled": true,
+    "variant": "default"
+  },
+  "footer": {
+    "enabled": true,
+    "show_page_number": true
+  },
+  "blocks": []
+}
