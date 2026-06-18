@@ -71,6 +71,16 @@ class TestLoadLocalImage:
         result = load_local_image(str(tmp_image))
         assert result.exists()
 
+    def test_resolves_relative_path_with_allowed_root(self, tmp_image: Path) -> None:
+        result = load_local_image(tmp_image.name, allowed_root=tmp_image.parent)
+        assert result == tmp_image.resolve()
+
+    def test_rejects_path_traversal_outside_allowed_root(self, tmp_path: Path) -> None:
+        outside = tmp_path.parent / "outside.png"
+        _create_test_image(outside)
+        with pytest.raises(RenderError, match="escapes the allowed asset root"):
+            load_local_image("../outside.png", allowed_root=tmp_path)
+
 
 class TestLoadBase64Image:
     def test_valid_base64_png(self, tmp_path: Path) -> None:

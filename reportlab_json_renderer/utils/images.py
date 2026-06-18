@@ -21,11 +21,17 @@ from PIL import Image as PILImage
 from reportlab_json_renderer.utils.errors import RenderError
 
 
-def load_local_image(path: str | Path) -> Path:
+def load_local_image(
+    path: str | Path,
+    *,
+    allowed_root: str | Path | None = None,
+) -> Path:
     """Validate and return a local image path.
 
     Args:
         path: Filesystem path to the image.
+        allowed_root: Optional directory boundary. When provided, the resolved
+            image path must stay within this root.
 
     Returns:
         Resolved ``Path`` object.
@@ -34,7 +40,19 @@ def load_local_image(path: str | Path) -> Path:
         RenderError: If the file does not exist or is not a supported
             image format (PNG, JPEG, GIF, BMP, TIFF, WebP).
     """
-    p = Path(path).resolve()
+    raw_path = Path(path)
+    if allowed_root is not None:
+        root = Path(allowed_root).resolve()
+        candidate = raw_path if raw_path.is_absolute() else root / raw_path
+        p = candidate.resolve()
+        try:
+            p.relative_to(root)
+        except ValueError as exc:
+            raise RenderError(
+                f"Image path escapes the allowed asset root: {raw_path}"
+            ) from exc
+    else:
+        p = raw_path.resolve()
     if not p.exists():
         raise RenderError(f"Image file not found: {p}")
 

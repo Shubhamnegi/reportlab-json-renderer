@@ -7,6 +7,7 @@ block dispatch, and PDF assembly.
 from __future__ import annotations
 
 import io
+from pathlib import Path
 from typing import Any
 
 from reportlab.lib.pagesizes import A3, A4, LEGAL, LETTER
@@ -21,6 +22,7 @@ from reportlab_json_renderer.schema.validators import validate_spec
 from reportlab_json_renderer.templates import get_template
 from reportlab_json_renderer.themes import get_theme
 from reportlab_json_renderer.utils.errors import RenderError, ValidationError
+from reportlab_json_renderer.utils.images import load_local_image
 from reportlab_json_renderer.utils.units import cm_to_pt
 
 # Page size mapping.
@@ -37,6 +39,7 @@ def build_pdf(
     output_path: str | None = None,
     *,
     allow_partial: bool = False,
+    asset_root: str | Path | None = None,
 ) -> dict[str, Any]:
     """Execute the full render pipeline and return a result dict.
 
@@ -55,6 +58,9 @@ def build_pdf(
         allow_partial: If ``True``, continue after block-level render errors and
             return them as warnings. If ``False``, raise on the first block-level
             render failure.
+        asset_root: Directory boundary for local assets such as images. Relative
+            image paths are resolved under this root, and traversal outside it is
+            rejected. Defaults to the current working directory.
 
     Returns:
         Result dictionary with keys: success, path, bytes, pages, warnings, metadata.
@@ -93,13 +99,18 @@ def build_pdf(
     bottom_margin = cm_to_pt(page_config.margins["bottom_cm"])
 
     frame_width = page_size[0] - left_margin - right_margin
+    resolved_asset_root = _resolve_asset_root(asset_root)
 
     # ── 5. Build flowables from blocks ───────────────────────────────
     flowables = []
     for idx, block in enumerate(parsed.blocks):
+        block_dict = block.model_dump() if hasattr(block, "model_dump") else block
+        block_type = block_dict.get("type", "?")
         try:
-            block_dict = block.model_dump() if hasattr(block, "model_dump") else block
-            block_type = block_dict.get("type", "?")
+            block_dict = _normalize_block_assets(
+                block_dict,
+                asset_root=resolved_asset_root,
+            )
             if not tpl.is_block_allowed(block_type):
                 warnings.append(
                     f"Block {idx} ({block_type}): not allowed by template {tpl.name}"
@@ -243,6 +254,40 @@ def _build_document(
     doc.addPageTemplates([template])
 
     return doc
+
+
+def _resolve_asset_root(asset_root: str | Path | None) -> Path:
+    """Resolve the asset root used for local file validation."""
+    if asset_root is None:
+        return Path.cwd().resolve()
+    return Path(asset_root).resolve()
+
+
+def _normalize_block_assets(
+    block: dict[str, Any],
+    *,
+    asset_root: Path,
+) -> dict[str, Any]:
+    """Resolve and validate local asset references within a block tree."""
+    normalized = dict(block)
+    block_type = normalized.get("type")
+
+    if block_type == "image":
+        normalized["src"] = str(
+            load_local_image(normalized.get("src", ""), allowed_root=asset_root)
+        )
+
+    if block_type == "two_column":
+        normalized["left"] = [
+            _normalize_block_assets(child, asset_root=asset_root)
+            for child in normalized.get("left", [])
+        ]
+        normalized["right"] = [
+            _normalize_block_assets(child, asset_root=asset_root)
+            for child in normalized.get("right", [])
+        ]
+
+    return normalized
 
 
 def _hex_color(hex_str: str):

@@ -91,6 +91,23 @@ class TestRenderCommand:
         assert code == 0
         assert output_file.exists()
 
+    def test_render_relative_image_uses_input_directory(self, tmp_path: Path, minimal_spec: dict[str, Any]) -> None:
+        from PIL import Image as PILImage
+
+        image_path = tmp_path / "chart.png"
+        PILImage.new("RGB", (20, 20), color=(124, 181, 24)).save(image_path, "PNG")
+        spec = {
+            **minimal_spec,
+            "blocks": [{"type": "image", "src": "chart.png"}],
+        }
+        input_file = _write_json(tmp_path / "spec.json", spec)
+        output_file = tmp_path / "out.pdf"
+
+        code = main(["render", "--input", str(input_file), "--output", str(output_file)])
+
+        assert code == 0
+        assert output_file.exists()
+
     def test_render_unknown_theme(self, tmp_path: Path, minimal_spec: dict[str, Any]) -> None:
         """Render should fail with an unknown theme."""
         spec = {**minimal_spec, "theme": "nonexistent_theme"}
@@ -105,6 +122,23 @@ class TestRenderCommand:
         input_file = _write_json(tmp_path / "spec.json", spec)
 
         code = main(["render", "--input", str(input_file), "--output", str(tmp_path / "out.pdf")])
+        assert code == 1
+
+    def test_render_image_path_traversal_rejected(
+        self, tmp_path: Path, minimal_spec: dict[str, Any]
+    ) -> None:
+        from PIL import Image as PILImage
+
+        outside = tmp_path.parent / "outside.png"
+        PILImage.new("RGB", (20, 20), color=(124, 181, 24)).save(outside, "PNG")
+        spec = {
+            **minimal_spec,
+            "blocks": [{"type": "image", "src": "../outside.png"}],
+        }
+        input_file = _write_json(tmp_path / "spec.json", spec)
+
+        code = main(["render", "--input", str(input_file), "--output", str(tmp_path / "out.pdf")])
+
         assert code == 1
 
     def test_render_block_failure_exits_nonzero(

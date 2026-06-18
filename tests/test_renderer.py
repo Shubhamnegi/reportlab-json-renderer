@@ -134,6 +134,17 @@ class TestRenderWithBlocks:
         result = render_pdf(spec)
         assert result["success"] is True
 
+    def test_image_block_resolves_within_asset_root(self, tmp_path: Path) -> None:
+        from PIL import Image as PILImage
+
+        image_path = tmp_path / "chart.png"
+        PILImage.new("RGB", (20, 20), color=(124, 181, 24)).save(image_path, "PNG")
+        spec = _spec_with_blocks([
+            {"type": "image", "src": "chart.png"},
+        ])
+        result = render_pdf(spec, asset_root=tmp_path)
+        assert result["success"] is True
+
 
 # ── Theme / Template Variations ─────────────────────────────────────
 
@@ -243,6 +254,17 @@ class TestWarnings:
         result = render_pdf(spec, allow_partial=True)
         assert result["success"] is True
         assert any("Block 0 (two_column):" in warning for warning in result["warnings"])
+
+    def test_image_path_traversal_is_rejected(self, tmp_path: Path) -> None:
+        from PIL import Image as PILImage
+
+        outside = tmp_path.parent / "outside.png"
+        PILImage.new("RGB", (20, 20), color=(124, 181, 24)).save(outside, "PNG")
+        spec = _spec_with_blocks([
+            {"type": "image", "src": "../outside.png"},
+        ])
+        with pytest.raises(RenderError, match="Image path escapes the allowed asset root"):
+            render_pdf(spec, asset_root=tmp_path)
 
 
 # ── Header / Footer ─────────────────────────────────────────────────

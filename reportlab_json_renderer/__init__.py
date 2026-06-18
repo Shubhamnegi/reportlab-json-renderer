@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
 
 from reportlab_json_renderer.renderer import build_pdf
@@ -14,6 +15,7 @@ def render_pdf(
     output_path: str | None = None,
     *,
     allow_partial: bool = False,
+    asset_root: str | Path | None = None,
 ) -> dict[str, Any]:
     """Render a PDF from a validated JSON specification.
 
@@ -24,6 +26,9 @@ def render_pdf(
         allow_partial: If ``True``, continue after block-level render errors and
             return them as warnings. If ``False``, raise on the first block-level
             render failure.
+        asset_root: Directory boundary for local assets such as images. Relative
+            image paths are resolved under this root, and traversal outside it is
+            rejected. Defaults to the current working directory.
 
     Returns:
         A result dictionary containing:
@@ -40,7 +45,12 @@ def render_pdf(
         reportlab_json_renderer.utils.errors.RenderError:
             If a block cannot be rendered.
     """
-    return build_pdf(spec, output_path=output_path, allow_partial=allow_partial)
+    return build_pdf(
+        spec,
+        output_path=output_path,
+        allow_partial=allow_partial,
+        asset_root=asset_root,
+    )
 
 
 __all__ = ["__version__", "render_pdf"]

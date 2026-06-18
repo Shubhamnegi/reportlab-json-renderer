@@ -57,7 +57,7 @@ pdf-renderer sample --output sample.json
 
 ## Python API Reference
 
-### `render_pdf(spec, output_path=None)`
+### `render_pdf(spec, output_path=None, allow_partial=False, asset_root=None)`
 
 Render a PDF from a validated JSON specification.
 
@@ -67,6 +67,8 @@ Render a PDF from a validated JSON specification.
 |------|------|-------------|
 | `spec` | `dict` | JSON specification conforming to the report schema. |
 | `output_path` | `str \| None` | Filesystem path for the generated PDF. If `None`, returns bytes only. |
+| `allow_partial` | `bool` | Continue after block render errors and return warnings instead of raising. Default: `False`. |
+| `asset_root` | `str \| Path \| None` | Directory boundary for local images. Relative paths resolve under this root and traversal outside it is rejected. Default: current working directory. |
 
 **Returns** `dict` with keys:
 
@@ -97,6 +99,9 @@ pdf_bytes = result["bytes"]
 
 # Explicit partial rendering
 result = render_pdf(spec, allow_partial=True)
+
+# Restrict image loading to a known directory
+result = render_pdf(spec, asset_root="/app/report-assets")
 ```
 
 ## JSON Contract
@@ -164,6 +169,9 @@ This library is designed to be extended with custom blocks, themes, and template
 Current implementation notes:
 
 - `image` blocks currently support local filesystem paths only.
+- Relative image paths are resolved under `asset_root` in the Python API and
+  under the input JSON file's directory in the CLI. Traversal outside that root
+  is rejected.
 - `image.fit` is accepted by the schema but not yet applied by the renderer.
 - Renders fail closed by default on block errors. Use `allow_partial=True` only if
   your application explicitly accepts partial output.

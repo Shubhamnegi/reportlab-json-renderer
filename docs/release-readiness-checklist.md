@@ -26,7 +26,7 @@ implemented and verified.
 ## Images And Resource Safety
 
 - [x] Route image loading through validated utilities
-- [ ] Restrict local image access to safe paths and reject traversal
+- [x] Restrict local image access to safe paths and reject traversal
 - [ ] Add resource limits for large JSON payloads, large images, and oversized tables/charts
 - [ ] Clean up temporary files created during base64 image handling
 - [ ] Implement or remove unsupported remote-image claims

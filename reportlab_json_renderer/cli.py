@@ -193,7 +193,11 @@ def _cmd_render(args: argparse.Namespace) -> int:
         return 1
 
     try:
-        result = build_pdf(spec, output_path=str(args.output))
+        result = build_pdf(
+            spec,
+            output_path=str(args.output),
+            asset_root=args.input.parent,
+        )
     except ValidationError as exc:
         print(f"Validation failed:\n{exc}", file=sys.stderr)
         return 1

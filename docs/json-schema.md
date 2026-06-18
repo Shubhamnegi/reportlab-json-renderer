@@ -225,7 +225,7 @@ Image block currently supporting local filesystem paths.
 
 | Field | Type | Required | Default | Description |
 |-------|------|----------|---------|-------------|
-| `src` | `string` | **Yes** | — | Image source path. Current renderer support is limited to local filesystem paths. |
+| `src` | `string` | **Yes** | — | Image source path. Current renderer support is limited to local filesystem paths. Relative paths resolve under the configured asset root, and traversal outside that root is rejected. |
 | `title` | `string` | No | `null` | Image caption. |
 | `width_cm` | `number` | No | `null` | Width in cm. |
 | `height_cm` | `number` | No | `null` | Height in cm. |

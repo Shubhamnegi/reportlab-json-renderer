@@ -355,7 +355,7 @@ Useful for comparison reports.
 {
   "type": "image",
   "title": "Outlet Photo",
-  "src": "/safe/path/image.png",
+  "src": "charts/overview.png",
   "width_cm": 14,
   "height_cm": 7,
   "fit": "contain",
@@ -365,6 +365,9 @@ Useful for comparison reports.
 Supported image sources in the current implementation:
 
 local file
+
+Relative image paths must stay under the configured asset root. Traversal
+outside that root must be rejected.
 
 8.13 Chart
 
