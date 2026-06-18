@@ -28,7 +28,7 @@ This document remains the implementation history for the original build-out.
 - [x] `utils/units.py` — cm/mm/pt conversion helpers
 - [x] `utils/colors.py` — tone-to-hex resolver (reads from theme, never raw hex from JSON)
 - [x] `utils/text.py` — text truncation, sanitization, line-break helpers
-- [x] `utils/images.py` — local file loader, optional HTTP/S3/base64 loader with validation
+- [x] `utils/images.py` — local file loader and controlled base64 helper with validation
 - [x] `utils/charts.py` — matplotlib chart renderers (bar, horizontal_bar, line, area, pie, donut, stacked_bar, grouped_bar)
 
 ---
@@ -84,7 +84,7 @@ This document remains the implementation history for the original build-out.
 - [x] `blocks/callout.py` — colored callout box (tone, title, text)
 - [x] `blocks/insight_list.py` — numbered/bulleted insight items
 - [x] `blocks/recommendations.py` — priority/action/owner/impact table
-- [x] `blocks/image.py` — image block (local, HTTP, S3, base64, contain/cover fit, alignment)
+- [x] `blocks/image.py` — image block (local file paths, contain/cover fit placeholder, alignment)
 - [x] `blocks/chart.py` — chart block (renders via matplotlib utils, embeds as image flowable)
 - [x] `blocks/layout.py` — two-column (and future multi-column) layout container
 - [x] `blocks/spacer.py` — vertical spacer

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import base64
+import gc
 import io
 from pathlib import Path
 
@@ -99,6 +100,8 @@ class TestLoadBase64Image:
         result = load_base64_image(b64, output_dir=tmp_path)
         assert result.exists()
         assert result.suffix == ".png"
+        result.cleanup()
+        assert not Path(str(result)).exists()
 
     def test_invalid_base64_raises(self, tmp_path: Path) -> None:
         with pytest.raises(RenderError, match="Invalid base64"):
@@ -108,6 +111,31 @@ class TestLoadBase64Image:
         b64 = base64.b64encode(b"this is not an image").decode()
         with pytest.raises(RenderError, match="not a valid image"):
             load_base64_image(b64, output_dir=tmp_path)
+
+    def test_context_manager_cleans_up_file(self, tmp_path: Path) -> None:
+        img = PILImage.new("RGB", (10, 10), color="red")
+        buf = io.BytesIO()
+        img.save(buf, format="PNG")
+        b64 = base64.b64encode(buf.getvalue()).decode()
+
+        with load_base64_image(b64, output_dir=tmp_path) as path:
+            temp_path = Path(path)
+            assert temp_path.exists()
+
+        assert not temp_path.exists()
+
+    def test_managed_image_cleans_up_on_gc(self, tmp_path: Path) -> None:
+        img = PILImage.new("RGB", (10, 10), color="red")
+        buf = io.BytesIO()
+        img.save(buf, format="PNG")
+        b64 = base64.b64encode(buf.getvalue()).decode()
+
+        managed = load_base64_image(b64, output_dir=tmp_path)
+        temp_path = Path(str(managed))
+        assert temp_path.exists()
+        del managed
+        gc.collect()
+        assert not temp_path.exists()
 
 
 class TestLoadRemoteImage:

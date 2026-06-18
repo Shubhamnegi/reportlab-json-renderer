@@ -1,19 +1,17 @@
 """Image loading and validation helpers.
 
-Supported sources (per the spec):
-  - Local file path
-  - HTTP / HTTPS URL  (optional, Phase 2)
-  - S3 path           (optional, Phase 2)
-  - Base64 string     (optional, Phase 2)
-
-Only the local-file loader is mandatory for v1.  Remote sources raise
-``NotImplementedError`` until explicitly enabled.
+Public renderer support in this release is limited to local filesystem images.
+Base64 decoding helpers exist for controlled internal use. Remote image loading
+is intentionally unsupported.
 """
 
 from __future__ import annotations
 
 import base64
 import io
+import shutil
+import tempfile
+import weakref
 from pathlib import Path
 
 from PIL import Image as PILImage
@@ -22,6 +20,42 @@ from reportlab_json_renderer.utils.errors import RenderError
 
 MAX_IMAGE_PIXELS = 25_000_000
 MAX_IMAGE_DIMENSION = 10_000
+
+
+class ManagedTempImage:
+    """Temporary image file wrapper with explicit cleanup support."""
+
+    def __init__(self, path: Path, temp_dir: Path) -> None:
+        self.path = path
+        self._temp_dir = temp_dir
+        self._finalizer = weakref.finalize(
+            self,
+            shutil.rmtree,
+            temp_dir,
+            True,
+        )
+
+    @property
+    def suffix(self) -> str:
+        return self.path.suffix
+
+    def exists(self) -> bool:
+        return self.path.exists()
+
+    def cleanup(self) -> None:
+        self._finalizer()
+
+    def __fspath__(self) -> str:
+        return str(self.path)
+
+    def __str__(self) -> str:
+        return str(self.path)
+
+    def __enter__(self) -> Path:
+        return self.path
+
+    def __exit__(self, exc_type: object, exc: object, tb: object) -> None:
+        self.cleanup()
 
 
 def load_local_image(
@@ -87,7 +121,10 @@ def load_local_image(
     return p
 
 
-def load_base64_image(data: str, output_dir: Path | None = None) -> Path:
+def load_base64_image(
+    data: str,
+    output_dir: Path | None = None,
+) -> ManagedTempImage:
     """Decode a base64-encoded image and write it to a temporary file.
 
     Args:
@@ -118,30 +155,27 @@ def load_base64_image(data: str, output_dir: Path | None = None) -> Path:
     ext = {"jpeg": ".jpg", "png": ".png", "gif": ".gif", "bmp": ".bmp",
            "tiff": ".tiff", "webp": ".webp"}.get(fmt, ".png")
 
-    import tempfile
-
-    base_dir = str(output_dir) if output_dir else None
-    with tempfile.NamedTemporaryFile(suffix=ext, dir=base_dir, delete=False) as fd:
-        fd.write(raw)
-        tmp_path = fd.name
-
-    return Path(tmp_path)
+    base_dir = output_dir if output_dir else None
+    temp_dir = Path(
+        tempfile.mkdtemp(dir=str(base_dir) if base_dir else None)
+    )
+    tmp_path = temp_dir / f"decoded{ext}"
+    tmp_path.write_bytes(raw)
+    return ManagedTempImage(tmp_path, temp_dir)
 
 
 def load_remote_image(url: str) -> Path:
-    """Download and validate a remote image.
+    """Reject remote image loading.
 
     Args:
         url: HTTP or HTTPS URL.
 
     Returns:
-        Path to the downloaded image file.
-
     Raises:
-        NotImplementedError: Remote image loading is not yet implemented.
+        NotImplementedError: Remote image loading is intentionally unsupported.
     """
     raise NotImplementedError(
-        "Remote image loading will be implemented when explicitly enabled."
+        "Remote image loading is not supported in this release."
     )
 
 
@@ -163,4 +197,5 @@ __all__ = [
     "load_base64_image",
     "load_local_image",
     "load_remote_image",
+    "ManagedTempImage",
 ]
