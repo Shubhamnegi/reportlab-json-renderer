@@ -32,41 +32,41 @@
 
 ## Phase 3 — Schema & Validation
 
-- [ ] `schema/base.py` — Python dataclass / TypedDict definitions for root spec, metadata, page config
-- [ ] `schema/report_schema.json` — JSON Schema for the full contract (version, template, theme, metadata, page, header, footer, blocks)
-- [ ] `schema/validators.py` — `validate_spec(json)` function that returns structured errors
-- [ ] Unit tests for valid specs, missing fields, unknown block types, invalid tones
+- [x] `schema/base.py` — Pydantic models for root spec, metadata, page config, all block types
+- [x] `schema/validators.py` — `validate_spec(json)` and `validate_spec_or_raise(json)` with structured errors
+- [x] Unit tests for valid specs, missing fields, unknown block types, invalid tones (24 tests)
 
 ---
 
 ## Phase 4 — Theme System
 
-- [ ] `themes/base.py` — `Theme` class with color palette, font config, tone resolution
-- [ ] `themes/limetray_green.py` — default LimeTray theme
-- [ ] `themes/neutral.py` — grayscale / neutral theme
-- [ ] `themes/dark.py` — dark background theme
-- [ ] Theme resolver: look up theme by name, fall back to default
-- [ ] Unit tests for tone resolution, missing theme fallback
+- [x] `themes/base.py` — `Theme` class with color palette, font config, tone resolution
+- [x] `themes/limetray_green.py` — default LimeTray theme
+- [x] `themes/neutral.py` — grayscale / neutral theme
+- [x] `themes/dark.py` — dark background theme
+- [x] `themes/registry.py` — Theme resolver: look up theme by name, register custom themes
+- [x] Unit tests for tone resolution, missing theme fallback (17 tests)
 
 ---
 
 ## Phase 5 — Template System
 
-- [ ] `templates/base.py` — `BaseTemplate` class (page size, margins, header/footer defaults, section spacing, allowed blocks)
-- [ ] `templates/analytics_report_v1.py`
-- [ ] `templates/business_report_v1.py`
-- [ ] `templates/invoice_v1.py`
-- [ ] `templates/proposal_v1.py`
-- [ ] `templates/compact_report_v1.py`
-- [ ] Template resolver: look up template by name, merge with page overrides from JSON
-- [ ] Unit tests for template resolution and page config merging
+- [x] `templates/base.py` — `Template` class (page size, margins, header/footer defaults, section spacing, allowed blocks)
+- [x] `templates/analytics_report_v1.py`
+- [x] `templates/business_report_v1.py`
+- [x] `templates/invoice_v1.py`
+- [x] `templates/proposal_v1.py`
+- [x] `templates/compact_report_v1.py`
+- [x] `templates/registry.py` — Template resolver: look up template by name, merge with page overrides from JSON
+- [x] Unit tests for template resolution and page config merging (16 tests)
 
 ---
 
 ## Phase 6 — Block Renderer Registry
 
-- [ ] `blocks/base.py` — `BaseBlock` abstract class (`render(spec, theme, template) → list[Flowable]`)
-- [ ] `blocks/registry.py` — block type → renderer mapping, auto-discovery or manual registration
+- [x] `blocks/base.py` — `BaseBlock` abstract class (`render(spec, theme, template) → list[Flowable]`)
+- [x] `blocks/registry.py` — block type → renderer mapping, register, get_renderer, render_block
+- [x] Unit tests for registry (11 tests)
 
 ---
 
