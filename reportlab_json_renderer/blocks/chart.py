@@ -12,6 +12,7 @@ from reportlab.platypus import Image as RLImage
 from reportlab_json_renderer.blocks.base import BaseBlock
 from reportlab_json_renderer.utils.charts import render_chart
 from reportlab_json_renderer.utils.errors import RenderError
+from reportlab_json_renderer.utils.text import safe_paragraph_text
 
 
 class ChartBlock(BaseBlock):
@@ -28,7 +29,7 @@ class ChartBlock(BaseBlock):
         available_width: float,
     ) -> list[Flowable]:
         chart_type = block.get("chart_type", "bar")
-        title = block.get("title", "")
+        title = safe_paragraph_text(str(block.get("title", "")))
         labels = block.get("labels", [])
         values = block.get("values", [])
         series = block.get("series")

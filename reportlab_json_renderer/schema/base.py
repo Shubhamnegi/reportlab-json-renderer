@@ -202,7 +202,7 @@ class RecommendationsBlock(StrictModel):
 class ImageBlock(StrictModel):
     type: Literal["image"] = "image"
     title: str | None = None
-    src: str
+    src: str = Field(min_length=1)
     width_cm: float | None = Field(default=None, gt=0)
     height_cm: float | None = Field(default=None, gt=0)
     fit: ImageFit = ImageFit.CONTAIN

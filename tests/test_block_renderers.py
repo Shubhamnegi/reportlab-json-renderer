@@ -245,6 +245,16 @@ class TestCalloutGroupBlock:
         )
         assert len(result) >= 1
 
+    def test_escapes_markup_in_group_title(self) -> None:
+        r = CalloutGroupBlock()
+        result = r.render(
+            {"type": "callout_group", "title": "<b>unsafe</b>", "items": []},
+            theme=_theme, template=_template, available_width=_width,
+        )
+        para = result[0]
+        assert isinstance(para, Paragraph)
+        assert para.getPlainText() == "<b>unsafe</b>"
+
 
 # ── Table Block ─────────────────────────────────────────────────────
 
@@ -358,13 +368,13 @@ class TestImageBlock:
                 theme=_theme, template=_template, available_width=_width,
             )
 
-    def test_renders_empty_src(self) -> None:
+    def test_empty_src_raises(self) -> None:
         r = ImageBlock()
-        result = r.render(
-            {"type": "image", "src": ""},
-            theme=_theme, template=_template, available_width=_width,
-        )
-        assert len(result) == 0
+        with pytest.raises(RenderError, match="Unsupported image format"):
+            r.render(
+                {"type": "image", "src": ""},
+                theme=_theme, template=_template, available_width=_width,
+            )
 
 
 # ── Chart Block ─────────────────────────────────────────────────────
@@ -394,6 +404,16 @@ class TestChartBlock:
             theme=_theme, template=_template, available_width=_width,
         )
         assert len(result) >= 2
+
+    def test_escapes_markup_in_title(self) -> None:
+        r = ChartBlock()
+        result = r.render(
+            {"type": "chart", "chart_type": "bar", "title": "<b>unsafe</b>", "labels": ["A"], "values": [10]},
+            theme=_theme, template=_template, available_width=_width,
+        )
+        para = result[0]
+        assert isinstance(para, Paragraph)
+        assert para.getPlainText() == "<b>unsafe</b>"
 
 
 # ── Two Column Block ────────────────────────────────────────────────

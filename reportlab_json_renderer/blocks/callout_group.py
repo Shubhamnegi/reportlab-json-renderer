@@ -8,6 +8,7 @@ from reportlab.platypus import Flowable, Paragraph
 
 from reportlab_json_renderer.blocks.base import BaseBlock
 from reportlab_json_renderer.blocks.callout import CalloutBlock
+from reportlab_json_renderer.utils.text import safe_paragraph_text
 
 
 class CalloutGroupBlock(BaseBlock):
@@ -26,7 +27,7 @@ class CalloutGroupBlock(BaseBlock):
         template: Any,
         available_width: float,
     ) -> list[Flowable]:
-        title = block.get("title", "")
+        title = safe_paragraph_text(str(block.get("title", "")))
         items = block.get("items", [])
         flowables: list[Flowable] = []
 

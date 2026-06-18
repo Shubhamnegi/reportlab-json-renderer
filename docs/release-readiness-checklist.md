@@ -21,7 +21,7 @@ implemented and verified.
 - [x] Enforce template `allowed_blocks`
 - [x] Define and test empty-report behavior
 - [x] Escape and sanitize user-controlled text before ReportLab markup rendering
-- [ ] Ensure all input blocks either render or raise a clear failure
+- [x] Ensure all input blocks either render or raise a clear failure
 
 ## Images And Resource Safety
 

@@ -182,6 +182,20 @@ class TestChartValidation:
             result = validate_spec(spec)
             assert result.valid, f"chart_type {chart_type} should be valid"
 
+    def test_image_src_must_not_be_empty(self) -> None:
+        spec = {
+            "version": "1.0",
+            "template": "analytics_report_v1",
+            "theme": "green",
+            "metadata": {
+                "entity_name": "Test Entity",
+                "report_title": "Test Report",
+            },
+            "blocks": [{"type": "image", "src": ""}],
+        }
+        result = validate_spec(spec)
+        assert not result.valid
+
     def test_unknown_chart_type_gives_warning(self) -> None:
         spec = {
             "version": "1.0",

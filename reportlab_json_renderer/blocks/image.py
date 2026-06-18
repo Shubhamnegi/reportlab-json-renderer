@@ -11,6 +11,7 @@ from reportlab.platypus import Image as RLImage
 
 from reportlab_json_renderer.blocks.base import BaseBlock
 from reportlab_json_renderer.utils.images import load_local_image
+from reportlab_json_renderer.utils.text import safe_paragraph_text
 from reportlab_json_renderer.utils.units import cm_to_pt
 
 
@@ -27,7 +28,7 @@ class ImageBlock(BaseBlock):
         template: Any,
         available_width: float,
     ) -> list[Flowable]:
-        title = block.get("title", "")
+        title = safe_paragraph_text(str(block.get("title", "")))
         src = block.get("src", "")
         width_cm = block.get("width_cm")
         height_cm = block.get("height_cm")
@@ -43,9 +44,6 @@ class ImageBlock(BaseBlock):
                 spaceAfter=4,
             )
             flowables.append(Paragraph(title, title_style))
-
-        if not src:
-            return flowables
 
         # Resolve dimensions.
         w = cm_to_pt(width_cm) if width_cm else available_width * 0.8
