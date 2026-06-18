@@ -75,6 +75,31 @@ def tone_to_color(tone: str, theme_palette: dict[str, str] | None = None) -> Hex
     return HexColor(resolve_tone(tone, theme_palette))
 
 
+def tone_tint(tone: str, theme_palette: dict[str, str] | None = None, factor: float = 0.90) -> str:
+    """Return a light tint of a tone for use as a background colour.
+
+    Blends the tone with white: ``factor`` controls how white the result
+    is (0.0 = pure tone, 1.0 = pure white).  The default 0.90 produces a
+    soft pastel suitable for callout and card backgrounds.
+
+    Args:
+        tone: Semantic tone name (e.g. ``"danger"``).
+        theme_palette: Optional theme colour palette.
+        factor: Blend factor toward white (0.0–1.0).  Default 0.90.
+
+    Returns:
+        Hex colour string for the tinted background.
+    """
+    hex_val = resolve_tone(tone, theme_palette)
+    r = int(hex_val[1:3], 16)
+    g = int(hex_val[3:5], 16)
+    b = int(hex_val[5:7], 16)
+    r = int(r + (255 - r) * factor)
+    g = int(g + (255 - g) * factor)
+    b = int(b + (255 - b) * factor)
+    return f"#{r:02X}{g:02X}{b:02X}"
+
+
 def is_valid_tone(tone: str, theme_palette: dict[str, str] | None = None) -> bool:
     """Check whether *tone* is a known tone without raising.
 

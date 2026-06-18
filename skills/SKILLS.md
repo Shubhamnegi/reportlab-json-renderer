@@ -98,9 +98,15 @@ muted
 
 Component Selection Guide
 
+Use title for report header (entity, title, subtitle, right-aligned text).
+
+Use section_header for numbered section headings that divide the report into logical parts.
+
 Use kpi_grid for top metrics.
 
-Use callout or callout_group for key insights.
+Use callout or callout_group for key insights and alerts. Callout backgrounds are automatically tinted to match the tone (danger = red tint, warning = orange tint, etc.).
+
+Use summary_box for executive summary cards with tone-matched background.
 
 Use table for structured comparisons.
 
@@ -108,13 +114,25 @@ Use chart for visual trends.
 
 Use insight_list for analysis points.
 
-Use recommendations for action items.
+Use recommendations for action items (priority, action, owner, impact).
+
+Use rich_text for inline-styled text runs with mixed bold/italic/coloured segments.
+
+Use paragraph for body text. Supports HTML tags like <b>, <i>, <u>, <br/>.
+
+Use badge for small inline labels (e.g. status tags).
+
+Use divider for horizontal separator lines.
+
+Use spacer for vertical spacing.
 
 Use page_break between major report sections.
 
 Use image only when image source is available.
 
 Use two_column when placing two short charts/tables side by side.
+
+Use matrix_table for cross-tab / pivot comparisons.
 
 ⸻
 
@@ -180,18 +198,18 @@ Recommended Report Flow
 
 For analytics reports, use this structure:
 
-title metadata
+title
 kpi_grid
-overall callouts
-action items
-performance rating table
-source mix table/chart
-outlet comparison table/chart
-deep-dive sections
-promo/driver analysis
+section_header + overall callouts
+section_header + action items
+section_header + performance rating table
+section_header + source mix table/chart
+section_header + outlet comparison table/chart
+section_header + deep-dive sections
+section_header + promo/driver analysis
 trend table/chart
-final recommendations
-disclaimer
+section_header + final recommendations
+divider + disclaimer paragraph
 
 ⸻
 

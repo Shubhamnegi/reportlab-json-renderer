@@ -9,6 +9,7 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.platypus import Flowable, Paragraph, Spacer, Table, TableStyle
 
 from reportlab_json_renderer.blocks.base import BaseBlock
+from reportlab_json_renderer.utils.colors import tone_tint
 from reportlab_json_renderer.utils.text import safe_paragraph_text
 
 
@@ -30,7 +31,7 @@ class SummaryBoxBlock(BaseBlock):
         tone = block.get("tone", "primary")
 
         border_color = theme.resolve_tone(tone) if theme else "#7CB518"
-        bg_color = theme.resolve_tone("light") if theme else "#F5F5F5"
+        bg_color = tone_tint(tone, theme.tones if theme else None)
 
         inner_parts: list[str] = []
         if title:
