@@ -19,6 +19,16 @@ from reportlab_json_renderer.schema.base import (
     SUPPORTED_CHART_TYPES,
     ReportSpec,
 )
+from reportlab_json_renderer.schema.constants import (
+    MAX_BLOCK_COUNT,
+    MAX_CHART_POINTS,
+    MAX_CHART_SERIES,
+    MAX_MATRIX_COLUMNS,
+    MAX_MATRIX_ROWS,
+    MAX_SPEC_BYTES,
+    MAX_TABLE_COLUMNS,
+    MAX_TABLE_ROWS,
+)
 from reportlab_json_renderer.utils.errors import ValidationError
 
 
@@ -123,6 +133,86 @@ def _post_validate(spec: ReportSpec) -> list[str]:
     return warnings
 
 
+def _pre_validate_limits(data: dict[str, Any]) -> list[str]:
+    """Reject oversized specs before full model validation."""
+    errors: list[str] = []
+
+    try:
+        payload_size = len(json.dumps(data).encode("utf-8"))
+    except (TypeError, ValueError):
+        payload_size = None
+    if payload_size is not None and payload_size > MAX_SPEC_BYTES:
+        errors.append(
+            f"spec exceeds maximum size of {MAX_SPEC_BYTES} bytes"
+        )
+
+    blocks = data.get("blocks", [])
+    if isinstance(blocks, list) and len(blocks) > MAX_BLOCK_COUNT:
+        errors.append(f"blocks: maximum {MAX_BLOCK_COUNT} blocks allowed")
+
+    for idx, block in enumerate(blocks if isinstance(blocks, list) else []):
+        if not isinstance(block, dict):
+            continue
+        block_type = block.get("type")
+
+        if block_type == "table":
+            columns = block.get("columns", [])
+            rows = block.get("rows", [])
+            if isinstance(columns, list) and len(columns) > MAX_TABLE_COLUMNS:
+                errors.append(
+                    f"blocks → {idx} → columns: maximum {MAX_TABLE_COLUMNS} columns allowed"
+                )
+            if isinstance(rows, list) and len(rows) > MAX_TABLE_ROWS:
+                errors.append(
+                    f"blocks → {idx} → rows: maximum {MAX_TABLE_ROWS} rows allowed"
+                )
+
+        if block_type == "matrix_table":
+            columns = block.get("columns", [])
+            rows = block.get("rows", [])
+            if isinstance(columns, list) and len(columns) > MAX_MATRIX_COLUMNS:
+                errors.append(
+                    f"blocks → {idx} → columns: maximum {MAX_MATRIX_COLUMNS} columns allowed"
+                )
+            if isinstance(rows, list) and len(rows) > MAX_MATRIX_ROWS:
+                errors.append(
+                    f"blocks → {idx} → rows: maximum {MAX_MATRIX_ROWS} rows allowed"
+                )
+
+        if block_type == "chart":
+            labels = block.get("labels", [])
+            values = block.get("values", [])
+            series = block.get("series")
+            if isinstance(labels, list) and len(labels) > MAX_CHART_POINTS:
+                errors.append(
+                    f"blocks → {idx} → labels: maximum {MAX_CHART_POINTS} points allowed"
+                )
+            if isinstance(values, list) and len(values) > MAX_CHART_POINTS:
+                errors.append(
+                    f"blocks → {idx} → values: maximum {MAX_CHART_POINTS} points allowed"
+                )
+            if isinstance(series, dict):
+                if len(series) > MAX_CHART_SERIES:
+                    errors.append(
+                        f"blocks → {idx} → series: maximum {MAX_CHART_SERIES} series allowed"
+                    )
+                for series_name, series_values in series.items():
+                    if isinstance(series_values, list) and len(series_values) > MAX_CHART_POINTS:
+                        errors.append(
+                            f"blocks → {idx} → series → {series_name}: maximum {MAX_CHART_POINTS} points allowed"
+                        )
+
+        if block_type == "two_column":
+            for side in ("left", "right"):
+                nested_blocks = block.get(side, [])
+                if isinstance(nested_blocks, list) and len(nested_blocks) > MAX_BLOCK_COUNT:
+                    errors.append(
+                        f"blocks → {idx} → {side}: maximum {MAX_BLOCK_COUNT} nested blocks allowed"
+                    )
+
+    return errors
+
+
 def validate_spec(data: dict[str, Any]) -> ValidationResult:
     """Validate a JSON spec dictionary.
 
@@ -137,6 +227,9 @@ def validate_spec(data: dict[str, Any]) -> ValidationResult:
         ``ValidationResult`` with ``valid``, ``errors``, and ``warnings``.
     """
     errors: list[str] = []
+    errors.extend(_pre_validate_limits(data))
+    if errors:
+        return ValidationResult(valid=False, errors=errors)
 
     try:
         spec = ReportSpec.model_validate(data)

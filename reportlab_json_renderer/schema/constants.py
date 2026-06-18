@@ -1,0 +1,23 @@
+"""Validation limits for public JSON report specifications."""
+
+from __future__ import annotations
+
+MAX_SPEC_BYTES = 1_000_000
+MAX_BLOCK_COUNT = 200
+MAX_TABLE_ROWS = 500
+MAX_TABLE_COLUMNS = 20
+MAX_MATRIX_ROWS = 500
+MAX_MATRIX_COLUMNS = 20
+MAX_CHART_POINTS = 500
+MAX_CHART_SERIES = 10
+
+__all__ = [
+    "MAX_BLOCK_COUNT",
+    "MAX_CHART_POINTS",
+    "MAX_CHART_SERIES",
+    "MAX_MATRIX_COLUMNS",
+    "MAX_MATRIX_ROWS",
+    "MAX_SPEC_BYTES",
+    "MAX_TABLE_COLUMNS",
+    "MAX_TABLE_ROWS",
+]

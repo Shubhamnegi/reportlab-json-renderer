@@ -71,6 +71,12 @@ class TestLoadLocalImage:
         result = load_local_image(str(tmp_image))
         assert result.exists()
 
+    def test_rejects_oversized_dimensions(self, tmp_path: Path) -> None:
+        p = tmp_path / "wide.png"
+        _create_test_image(p, size=(10001, 10))
+        with pytest.raises(RenderError, match="Image dimensions exceed limit"):
+            load_local_image(p)
+
     def test_resolves_relative_path_with_allowed_root(self, tmp_image: Path) -> None:
         result = load_local_image(tmp_image.name, allowed_root=tmp_image.parent)
         assert result == tmp_image.resolve()

@@ -20,6 +20,9 @@ from PIL import Image as PILImage
 
 from reportlab_json_renderer.utils.errors import RenderError
 
+MAX_IMAGE_PIXELS = 25_000_000
+MAX_IMAGE_DIMENSION = 10_000
+
 
 def load_local_image(
     path: str | Path,
@@ -69,6 +72,17 @@ def load_local_image(
             img.verify()
     except Exception as exc:
         raise RenderError(f"Invalid image file: {p} — {exc}") from exc
+
+    width, height = get_image_dimensions(p)
+    if width > MAX_IMAGE_DIMENSION or height > MAX_IMAGE_DIMENSION:
+        raise RenderError(
+            f"Image dimensions exceed limit: {width}x{height} > "
+            f"{MAX_IMAGE_DIMENSION}px"
+        )
+    if width * height > MAX_IMAGE_PIXELS:
+        raise RenderError(
+            f"Image pixel count exceeds limit: {width * height} > {MAX_IMAGE_PIXELS}"
+        )
 
     return p
 

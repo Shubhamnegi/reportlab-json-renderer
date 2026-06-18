@@ -154,6 +154,38 @@ class TestPostValidationWarnings:
         assert result.warnings == []
 
 
+class TestResourceLimits:
+    def test_rejects_too_many_blocks(self, minimal_spec: dict[str, Any]) -> None:
+        spec = _copy_spec(minimal_spec)
+        spec["blocks"] = [{"type": "paragraph", "text": "x"} for _ in range(201)]
+        result = validate_spec(spec)
+        assert not result.valid
+        assert any("maximum 200 blocks allowed" in error for error in result.errors)
+
+    def test_rejects_too_many_table_rows(self, minimal_spec: dict[str, Any]) -> None:
+        spec = _copy_spec(minimal_spec)
+        spec["blocks"] = [{
+            "type": "table",
+            "columns": [{"key": "a", "label": "A"}],
+            "rows": [{"a": str(i)} for i in range(501)],
+        }]
+        result = validate_spec(spec)
+        assert not result.valid
+        assert any("maximum 500 rows allowed" in error for error in result.errors)
+
+    def test_rejects_too_many_chart_points(self, minimal_spec: dict[str, Any]) -> None:
+        spec = _copy_spec(minimal_spec)
+        spec["blocks"] = [{
+            "type": "chart",
+            "chart_type": "bar",
+            "labels": [str(i) for i in range(501)],
+            "values": [float(i) for i in range(501)],
+        }]
+        result = validate_spec(spec)
+        assert not result.valid
+        assert any("maximum 500 points allowed" in error for error in result.errors)
+
+
 class TestValidationResult:
     """Test the ValidationResult API surface."""
 
