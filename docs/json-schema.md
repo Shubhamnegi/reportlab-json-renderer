@@ -221,15 +221,15 @@ Each item:
 
 ### `image`
 
-Image block supporting local files, HTTP URLs, and base64 data.
+Image block currently supporting local filesystem paths.
 
 | Field | Type | Required | Default | Description |
 |-------|------|----------|---------|-------------|
-| `src` | `string` | **Yes** | — | Image source (file path, URL, or data URI). |
+| `src` | `string` | **Yes** | — | Image source path. Current renderer support is limited to local filesystem paths. |
 | `title` | `string` | No | `null` | Image caption. |
 | `width_cm` | `number` | No | `null` | Width in cm. |
 | `height_cm` | `number` | No | `null` | Height in cm. |
-| `fit` | `string` | No | `"contain"` | `"contain"`, `"cover"`, or `"stretch"`. |
+| `fit` | `string` | No | `"contain"` | Reserved for future use. Accepted by the schema but not currently applied by the renderer. |
 | `align` | `string` | No | `"center"` | `"left"`, `"center"`, or `"right"`. |
 
 ### `chart`
@@ -306,7 +306,7 @@ Tones are semantic colour names resolved by the active theme. All themes must de
 
 `primary`, `secondary`, `danger`, `success`, `warning`, `info`, `light`, `dark`, `muted`
 
-You can also pass raw hex values (e.g. `"#FF0000"`) — they pass through unchanged.
+You can also pass raw hex values (e.g. `"#FF0000"`) because the current theme resolver passes them through unchanged.
 
 ---
 

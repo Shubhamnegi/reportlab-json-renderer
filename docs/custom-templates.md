@@ -155,8 +155,8 @@ INVOICE_TEMPLATE = build_template(
 )
 ```
 
-If a spec contains a block type not in `allowed_blocks`, the renderer will
-skip it and add a warning to the result.
+`allowed_blocks` is part of the template definition API, but the current renderer
+does not enforce it yet. Treat it as metadata until enforcement is implemented.
 
 ---
 

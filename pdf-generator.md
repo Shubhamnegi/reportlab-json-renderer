@@ -42,7 +42,7 @@ Functional Goals
 * Support page header/footer.
 * Support brand themes.
 * Support custom report types.
-* Support local images, remote images, and generated chart images.
+* Support local images and generated chart images.
 * Validate JSON before rendering.
 * Return generated PDF path, bytes, or stream.
 * Allow CLI and MCP/server usage.
@@ -355,20 +355,16 @@ Useful for comparison reports.
 {
   "type": "image",
   "title": "Outlet Photo",
-  "src": "s3://bucket/path/image.png",
+  "src": "/safe/path/image.png",
   "width_cm": 14,
   "height_cm": 7,
   "fit": "contain",
   "align": "center"
 }
 
-Supported image sources:
+Supported image sources in the current implementation:
 
 local file
-HTTP/HTTPS URL, optional
-S3 path, optional
-base64, optional but discouraged
-pre-generated asset id
 
 8.13 Chart
 
@@ -742,15 +738,10 @@ Example validation error:
 Image loader should support:
 
 local:/safe/path/image.png
-s3://bucket/key
-https://example.com/image.png
-asset://logo/default
-data:image/png;base64,...
 
 Recommended v1 support:
 
 local
-asset
 pre-generated chart buffer
 
 Optional v2:
@@ -759,12 +750,7 @@ s3
 http
 base64
 
-Image fit modes:
-
-contain
-cover
-stretch
-actual
+Image fit modes are reserved in the schema but are not yet applied by the current renderer.
 
 ⸻
 
@@ -1056,7 +1042,7 @@ Phase 3: Charts and Images
 * Image loader.
 * Chart block.
 * Two-column chart layout.
-* Image block with fit modes.
+* Image block with schema-level fit options reserved for later renderer support.
 
 Phase 4: MCP Server
 

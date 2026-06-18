@@ -79,6 +79,8 @@ Render a PDF from a validated JSON specification.
 | `warnings` | `list[str]` | Non-fatal warnings collected during render. |
 | `metadata` | `dict` | Echo of template and theme used. |
 
+Warnings may come from schema post-validation checks or block-level render fallbacks.
+
 **Raises** `ValidationError` if the spec fails validation.
 
 ```python
@@ -153,6 +155,12 @@ Minimal example:
 ## Extending
 
 This library is designed to be extended with custom blocks, themes, and templates.
+
+Current implementation notes:
+
+- `image` blocks currently support local filesystem paths only.
+- `image.fit` is accepted by the schema but not yet applied by the renderer.
+- Template `allowed_blocks` metadata exists, but enforcement is still pending.
 
 - **Custom blocks**: Subclass `BaseBlock` and register via the block registry. See [`docs/custom-blocks.md`](docs/custom-blocks.md).
 - **Custom themes**: Create a `Theme` dataclass and register via the theme registry. See [`docs/custom-themes.md`](docs/custom-themes.md).
