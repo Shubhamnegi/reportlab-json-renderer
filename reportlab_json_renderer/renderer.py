@@ -17,9 +17,10 @@ from reportlab.platypus import (
 )
 
 from reportlab_json_renderer.blocks.registry import render_block
-from reportlab_json_renderer.schema.validators import validate_spec_or_raise
+from reportlab_json_renderer.schema.validators import validate_spec
 from reportlab_json_renderer.templates import get_template
 from reportlab_json_renderer.themes import get_theme
+from reportlab_json_renderer.utils.errors import ValidationError
 from reportlab_json_renderer.utils.units import cm_to_pt
 
 # Page size mapping.
@@ -53,7 +54,14 @@ def build_pdf(spec: dict[str, Any], output_path: str | None = None) -> dict[str,
     warnings: list[str] = []
 
     # ── 1. Validate ──────────────────────────────────────────────────
-    parsed = validate_spec_or_raise(spec)
+    validation_result = validate_spec(spec)
+    if not validation_result.valid:
+        msg = "Spec validation failed:\n" + "\n".join(
+            f"  - {error}" for error in validation_result.errors
+        )
+        raise ValidationError(msg)
+    parsed = validation_result.parsed
+    warnings.extend(validation_result.warnings)
 
     # ── 2. Resolve template ──────────────────────────────────────────
     tpl = get_template(parsed.template)

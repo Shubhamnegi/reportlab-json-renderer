@@ -197,6 +197,19 @@ class TestValidationErrors:
 
 
 class TestWarnings:
+    def test_validation_warnings_are_returned(self) -> None:
+        spec = _spec_with_blocks([
+            {
+                "type": "table",
+                "columns": [{"key": "a", "label": "A", "width": 0.8}],
+                "rows": [{"a": "1", "extra": "2"}],
+            },
+        ])
+        result = render_pdf(spec)
+        assert result["success"] is True
+        assert any("widths sum" in warning for warning in result["warnings"])
+        assert any("extra keys" in warning for warning in result["warnings"])
+
     def test_broken_block_generates_warning(self) -> None:
         """A block that causes a render error should generate a warning,
         not crash the entire pipeline."""

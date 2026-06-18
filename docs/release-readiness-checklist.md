@@ -12,7 +12,7 @@ implemented and verified.
 
 - [x] Enforce strict schema inputs (`extra="forbid"` where appropriate)
 - [x] Enforce schema version compatibility explicitly
-- [ ] Propagate validation warnings into render results
+- [x] Propagate validation warnings into render results
 - [ ] Align public documentation with implemented behavior
 
 ## Rendering Correctness
