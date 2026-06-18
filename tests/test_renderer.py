@@ -82,57 +82,78 @@ class TestRenderPDFMinimal:
 
 class TestRenderWithBlocks:
     def test_title_block(self) -> None:
-        spec = _spec_with_blocks([
-            {"type": "title", "entity": "Acme", "title": "Q1 Report"},
-        ])
+        spec = _spec_with_blocks(
+            [
+                {"type": "title", "entity": "Acme", "title": "Q1 Report"},
+            ]
+        )
         result = render_pdf(spec)
         assert result["success"] is True
         assert result["bytes"] is not None
 
     def test_multiple_blocks(self) -> None:
-        spec = _spec_with_blocks([
-            {"type": "title", "entity": "Acme", "title": "Report"},
-            {"type": "section_header", "number": "1", "title": "Summary"},
-            {"type": "paragraph", "text": "This is a test paragraph."},
-            {"type": "spacer", "height": 12},
-            {"type": "divider"},
-            {"type": "page_break"},
-            {"type": "paragraph", "text": "Page 2 content."},
-        ])
+        spec = _spec_with_blocks(
+            [
+                {"type": "title", "entity": "Acme", "title": "Report"},
+                {"type": "section_header", "number": "1", "title": "Summary"},
+                {"type": "paragraph", "text": "This is a test paragraph."},
+                {"type": "spacer", "height": 12},
+                {"type": "divider"},
+                {"type": "page_break"},
+                {"type": "paragraph", "text": "Page 2 content."},
+            ]
+        )
         result = render_pdf(spec)
         assert result["success"] is True
 
     def test_table_block(self) -> None:
-        spec = _spec_with_blocks([
-            {"type": "table", "title": "Data", "columns": [
-                {"key": "a", "label": "A", "width": 0.5},
-                {"key": "b", "label": "B", "width": 0.5},
-            ], "rows": [{"a": "1", "b": "2"}]},
-        ])
+        spec = _spec_with_blocks(
+            [
+                {
+                    "type": "table",
+                    "title": "Data",
+                    "columns": [
+                        {"key": "a", "label": "A", "width": 0.5},
+                        {"key": "b", "label": "B", "width": 0.5},
+                    ],
+                    "rows": [{"a": "1", "b": "2"}],
+                },
+            ]
+        )
         result = render_pdf(spec)
         assert result["success"] is True
 
     def test_chart_block(self) -> None:
-        spec = _spec_with_blocks([
-            {"type": "chart", "chart_type": "bar", "labels": ["A", "B"], "values": [10, 20]},
-        ])
+        spec = _spec_with_blocks(
+            [
+                {"type": "chart", "chart_type": "bar", "labels": ["A", "B"], "values": [10, 20]},
+            ]
+        )
         result = render_pdf(spec)
         assert result["success"] is True
 
     def test_kpi_grid_block(self) -> None:
-        spec = _spec_with_blocks([
-            {"type": "kpi_grid", "columns": 2, "items": [
-                {"label": "Orders", "value": "1,000"},
-                {"label": "Revenue", "value": "₹50K"},
-            ]},
-        ])
+        spec = _spec_with_blocks(
+            [
+                {
+                    "type": "kpi_grid",
+                    "columns": 2,
+                    "items": [
+                        {"label": "Orders", "value": "1,000"},
+                        {"label": "Revenue", "value": "₹50K"},
+                    ],
+                },
+            ]
+        )
         result = render_pdf(spec)
         assert result["success"] is True
 
     def test_callout_block(self) -> None:
-        spec = _spec_with_blocks([
-            {"type": "callout", "tone": "danger", "text": "Warning!"},
-        ])
+        spec = _spec_with_blocks(
+            [
+                {"type": "callout", "tone": "danger", "text": "Warning!"},
+            ]
+        )
         result = render_pdf(spec)
         assert result["success"] is True
 
@@ -141,9 +162,11 @@ class TestRenderWithBlocks:
 
         image_path = tmp_path / "chart.png"
         PILImage.new("RGB", (20, 20), color=(124, 181, 24)).save(image_path, "PNG")
-        spec = _spec_with_blocks([
-            {"type": "image", "src": "chart.png"},
-        ])
+        spec = _spec_with_blocks(
+            [
+                {"type": "image", "src": "chart.png"},
+            ]
+        )
         result = render_pdf(spec, asset_root=tmp_path)
         assert result["success"] is True
 
@@ -217,16 +240,20 @@ class TestWarnings:
         )
         result = render_pdf(spec)
         assert result["success"] is True
-        assert any("not allowed by template invoice_v1" in warning for warning in result["warnings"])
+        assert any(
+            "not allowed by template invoice_v1" in warning for warning in result["warnings"]
+        )
 
     def test_validation_warnings_are_returned(self) -> None:
-        spec = _spec_with_blocks([
-            {
-                "type": "table",
-                "columns": [{"key": "a", "label": "A", "width": 0.8}],
-                "rows": [{"a": "1", "extra": "2"}],
-            },
-        ])
+        spec = _spec_with_blocks(
+            [
+                {
+                    "type": "table",
+                    "columns": [{"key": "a", "label": "A", "width": 0.8}],
+                    "rows": [{"a": "1", "extra": "2"}],
+                },
+            ]
+        )
         result = render_pdf(spec)
         assert result["success"] is True
         assert any("widths sum" in warning for warning in result["warnings"])
@@ -234,25 +261,29 @@ class TestWarnings:
 
     def test_broken_block_raises_by_default(self) -> None:
         """A block render failure should fail the render by default."""
-        spec = _spec_with_blocks([
-            {
-                "type": "two_column",
-                "left": [{"type": "missing_renderer"}],
-                "right": [],
-            },
-        ])
+        spec = _spec_with_blocks(
+            [
+                {
+                    "type": "two_column",
+                    "left": [{"type": "missing_renderer"}],
+                    "right": [],
+                },
+            ]
+        )
         with pytest.raises(RenderError, match="Block 0 \\(two_column\\):"):
             render_pdf(spec)
 
     def test_broken_block_can_be_downgraded_to_warning(self) -> None:
         """Partial rendering remains an explicit opt-in."""
-        spec = _spec_with_blocks([
-            {
-                "type": "two_column",
-                "left": [{"type": "missing_renderer"}],
-                "right": [],
-            },
-        ])
+        spec = _spec_with_blocks(
+            [
+                {
+                    "type": "two_column",
+                    "left": [{"type": "missing_renderer"}],
+                    "right": [],
+                },
+            ]
+        )
         result = render_pdf(spec, allow_partial=True)
         assert result["success"] is True
         assert any("Block 0 (two_column):" in warning for warning in result["warnings"])
@@ -262,9 +293,11 @@ class TestWarnings:
 
         outside = tmp_path.parent / "outside.png"
         PILImage.new("RGB", (20, 20), color=(124, 181, 24)).save(outside, "PNG")
-        spec = _spec_with_blocks([
-            {"type": "image", "src": "../outside.png"},
-        ])
+        spec = _spec_with_blocks(
+            [
+                {"type": "image", "src": "../outside.png"},
+            ]
+        )
         with pytest.raises(RenderError, match="Image path escapes the allowed asset root"):
             render_pdf(spec, asset_root=tmp_path)
 
@@ -296,6 +329,7 @@ class TestHeaderFooter:
 class TestFullReportSmoke:
     def test_full_report_from_fixture(self) -> None:
         from tests.conftest import load_fixture
+
         spec = load_fixture("full_spec")
         result = render_pdf(spec)
         assert result["success"] is True
@@ -304,6 +338,7 @@ class TestFullReportSmoke:
 
     def test_full_report_to_file(self, tmp_path: Path) -> None:
         from tests.conftest import load_fixture
+
         spec = load_fixture("full_spec")
         out = tmp_path / "full_report.pdf"
         result = render_pdf(spec, output_path=str(out))

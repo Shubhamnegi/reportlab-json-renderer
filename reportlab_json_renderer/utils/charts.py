@@ -27,8 +27,14 @@ _DEFAULT_DPI: int = 150
 
 # Fallback palette when no theme colours are supplied.
 _FALLBACK_COLOURS: list[str] = [
-    "#7CB518", "#1565C0", "#E65100", "#C62828",
-    "#2E7D32", "#555555", "#9C27B0", "#00838F",
+    "#7CB518",
+    "#1565C0",
+    "#E65100",
+    "#C62828",
+    "#2E7D32",
+    "#555555",
+    "#9C27B0",
+    "#00838F",
 ]
 
 
@@ -56,15 +62,22 @@ def _fig_to_png_buffer(fig: plt.Figure) -> io.BytesIO:
         In-memory PNG image buffer.
     """
     buf = io.BytesIO()
-    fig.savefig(buf, format="png", dpi=_DEFAULT_DPI, bbox_inches="tight",
-                facecolor="white", edgecolor="none")
+    fig.savefig(
+        buf,
+        format="png",
+        dpi=_DEFAULT_DPI,
+        bbox_inches="tight",
+        facecolor="white",
+        edgecolor="none",
+    )
     plt.close(fig)
     buf.seek(0)
     return buf
 
 
-def _pick_colours(count: int, tone: str | None = None,
-                  theme_palette: dict[str, str] | None = None) -> list[str]:
+def _pick_colours(
+    count: int, tone: str | None = None, theme_palette: dict[str, str] | None = None
+) -> list[str]:
     """Pick *count* colours from the theme palette or fallback.
 
     Args:
@@ -333,8 +346,16 @@ def render_stacked_bar(
     bottom = np.zeros(len(labels))
 
     for idx, (name, vals) in enumerate(series.items()):
-        ax.bar(x, vals, width, label=name, bottom=bottom, color=colours[idx],
-               edgecolor="white", linewidth=0.5)
+        ax.bar(
+            x,
+            vals,
+            width,
+            label=name,
+            bottom=bottom,
+            color=colours[idx],
+            edgecolor="white",
+            linewidth=0.5,
+        )
         bottom += np.array(vals)
 
     ax.set_xticks(x)
@@ -372,8 +393,15 @@ def render_grouped_bar(
     offsets = np.linspace(-(n - 1) * width / 2, (n - 1) * width / 2, n)
 
     for idx, (name, vals) in enumerate(series.items()):
-        ax.bar(x + offsets[idx], vals, width, label=name, color=colours[idx],
-               edgecolor="white", linewidth=0.5)
+        ax.bar(
+            x + offsets[idx],
+            vals,
+            width,
+            label=name,
+            color=colours[idx],
+            edgecolor="white",
+            linewidth=0.5,
+        )
 
     ax.set_xticks(x)
     ax.set_xticklabels(labels)
@@ -431,11 +459,21 @@ def render_chart(
         )
 
     if chart_type in ("stacked_bar", "grouped_bar"):
-        return renderer(labels=labels or [], series=series or {}, title=title,
-                        tone=tone, theme_palette=theme_palette)
+        return renderer(
+            labels=labels or [],
+            series=series or {},
+            title=title,
+            tone=tone,
+            theme_palette=theme_palette,
+        )
 
-    return renderer(labels=labels or [], values=values or [], title=title,
-                    tone=tone, theme_palette=theme_palette)
+    return renderer(
+        labels=labels or [],
+        values=values or [],
+        title=title,
+        tone=tone,
+        theme_palette=theme_palette,
+    )
 
 
 __all__ = [

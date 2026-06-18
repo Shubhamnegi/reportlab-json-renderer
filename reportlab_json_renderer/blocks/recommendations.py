@@ -77,12 +77,19 @@ class RecommendationsBlock(BaseBlock):
             ("RIGHTPADDING", (0, 0), (-1, -1), 6),
             ("TOPPADDING", (0, 0), (-1, -1), 4),
             ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
-            ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor(
-                theme.table_header_bg if theme else "#F0F0F0"
-            )),
-            ("GRID", (0, 0), (-1, -1), 0.5, colors.HexColor(
-                theme.resolve_tone("primary") if theme else "#7CB518"
-            )),
+            (
+                "BACKGROUND",
+                (0, 0),
+                (-1, 0),
+                colors.HexColor(theme.table_header_bg if theme else "#F0F0F0"),
+            ),
+            (
+                "GRID",
+                (0, 0),
+                (-1, -1),
+                0.5,
+                colors.HexColor(theme.resolve_tone("primary") if theme else "#7CB518"),
+            ),
         ]
 
         table.setStyle(TableStyle(style_cmds))

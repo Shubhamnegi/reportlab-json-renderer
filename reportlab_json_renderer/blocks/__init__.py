@@ -54,11 +54,25 @@ def _register_builtins() -> None:
     from reportlab_json_renderer.blocks.title import TitleBlock
 
     for renderer_cls in (
-        TitleBlock, SectionHeaderBlock, ParagraphBlock, RichTextBlock,
-        KPIGridBlock, CalloutBlock, CalloutGroupBlock, TableBlock,
-        MatrixTableBlock, InsightListBlock, RecommendationsBlock,
-        ImageBlock, ChartBlock, TwoColumnBlock, SpacerBlock,
-        PageBreakBlock, DividerBlock, BadgeBlock, SummaryBoxBlock,
+        TitleBlock,
+        SectionHeaderBlock,
+        ParagraphBlock,
+        RichTextBlock,
+        KPIGridBlock,
+        CalloutBlock,
+        CalloutGroupBlock,
+        TableBlock,
+        MatrixTableBlock,
+        InsightListBlock,
+        RecommendationsBlock,
+        ImageBlock,
+        ChartBlock,
+        TwoColumnBlock,
+        SpacerBlock,
+        PageBreakBlock,
+        DividerBlock,
+        BadgeBlock,
+        SummaryBoxBlock,
     ):
         r = renderer_cls()
         if r.block_type not in _REGISTRY:

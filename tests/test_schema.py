@@ -60,7 +60,11 @@ class TestValidSpec:
 
 class TestMissingFields:
     def test_missing_template(self) -> None:
-        spec = {"version": "1.0", "metadata": {"entity_name": "X", "report_title": "Y"}, "blocks": []}
+        spec = {
+            "version": "1.0",
+            "metadata": {"entity_name": "X", "report_title": "Y"},
+            "blocks": [],
+        }
         result = validate_spec(spec)
         assert result.valid is False
         assert any("template" in e for e in result.errors)
@@ -217,14 +221,16 @@ class TestTableValidation:
             "version": "1.0",
             "template": "test",
             "metadata": {"entity_name": "X", "report_title": "Y"},
-            "blocks": [{
-                "type": "table",
-                "columns": [
-                    {"key": "a", "label": "A", "width": 0.8},
-                    {"key": "b", "label": "B", "width": 0.8},
-                ],
-                "rows": [],
-            }],
+            "blocks": [
+                {
+                    "type": "table",
+                    "columns": [
+                        {"key": "a", "label": "A", "width": 0.8},
+                        {"key": "b", "label": "B", "width": 0.8},
+                    ],
+                    "rows": [],
+                }
+            ],
         }
         result = validate_spec(spec)
         assert result.valid is True
@@ -235,11 +241,13 @@ class TestTableValidation:
             "version": "1.0",
             "template": "test",
             "metadata": {"entity_name": "X", "report_title": "Y"},
-            "blocks": [{
-                "type": "table",
-                "columns": [{"key": "a", "label": "A"}],
-                "rows": [{"a": "1", "extra": "2"}],
-            }],
+            "blocks": [
+                {
+                    "type": "table",
+                    "columns": [{"key": "a", "label": "A"}],
+                    "rows": [{"a": "1", "extra": "2"}],
+                }
+            ],
         }
         result = validate_spec(spec)
         assert result.valid is True
@@ -250,14 +258,16 @@ class TestTableValidation:
             "version": "1.0",
             "template": "test",
             "metadata": {"entity_name": "X", "report_title": "Y"},
-            "blocks": [{
-                "type": "table",
-                "columns": [
-                    {"key": "a", "label": "A", "width": 0.5},
-                    {"key": "b", "label": "B", "width": 0.5},
-                ],
-                "rows": [{"a": "1", "b": "2"}],
-            }],
+            "blocks": [
+                {
+                    "type": "table",
+                    "columns": [
+                        {"key": "a", "label": "A", "width": 0.5},
+                        {"key": "b", "label": "B", "width": 0.5},
+                    ],
+                    "rows": [{"a": "1", "b": "2"}],
+                }
+            ],
         }
         result = validate_spec(spec)
         assert result.valid is True

@@ -37,9 +37,7 @@ class CalloutBlock(BaseBlock):
         # Build inner content.
         inner_parts: list[str] = []
         if title:
-            inner_parts.append(
-                f'<b><font size="10">{title}</font></b><br/>'
-            )
+            inner_parts.append(f'<b><font size="10">{title}</font></b><br/>')
         inner_parts.append(f'<font size="9">{text}</font>')
         html = "".join(inner_parts)
 
@@ -55,13 +53,23 @@ class CalloutBlock(BaseBlock):
 
         # Wrap in a table for the left-border effect.
         table = Table([[para]], colWidths=[available_width - border_width - 12])
-        table.setStyle(TableStyle([
-            ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor(bg_color)),
-            ("LEFTPADDING", (0, 0), (-1, -1), 10),
-            ("RIGHTPADDING", (0, 0), (-1, -1), 8),
-            ("TOPPADDING", (0, 0), (-1, -1), 6),
-            ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
-            ("LINEBEFORETABLE", (0, 0), (0, -1), border_width, colors.HexColor(border_color)),
-        ]))
+        table.setStyle(
+            TableStyle(
+                [
+                    ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor(bg_color)),
+                    ("LEFTPADDING", (0, 0), (-1, -1), 10),
+                    ("RIGHTPADDING", (0, 0), (-1, -1), 8),
+                    ("TOPPADDING", (0, 0), (-1, -1), 6),
+                    ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
+                    (
+                        "LINEBEFORETABLE",
+                        (0, 0),
+                        (0, -1),
+                        border_width,
+                        colors.HexColor(border_color),
+                    ),
+                ]
+            )
+        )
 
         return [Spacer(1, 4), table, Spacer(1, 6)]

@@ -43,13 +43,15 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Render a JSON spec into a PDF file.",
     )
     render_cmd.add_argument(
-        "--input", "-i",
+        "--input",
+        "-i",
         required=True,
         type=Path,
         help="Path to the input JSON file.",
     )
     render_cmd.add_argument(
-        "--output", "-o",
+        "--output",
+        "-o",
         required=True,
         type=Path,
         help="Path for the generated PDF.",
@@ -67,7 +69,8 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Validate a JSON spec without rendering.",
     )
     validate_cmd.add_argument(
-        "--input", "-i",
+        "--input",
+        "-i",
         required=True,
         type=Path,
         help="Path to the input JSON file.",
@@ -85,7 +88,8 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Print the JSON Schema for the report spec.",
     )
     schema_cmd.add_argument(
-        "--output", "-o",
+        "--output",
+        "-o",
         type=Path,
         default=None,
         help="Write schema to a file instead of stdout.",
@@ -109,7 +113,8 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Generate a minimal sample JSON spec.",
     )
     sample_cmd.add_argument(
-        "--output", "-o",
+        "--output",
+        "-o",
         type=Path,
         default=None,
         help="Write sample JSON to a file instead of stdout.",

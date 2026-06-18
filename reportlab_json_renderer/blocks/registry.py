@@ -29,9 +29,7 @@ def register(renderer: BaseBlock) -> None:
             registered.
     """
     if renderer.block_type in _REGISTRY:
-        raise ValueError(
-            f"Renderer for block type {renderer.block_type!r} already registered."
-        )
+        raise ValueError(f"Renderer for block type {renderer.block_type!r} already registered.")
     _REGISTRY[renderer.block_type] = renderer
 
 
@@ -50,8 +48,7 @@ def get_renderer(block_type: str) -> BaseBlock:
     if block_type not in _REGISTRY:
         available = ", ".join(sorted(_REGISTRY))
         raise RenderError(
-            f"No renderer for block type {block_type!r}. "
-            f"Registered types: {available}"
+            f"No renderer for block type {block_type!r}. " f"Registered types: {available}"
         )
     return _REGISTRY[block_type]
 

@@ -80,11 +80,7 @@ def escape_xml(text: str) -> str:
     Returns:
         Escaped text safe for ``<para>`` tags.
     """
-    return (
-        text.replace("&", "&amp;")
-        .replace("<", "&lt;")
-        .replace(">", "&gt;")
-    )
+    return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
 def safe_paragraph_text(text: str) -> str:
@@ -94,8 +90,7 @@ def safe_paragraph_text(text: str) -> str:
 
 # ReportLab-recognised HTML tags that should NOT be escaped.
 _RECOGNISED_TAGS = re.compile(
-    r"<(/?)(\s*(?:b|i|u|br/?|font|a|sup|sub|para|strong|em)"
-    r"(?:\s[^>]*)?\s*/?)>",
+    r"<(/?)(\s*(?:b|i|u|br/?|font|a|sup|sub|para|strong|em)" r"(?:\s[^>]*)?\s*/?)>",
     re.IGNORECASE,
 )
 
@@ -115,7 +110,6 @@ def safe_paragraph_html(text: str) -> str:
     # Protect recognised tags from escaping.
     placeholder = "\x00TAG\x00"
     protected: list[str] = []
-    offset = 0
     for match in _RECOGNISED_TAGS.finditer(text):
         protected.append(match.group(0))
     # Strip recognised tags, escape the rest, then put them back.

@@ -55,7 +55,11 @@ class RichTextBlock(BaseBlock):
             # Handle tone-based colouring.
             tone_color = None
             if style in ("bold_danger", "bold_success", "bold_warning"):
-                tone_map = {"bold_danger": "danger", "bold_success": "success", "bold_warning": "warning"}
+                tone_map = {
+                    "bold_danger": "danger",
+                    "bold_success": "success",
+                    "bold_warning": "warning",
+                }
                 tone_name = tone_map[style]
                 tone_color = theme.resolve_tone(tone_name) if theme else "#C62828"
             elif run.get("tone"):

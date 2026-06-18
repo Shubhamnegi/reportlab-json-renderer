@@ -55,10 +55,11 @@ class MatrixTableBlock(BaseBlock):
             leading=12,
         )
 
-        header = [Paragraph(f"<b>{safe_paragraph_text(str(h))}</b>", header_style) for h in col_headers]
+        header = [
+            Paragraph(f"<b>{safe_paragraph_text(str(h))}</b>", header_style) for h in col_headers
+        ]
         data_rows = [
-            [Paragraph(safe_paragraph_text(str(cell)), cell_style) for cell in row]
-            for row in rows
+            [Paragraph(safe_paragraph_text(str(cell)), cell_style) for cell in row] for row in rows
         ]
 
         all_data = [header, *data_rows]
@@ -73,20 +74,30 @@ class MatrixTableBlock(BaseBlock):
             ("RIGHTPADDING", (0, 0), (-1, -1), 6),
             ("TOPPADDING", (0, 0), (-1, -1), 4),
             ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
-            ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor(
-                theme.table_header_bg if theme else "#F0F0F0"
-            )),
-            ("GRID", (0, 0), (-1, -1), 0.5, colors.HexColor(
-                theme.resolve_tone("primary") if theme else "#7CB518"
-            )),
+            (
+                "BACKGROUND",
+                (0, 0),
+                (-1, 0),
+                colors.HexColor(theme.table_header_bg if theme else "#F0F0F0"),
+            ),
+            (
+                "GRID",
+                (0, 0),
+                (-1, -1),
+                0.5,
+                colors.HexColor(theme.resolve_tone("primary") if theme else "#7CB518"),
+            ),
         ]
 
         for i in range(1, len(all_data)):
             if i % 2 == 0:
                 style_cmds.append(
-                    ("BACKGROUND", (0, i), (-1, i), colors.HexColor(
-                        theme.resolve_tone("light") if theme else "#F5F5F5"
-                    ))
+                    (
+                        "BACKGROUND",
+                        (0, i),
+                        (-1, i),
+                        colors.HexColor(theme.resolve_tone("light") if theme else "#F5F5F5"),
+                    )
                 )
 
         table.setStyle(TableStyle(style_cmds))

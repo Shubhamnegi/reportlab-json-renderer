@@ -34,16 +34,26 @@ class TwoColumnBlock(BaseBlock):
         # Render left column blocks.
         left_flowables: list[Flowable] = []
         for b in left_blocks:
-            left_flowables.extend(render_block(
-                b, theme=theme, template=template, available_width=left_w,
-            ))
+            left_flowables.extend(
+                render_block(
+                    b,
+                    theme=theme,
+                    template=template,
+                    available_width=left_w,
+                )
+            )
 
         # Render right column blocks.
         right_flowables: list[Flowable] = []
         for b in right_blocks:
-            right_flowables.extend(render_block(
-                b, theme=theme, template=template, available_width=right_w,
-            ))
+            right_flowables.extend(
+                render_block(
+                    b,
+                    theme=theme,
+                    template=template,
+                    available_width=right_w,
+                )
+            )
 
         # Combine into a table.
         left_cell = left_flowables if left_flowables else [Spacer(1, 12)]
@@ -54,12 +64,16 @@ class TwoColumnBlock(BaseBlock):
             colWidths=[left_w, right_w],
             hAlign="LEFT",
         )
-        table.setStyle(TableStyle([
-            ("VALIGN", (0, 0), (-1, -1), "TOP"),
-            ("LEFTPADDING", (0, 0), (-1, -1), 0),
-            ("RIGHTPADDING", (0, 0), (-1, -1), 4),
-            ("TOPPADDING", (0, 0), (-1, -1), 0),
-            ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
-        ]))
+        table.setStyle(
+            TableStyle(
+                [
+                    ("VALIGN", (0, 0), (-1, -1), "TOP"),
+                    ("LEFTPADDING", (0, 0), (-1, -1), 0),
+                    ("RIGHTPADDING", (0, 0), (-1, -1), 4),
+                    ("TOPPADDING", (0, 0), (-1, -1), 0),
+                    ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+                ]
+            )
+        )
 
         return [table]

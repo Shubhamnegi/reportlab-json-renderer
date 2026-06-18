@@ -121,9 +121,7 @@ def build_pdf(
                 asset_root=resolved_asset_root,
             )
             if not tpl.is_block_allowed(block_type):
-                warnings.append(
-                    f"Block {idx} ({block_type}): not allowed by template {tpl.name}"
-                )
+                warnings.append(f"Block {idx} ({block_type}): not allowed by template {tpl.name}")
                 continue
             block_flowables = render_block(
                 block_dict,
@@ -240,27 +238,32 @@ def _build_document(
         # Header.
         if header_enabled:
             canvas.setFont(theme.font_bold if theme else "Helvetica-Bold", 8)
-            canvas.setFillColor(
-                _hex_color(theme.resolve_tone("muted") if theme else "#757575")
-            )
+            canvas.setFillColor(_hex_color(theme.resolve_tone("muted") if theme else "#757575"))
             entity = metadata.entity_name if metadata and metadata.entity_name else ""
             period = metadata.period if metadata and metadata.period else ""
             canvas.drawString(left_margin, page_h - top_margin + 10, entity)
             canvas.drawRightString(page_w - right_margin, page_h - top_margin + 10, period)
 
             # Header line.
-            canvas.setStrokeColor(_hex_color(theme.resolve_tone("primary") if theme else "#7CB518"))
+            canvas.setStrokeColor(
+                _hex_color(theme.resolve_tone("primary") if theme else "#7CB518")
+            )
             canvas.setLineWidth(0.5)
-            canvas.line(left_margin, page_h - top_margin + 5, page_w - right_margin, page_h - top_margin + 5)
+            canvas.line(
+                left_margin,
+                page_h - top_margin + 5,
+                page_w - right_margin,
+                page_h - top_margin + 5,
+            )
 
         # Footer.
         if footer_enabled:
             canvas.setFont(theme.font_body if theme else "Helvetica", 7)
-            canvas.setFillColor(
-                _hex_color(theme.resolve_tone("muted") if theme else "#757575")
-            )
+            canvas.setFillColor(_hex_color(theme.resolve_tone("muted") if theme else "#757575"))
             if show_page_num:
-                canvas.drawCentredString(page_w / 2, bottom_margin - 10, f"Page {canvas.getPageNumber()}")
+                canvas.drawCentredString(
+                    page_w / 2, bottom_margin - 10, f"Page {canvas.getPageNumber()}"
+                )
 
             powered_by = metadata.powered_by if metadata and metadata.powered_by else ""
             if powered_by:
@@ -288,10 +291,14 @@ def _normalize_pdf_bytes(pdf_bytes: bytes, spec: dict[str, Any]) -> bytes:
         b"D:20000101000000+00'00'",
         pdf_bytes,
     )
-    spec_digest = md5(
-        json.dumps(spec, sort_keys=True, separators=(",", ":")).encode("utf-8"),
-        usedforsecurity=False,
-    ).hexdigest().encode("ascii")
+    spec_digest = (
+        md5(
+            json.dumps(spec, sort_keys=True, separators=(",", ":")).encode("utf-8"),
+            usedforsecurity=False,
+        )
+        .hexdigest()
+        .encode("ascii")
+    )
     normalized = re.sub(
         rb"/ID\s*\[\s*<[^>]{32}>\s*<[^>]{32}>\s*\]",
         b"/ID [<" + spec_digest + b"><" + spec_digest + b">]",
@@ -337,4 +344,5 @@ def _normalize_block_assets(
 def _hex_color(hex_str: str):
     """Convert a hex string to a ReportLab Color object."""
     from reportlab.lib.colors import HexColor
+
     return HexColor(hex_str)

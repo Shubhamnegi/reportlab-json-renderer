@@ -66,12 +66,19 @@ class KPIGridBlock(BaseBlock):
             ("RIGHTPADDING", (0, 0), (-1, -1), 6),
             ("TOPPADDING", (0, 0), (-1, -1), 6),
             ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
-            ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor(
-                theme.resolve_tone("light") if theme else "#F5F5F5"
-            )),
-            ("BOX", (0, 0), (-1, -1), 0.5, colors.HexColor(
-                theme.resolve_tone("primary") if theme else "#7CB518"
-            )),
+            (
+                "BACKGROUND",
+                (0, 0),
+                (-1, -1),
+                colors.HexColor(theme.resolve_tone("light") if theme else "#F5F5F5"),
+            ),
+            (
+                "BOX",
+                (0, 0),
+                (-1, -1),
+                0.5,
+                colors.HexColor(theme.resolve_tone("primary") if theme else "#7CB518"),
+            ),
         ]
         table.setStyle(TableStyle(style_cmds))
 
@@ -85,14 +92,16 @@ class KPIGridBlock(BaseBlock):
         sub = safe_paragraph_text(str(item.get("sub", "")))
         tone = item.get("tone")
 
-        value_color = theme.resolve_tone(tone) if theme and tone else (
-            theme.resolve_tone("dark") if theme else "#2D2D2D"
+        value_color = (
+            theme.resolve_tone(tone)
+            if theme and tone
+            else (theme.resolve_tone("dark") if theme else "#2D2D2D")
         )
 
         muted_hex = theme.resolve_tone("muted") if theme else "#555555"
         parts = [
             f'<font size="8" color="{muted_hex}">{label}</font>',
-            '<br/>',
+            "<br/>",
             f'<font size="14"><b>{value}</b></font>',
         ]
         if sub:

@@ -67,21 +67,20 @@ class TableBlock(BaseBlock):
             leading=12,
         )
         for row in rows:
-            data_rows.append([
-                Paragraph(
-                    safe_paragraph_text(str(row.get(col.get("key", ""), ""))),
-                    cell_style,
-                )
-                for col in columns
-            ])
+            data_rows.append(
+                [
+                    Paragraph(
+                        safe_paragraph_text(str(row.get(col.get("key", ""), ""))),
+                        cell_style,
+                    )
+                    for col in columns
+                ]
+            )
 
         all_data = [header, *data_rows]
 
         # Column widths.
-        col_widths = [
-            col.get("width", 1.0 / len(columns)) * available_width
-            for col in columns
-        ]
+        col_widths = [col.get("width", 1.0 / len(columns)) * available_width for col in columns]
 
         table = Table(all_data, colWidths=col_widths, hAlign="LEFT")
 
@@ -92,12 +91,19 @@ class TableBlock(BaseBlock):
             ("RIGHTPADDING", (0, 0), (-1, -1), 6),
             ("TOPPADDING", (0, 0), (-1, -1), 4),
             ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
-            ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor(
-                theme.table_header_bg if theme else "#F0F0F0"
-            )),
-            ("LINEBELOW", (0, 0), (-1, 0), 1, colors.HexColor(
-                theme.resolve_tone("primary") if theme else "#7CB518"
-            )),
+            (
+                "BACKGROUND",
+                (0, 0),
+                (-1, 0),
+                colors.HexColor(theme.table_header_bg if theme else "#F0F0F0"),
+            ),
+            (
+                "LINEBELOW",
+                (0, 0),
+                (-1, 0),
+                1,
+                colors.HexColor(theme.resolve_tone("primary") if theme else "#7CB518"),
+            ),
         ]
 
         # Striping.
@@ -110,9 +116,15 @@ class TableBlock(BaseBlock):
                     )
 
         # Borders.
-        style_cmds.append(("GRID", (0, 0), (-1, -1), 0.5, colors.HexColor(
-            theme.resolve_tone("primary") if theme else "#7CB518"
-        )))
+        style_cmds.append(
+            (
+                "GRID",
+                (0, 0),
+                (-1, -1),
+                0.5,
+                colors.HexColor(theme.resolve_tone("primary") if theme else "#7CB518"),
+            )
+        )
 
         table.setStyle(TableStyle(style_cmds))
 

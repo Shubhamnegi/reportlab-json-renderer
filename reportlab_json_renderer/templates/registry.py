@@ -50,9 +50,7 @@ def get_template(name: str) -> Template:
     registry = _ensure_builtins()
     if name not in registry:
         available = ", ".join(sorted(registry))
-        raise TemplateError(
-            f"Unknown template {name!r}. Available templates: {available}"
-        )
+        raise TemplateError(f"Unknown template {name!r}. Available templates: {available}")
     return registry[name]
 
 
@@ -70,8 +68,7 @@ def register_template(template: Template, *, overwrite: bool = False) -> None:
     registry = _ensure_builtins()
     if template.name in registry and not overwrite:
         raise ValueError(
-            f"Template {template.name!r} already registered. "
-            f"Use overwrite=True to replace it."
+            f"Template {template.name!r} already registered. " f"Use overwrite=True to replace it."
         )
     registry[template.name] = template
 

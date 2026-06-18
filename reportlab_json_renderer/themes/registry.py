@@ -48,9 +48,7 @@ def get_theme(name: str) -> Theme:
     registry = _ensure_builtins()
     if name not in registry:
         available = ", ".join(sorted(registry))
-        raise ThemeError(
-            f"Unknown theme {name!r}. Available themes: {available}"
-        )
+        raise ThemeError(f"Unknown theme {name!r}. Available themes: {available}")
     return registry[name]
 
 
@@ -68,8 +66,7 @@ def register_theme(theme: Theme, *, overwrite: bool = False) -> None:
     registry = _ensure_builtins()
     if theme.name in registry and not overwrite:
         raise ValueError(
-            f"Theme {theme.name!r} already registered. "
-            f"Use overwrite=True to replace it."
+            f"Theme {theme.name!r} already registered. " f"Use overwrite=True to replace it."
         )
     registry[theme.name] = theme
 

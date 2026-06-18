@@ -36,7 +36,9 @@ class ParagraphBlock(BaseBlock):
             "lead": (theme.font_body if theme else "Helvetica", 12),
         }
 
-        font_name, font_size = font_map.get(style_name, (theme.font_body if theme else "Helvetica", 10))
+        font_name, font_size = font_map.get(
+            style_name, (theme.font_body if theme else "Helvetica", 10)
+        )
         text_color = theme.resolve_tone("dark") if theme else "#2D2D2D"
 
         style = ParagraphStyle(

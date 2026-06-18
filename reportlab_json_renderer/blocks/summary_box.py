@@ -35,9 +35,7 @@ class SummaryBoxBlock(BaseBlock):
 
         inner_parts: list[str] = []
         if title:
-            inner_parts.append(
-                f'<b><font size="11">{title}</font></b><br/>'
-            )
+            inner_parts.append(f'<b><font size="11">{title}</font></b><br/>')
         inner_parts.append(f'<font size="9">{text}</font>')
         html = "".join(inner_parts)
 
@@ -52,13 +50,17 @@ class SummaryBoxBlock(BaseBlock):
         para = Paragraph(html, text_style)
 
         table = Table([[para]], colWidths=[available_width - 20])
-        table.setStyle(TableStyle([
-            ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor(bg_color)),
-            ("LEFTPADDING", (0, 0), (-1, -1), 12),
-            ("RIGHTPADDING", (0, 0), (-1, -1), 12),
-            ("TOPPADDING", (0, 0), (-1, -1), 8),
-            ("BOTTOMPADDING", (0, 0), (-1, -1), 8),
-            ("BOX", (0, 0), (-1, -1), 2, colors.HexColor(border_color)),
-        ]))
+        table.setStyle(
+            TableStyle(
+                [
+                    ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor(bg_color)),
+                    ("LEFTPADDING", (0, 0), (-1, -1), 12),
+                    ("RIGHTPADDING", (0, 0), (-1, -1), 12),
+                    ("TOPPADDING", (0, 0), (-1, -1), 8),
+                    ("BOTTOMPADDING", (0, 0), (-1, -1), 8),
+                    ("BOX", (0, 0), (-1, -1), 2, colors.HexColor(border_color)),
+                ]
+            )
+        )
 
         return [Spacer(1, 4), table, Spacer(1, 8)]

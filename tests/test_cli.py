@@ -25,9 +25,7 @@ def _write_json(path: Path, data: dict[str, Any]) -> Path:
 class TestRenderCommand:
     """Tests for ``pdf-renderer render``."""
 
-    def test_render_happy_path(
-        self, tmp_path: Path, minimal_spec: dict[str, Any]
-    ) -> None:
+    def test_render_happy_path(self, tmp_path: Path, minimal_spec: dict[str, Any]) -> None:
         """Render a valid spec to PDF and verify exit code + output."""
         input_file = _write_json(tmp_path / "spec.json", minimal_spec)
         output_file = tmp_path / "out.pdf"
@@ -38,9 +36,7 @@ class TestRenderCommand:
         assert output_file.exists()
         assert output_file.stat().st_size > 0
 
-    def test_render_short_flags(
-        self, tmp_path: Path, minimal_spec: dict[str, Any]
-    ) -> None:
+    def test_render_short_flags(self, tmp_path: Path, minimal_spec: dict[str, Any]) -> None:
         """Verify short flags -i and -o work."""
         input_file = _write_json(tmp_path / "spec.json", minimal_spec)
         output_file = tmp_path / "out.pdf"
@@ -52,7 +48,15 @@ class TestRenderCommand:
 
     def test_render_missing_input_file(self, tmp_path: Path) -> None:
         """Render should fail gracefully when input file doesn't exist."""
-        code = main(["render", "--input", str(tmp_path / "missing.json"), "--output", str(tmp_path / "out.pdf")])
+        code = main(
+            [
+                "render",
+                "--input",
+                str(tmp_path / "missing.json"),
+                "--output",
+                str(tmp_path / "out.pdf"),
+            ]
+        )
         assert code == 1
 
     def test_render_invalid_json(self, tmp_path: Path) -> None:
@@ -79,9 +83,7 @@ class TestRenderCommand:
         code = main(["render", "--input", str(input_file), "--output", str(tmp_path / "out.pdf")])
         assert code == 1
 
-    def test_render_with_blocks(
-        self, tmp_path: Path, sample_spec: dict[str, Any]
-    ) -> None:
+    def test_render_with_blocks(self, tmp_path: Path, sample_spec: dict[str, Any]) -> None:
         """Render a spec with actual blocks."""
         input_file = _write_json(tmp_path / "sample.json", sample_spec)
         output_file = tmp_path / "out.pdf"
@@ -91,7 +93,9 @@ class TestRenderCommand:
         assert code == 0
         assert output_file.exists()
 
-    def test_render_relative_image_uses_input_directory(self, tmp_path: Path, minimal_spec: dict[str, Any]) -> None:
+    def test_render_relative_image_uses_input_directory(
+        self, tmp_path: Path, minimal_spec: dict[str, Any]
+    ) -> None:
         from PIL import Image as PILImage
 
         image_path = tmp_path / "chart.png"
@@ -168,9 +172,7 @@ class TestRenderCommand:
 class TestValidateCommand:
     """Tests for ``pdf-renderer validate``."""
 
-    def test_validate_valid_spec(
-        self, tmp_path: Path, minimal_spec: dict[str, Any]
-    ) -> None:
+    def test_validate_valid_spec(self, tmp_path: Path, minimal_spec: dict[str, Any]) -> None:
         """Validate a correct spec."""
         input_file = _write_json(tmp_path / "spec.json", minimal_spec)
 
@@ -178,9 +180,7 @@ class TestValidateCommand:
 
         assert code == 0
 
-    def test_validate_short_flags(
-        self, tmp_path: Path, minimal_spec: dict[str, Any]
-    ) -> None:
+    def test_validate_short_flags(self, tmp_path: Path, minimal_spec: dict[str, Any]) -> None:
         """Short flag -i should work."""
         input_file = _write_json(tmp_path / "spec.json", minimal_spec)
 

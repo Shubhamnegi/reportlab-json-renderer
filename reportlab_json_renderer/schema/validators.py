@@ -117,18 +117,14 @@ def _post_validate(spec: ReportSpec) -> list[str]:
             for r_idx, row in enumerate(rows):
                 extra = set(row.keys()) - col_keys
                 if extra:
-                    warnings.append(
-                        f"Block {idx}, row {r_idx}: extra keys {extra} not in columns"
-                    )
+                    warnings.append(f"Block {idx}, row {r_idx}: extra keys {extra} not in columns")
 
         # Check two_column widths sum approximately to 1.0.
         if block_dict.get("type") == "two_column":
             left_w = block_dict.get("left_width", 0.5)
             right_w = block_dict.get("right_width", 0.5)
             if abs(left_w + right_w - 1.0) > 0.01:
-                warnings.append(
-                    f"Block {idx}: two_column widths {left_w} + {right_w} != 1.0"
-                )
+                warnings.append(f"Block {idx}: two_column widths {left_w} + {right_w} != 1.0")
 
     return warnings
 
@@ -142,9 +138,7 @@ def _pre_validate_limits(data: dict[str, Any]) -> list[str]:
     except (TypeError, ValueError):
         payload_size = None
     if payload_size is not None and payload_size > MAX_SPEC_BYTES:
-        errors.append(
-            f"spec exceeds maximum size of {MAX_SPEC_BYTES} bytes"
-        )
+        errors.append(f"spec exceeds maximum size of {MAX_SPEC_BYTES} bytes")
 
     blocks = data.get("blocks", [])
     if isinstance(blocks, list) and len(blocks) > MAX_BLOCK_COUNT:
@@ -163,9 +157,7 @@ def _pre_validate_limits(data: dict[str, Any]) -> list[str]:
                     f"blocks → {idx} → columns: maximum {MAX_TABLE_COLUMNS} columns allowed"
                 )
             if isinstance(rows, list) and len(rows) > MAX_TABLE_ROWS:
-                errors.append(
-                    f"blocks → {idx} → rows: maximum {MAX_TABLE_ROWS} rows allowed"
-                )
+                errors.append(f"blocks → {idx} → rows: maximum {MAX_TABLE_ROWS} rows allowed")
 
         if block_type == "matrix_table":
             columns = block.get("columns", [])
@@ -175,9 +167,7 @@ def _pre_validate_limits(data: dict[str, Any]) -> list[str]:
                     f"blocks → {idx} → columns: maximum {MAX_MATRIX_COLUMNS} columns allowed"
                 )
             if isinstance(rows, list) and len(rows) > MAX_MATRIX_ROWS:
-                errors.append(
-                    f"blocks → {idx} → rows: maximum {MAX_MATRIX_ROWS} rows allowed"
-                )
+                errors.append(f"blocks → {idx} → rows: maximum {MAX_MATRIX_ROWS} rows allowed")
 
         if block_type == "chart":
             labels = block.get("labels", [])
@@ -258,9 +248,7 @@ def validate_spec_or_raise(data: dict[str, Any]) -> ReportSpec:
     """
     result = validate_spec(data)
     if not result.valid:
-        msg = "Spec validation failed:\n" + "\n".join(
-            f"  - {e}" for e in result.errors
-        )
+        msg = "Spec validation failed:\n" + "\n".join(f"  - {e}" for e in result.errors)
         raise ValidationError(msg)
     return result.parsed  # type: ignore[return-value]
 

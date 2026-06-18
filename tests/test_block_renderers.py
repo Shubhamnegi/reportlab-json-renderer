@@ -47,8 +47,16 @@ class TestTitleBlock:
     def test_renders_full_block(self) -> None:
         r = TitleBlock()
         result = r.render(
-            {"type": "title", "entity": "Acme", "title": "Q1 Report", "subtitle": "Jan-Mar 2026", "right_text": "Confidential"},
-            theme=_theme, template=_template, available_width=_width,
+            {
+                "type": "title",
+                "entity": "Acme",
+                "title": "Q1 Report",
+                "subtitle": "Jan-Mar 2026",
+                "right_text": "Confidential",
+            },
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         assert len(result) >= 3
         assert all(isinstance(f, Flowable) for f in result)
@@ -57,7 +65,9 @@ class TestTitleBlock:
         r = TitleBlock()
         result = r.render(
             {"type": "title"},
-            theme=_theme, template=_template, available_width=_width,
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         assert len(result) >= 2
 
@@ -65,7 +75,9 @@ class TestTitleBlock:
         r = TitleBlock()
         result = r.render(
             {"type": "title", "title": "Test"},
-            theme=None, template=None, available_width=_width,
+            theme=None,
+            template=None,
+            available_width=_width,
         )
         assert len(result) >= 2
 
@@ -78,7 +90,9 @@ class TestSectionHeaderBlock:
         r = SectionHeaderBlock()
         result = r.render(
             {"type": "section_header", "number": "1", "title": "Summary"},
-            theme=_theme, template=_template, available_width=_width,
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         assert len(result) >= 2
 
@@ -86,7 +100,9 @@ class TestSectionHeaderBlock:
         r = SectionHeaderBlock()
         result = r.render(
             {"type": "section_header", "title": "Summary"},
-            theme=_theme, template=_template, available_width=_width,
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         assert len(result) >= 2
 
@@ -99,7 +115,9 @@ class TestParagraphBlock:
         r = ParagraphBlock()
         result = r.render(
             {"type": "paragraph", "text": "Hello world", "style": "body"},
-            theme=_theme, template=_template, available_width=_width,
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         assert len(result) == 1
 
@@ -107,7 +125,9 @@ class TestParagraphBlock:
         r = ParagraphBlock()
         result = r.render(
             {"type": "paragraph", "text": "Bold text", "style": "bold"},
-            theme=_theme, template=_template, available_width=_width,
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         assert len(result) == 1
 
@@ -115,7 +135,9 @@ class TestParagraphBlock:
         r = ParagraphBlock()
         result = r.render(
             {"type": "paragraph", "text": "Caption", "style": "caption"},
-            theme=_theme, template=_template, available_width=_width,
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         assert len(result) == 1
 
@@ -123,7 +145,9 @@ class TestParagraphBlock:
         r = ParagraphBlock()
         result = r.render(
             {"type": "paragraph", "text": "<b>unsafe</b> & text", "style": "body"},
-            theme=_theme, template=_template, available_width=_width,
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         para = result[0]
         assert isinstance(para, Paragraph)
@@ -138,8 +162,16 @@ class TestRichTextBlock:
     def test_renders_normal_runs(self) -> None:
         r = RichTextBlock()
         result = r.render(
-            {"type": "rich_text", "runs": [{"text": "Hello ", "style": "normal"}, {"text": "world", "style": "bold"}]},
-            theme=_theme, template=_template, available_width=_width,
+            {
+                "type": "rich_text",
+                "runs": [
+                    {"text": "Hello ", "style": "normal"},
+                    {"text": "world", "style": "bold"},
+                ],
+            },
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         assert len(result) == 1
 
@@ -147,7 +179,9 @@ class TestRichTextBlock:
         r = RichTextBlock()
         result = r.render(
             {"type": "rich_text", "runs": [{"text": "Danger!", "style": "bold_danger"}]},
-            theme=_theme, template=_template, available_width=_width,
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         assert len(result) == 1
 
@@ -155,7 +189,9 @@ class TestRichTextBlock:
         r = RichTextBlock()
         result = r.render(
             {"type": "rich_text", "runs": []},
-            theme=_theme, template=_template, available_width=_width,
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         assert len(result) == 1
 
@@ -163,7 +199,9 @@ class TestRichTextBlock:
         r = RichTextBlock()
         result = r.render(
             {"type": "rich_text", "runs": [{"text": "<b>unsafe</b> & text", "style": "bold"}]},
-            theme=_theme, template=_template, available_width=_width,
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         para = result[0]
         assert isinstance(para, Paragraph)
@@ -177,11 +215,18 @@ class TestKPIGridBlock:
     def test_renders_with_items(self) -> None:
         r = KPIGridBlock()
         result = r.render(
-            {"type": "kpi_grid", "title": "KPIs", "columns": 3, "items": [
-                {"label": "Orders", "value": "1,000", "sub": "This Week", "tone": "primary"},
-                {"label": "Revenue", "value": "₹50K", "tone": "danger"},
-            ]},
-            theme=_theme, template=_template, available_width=_width,
+            {
+                "type": "kpi_grid",
+                "title": "KPIs",
+                "columns": 3,
+                "items": [
+                    {"label": "Orders", "value": "1,000", "sub": "This Week", "tone": "primary"},
+                    {"label": "Revenue", "value": "₹50K", "tone": "danger"},
+                ],
+            },
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         assert len(result) >= 2
 
@@ -189,7 +234,9 @@ class TestKPIGridBlock:
         r = KPIGridBlock()
         result = r.render(
             {"type": "kpi_grid", "columns": 3, "items": []},
-            theme=_theme, template=_template, available_width=_width,
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         assert len(result) == 0
 
@@ -197,7 +244,9 @@ class TestKPIGridBlock:
         r = KPIGridBlock()
         result = r.render(
             {"type": "kpi_grid", "columns": 2, "items": [{"label": "X", "value": "Y"}]},
-            theme=_theme, template=_template, available_width=_width,
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         assert len(result) >= 1
 
@@ -209,8 +258,15 @@ class TestCalloutBlock:
     def test_renders_with_title(self) -> None:
         r = CalloutBlock()
         result = r.render(
-            {"type": "callout", "tone": "danger", "title": "Warning", "text": "Something happened"},
-            theme=_theme, template=_template, available_width=_width,
+            {
+                "type": "callout",
+                "tone": "danger",
+                "title": "Warning",
+                "text": "Something happened",
+            },
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         assert len(result) >= 2
 
@@ -218,7 +274,9 @@ class TestCalloutBlock:
         r = CalloutBlock()
         result = r.render(
             {"type": "callout", "tone": "success", "text": "All good"},
-            theme=_theme, template=_template, available_width=_width,
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         assert len(result) >= 2
 
@@ -230,11 +288,17 @@ class TestCalloutGroupBlock:
     def test_renders_with_title(self) -> None:
         r = CalloutGroupBlock()
         result = r.render(
-            {"type": "callout_group", "title": "Insights", "items": [
-                {"tone": "danger", "title": "Issue", "text": "Bad"},
-                {"tone": "success", "title": "Good", "text": "Great"},
-            ]},
-            theme=_theme, template=_template, available_width=_width,
+            {
+                "type": "callout_group",
+                "title": "Insights",
+                "items": [
+                    {"tone": "danger", "title": "Issue", "text": "Bad"},
+                    {"tone": "success", "title": "Good", "text": "Great"},
+                ],
+            },
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         assert len(result) >= 3
 
@@ -242,7 +306,9 @@ class TestCalloutGroupBlock:
         r = CalloutGroupBlock()
         result = r.render(
             {"type": "callout_group", "items": [{"text": "Single"}]},
-            theme=_theme, template=_template, available_width=_width,
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         assert len(result) >= 1
 
@@ -250,7 +316,9 @@ class TestCalloutGroupBlock:
         r = CalloutGroupBlock()
         result = r.render(
             {"type": "callout_group", "title": "<b>unsafe</b>", "items": []},
-            theme=_theme, template=_template, available_width=_width,
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         para = result[0]
         assert isinstance(para, Paragraph)
@@ -264,11 +332,19 @@ class TestTableBlock:
     def test_renders_with_rows(self) -> None:
         r = TableBlock()
         result = r.render(
-            {"type": "table", "title": "Data", "style": "striped", "columns": [
-                {"key": "a", "label": "A", "width": 0.5},
-                {"key": "b", "label": "B", "width": 0.5},
-            ], "rows": [{"a": "1", "b": "2"}, {"a": "3", "b": "4"}]},
-            theme=_theme, template=_template, available_width=_width,
+            {
+                "type": "table",
+                "title": "Data",
+                "style": "striped",
+                "columns": [
+                    {"key": "a", "label": "A", "width": 0.5},
+                    {"key": "b", "label": "B", "width": 0.5},
+                ],
+                "rows": [{"a": "1", "b": "2"}, {"a": "3", "b": "4"}],
+            },
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         assert len(result) >= 2
 
@@ -276,7 +352,9 @@ class TestTableBlock:
         r = TableBlock()
         result = r.render(
             {"type": "table", "columns": [{"key": "a", "label": "A"}], "rows": []},
-            theme=_theme, template=_template, available_width=_width,
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         assert len(result) >= 1
 
@@ -284,7 +362,9 @@ class TestTableBlock:
         r = TableBlock()
         result = r.render(
             {"type": "table", "columns": [{"key": "x", "label": "X"}], "rows": [{"x": "val"}]},
-            theme=_theme, template=_template, available_width=_width,
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         assert len(result) >= 1
 
@@ -296,8 +376,15 @@ class TestMatrixTableBlock:
     def test_renders(self) -> None:
         r = MatrixTableBlock()
         result = r.render(
-            {"type": "matrix_table", "title": "Comparison", "columns": ["A", "B", "C"], "rows": [["1", "2", "3"], ["4", "5", "6"]]},
-            theme=_theme, template=_template, available_width=_width,
+            {
+                "type": "matrix_table",
+                "title": "Comparison",
+                "columns": ["A", "B", "C"],
+                "rows": [["1", "2", "3"], ["4", "5", "6"]],
+            },
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         assert len(result) >= 2
 
@@ -305,7 +392,9 @@ class TestMatrixTableBlock:
         r = MatrixTableBlock()
         result = r.render(
             {"type": "matrix_table", "columns": [], "rows": []},
-            theme=_theme, template=_template, available_width=_width,
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         assert len(result) == 0
 
@@ -317,11 +406,17 @@ class TestInsightListBlock:
     def test_renders_with_items(self) -> None:
         r = InsightListBlock()
         result = r.render(
-            {"type": "insight_list", "title": "Insights", "items": [
-                {"title": "Why?", "text": "Because."},
-                {"title": "How?", "text": "Like this."},
-            ]},
-            theme=_theme, template=_template, available_width=_width,
+            {
+                "type": "insight_list",
+                "title": "Insights",
+                "items": [
+                    {"title": "Why?", "text": "Because."},
+                    {"title": "How?", "text": "Like this."},
+                ],
+            },
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         assert len(result) >= 3
 
@@ -329,7 +424,9 @@ class TestInsightListBlock:
         r = InsightListBlock()
         result = r.render(
             {"type": "insight_list", "items": [{"title": "X", "text": "Y"}]},
-            theme=_theme, template=_template, available_width=_width,
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         assert len(result) >= 1
 
@@ -341,10 +438,16 @@ class TestRecommendationsBlock:
     def test_renders(self) -> None:
         r = RecommendationsBlock()
         result = r.render(
-            {"type": "recommendations", "title": "Next Steps", "items": [
-                {"priority": "High", "action": "Fix bug", "owner": "Dev", "impact": "Uptime"},
-            ]},
-            theme=_theme, template=_template, available_width=_width,
+            {
+                "type": "recommendations",
+                "title": "Next Steps",
+                "items": [
+                    {"priority": "High", "action": "Fix bug", "owner": "Dev", "impact": "Uptime"},
+                ],
+            },
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         assert len(result) >= 2
 
@@ -352,7 +455,9 @@ class TestRecommendationsBlock:
         r = RecommendationsBlock()
         result = r.render(
             {"type": "recommendations", "items": []},
-            theme=_theme, template=_template, available_width=_width,
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         assert len(result) == 0
 
@@ -366,7 +471,9 @@ class TestImageBlock:
         with pytest.raises(RenderError, match="Image file not found"):
             r.render(
                 {"type": "image", "src": "/nonexistent/path.png", "title": "Photo"},
-                theme=_theme, template=_template, available_width=_width,
+                theme=_theme,
+                template=_template,
+                available_width=_width,
             )
 
     def test_empty_src_raises(self) -> None:
@@ -374,7 +481,9 @@ class TestImageBlock:
         with pytest.raises(RenderError, match="Unsupported image format"):
             r.render(
                 {"type": "image", "src": ""},
-                theme=_theme, template=_template, available_width=_width,
+                theme=_theme,
+                template=_template,
+                available_width=_width,
             )
 
 
@@ -385,8 +494,17 @@ class TestChartBlock:
     def test_renders_bar_chart(self) -> None:
         r = ChartBlock()
         result = r.render(
-            {"type": "chart", "chart_type": "bar", "title": "Sales", "labels": ["A", "B"], "values": [10, 20], "tone": "primary"},
-            theme=_theme, template=_template, available_width=_width,
+            {
+                "type": "chart",
+                "chart_type": "bar",
+                "title": "Sales",
+                "labels": ["A", "B"],
+                "values": [10, 20],
+                "tone": "primary",
+            },
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         assert len(result) >= 2
 
@@ -394,23 +512,40 @@ class TestChartBlock:
         r = ChartBlock()
         result = r.render(
             {"type": "chart", "chart_type": "pie", "labels": ["X", "Y"], "values": [30, 70]},
-            theme=_theme, template=_template, available_width=_width,
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         assert len(result) >= 2
 
     def test_renders_grouped_bar(self) -> None:
         r = ChartBlock()
         result = r.render(
-            {"type": "chart", "chart_type": "grouped_bar", "labels": ["A"], "series": {"S1": [10], "S2": [20]}},
-            theme=_theme, template=_template, available_width=_width,
+            {
+                "type": "chart",
+                "chart_type": "grouped_bar",
+                "labels": ["A"],
+                "series": {"S1": [10], "S2": [20]},
+            },
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         assert len(result) >= 2
 
     def test_escapes_markup_in_title(self) -> None:
         r = ChartBlock()
         result = r.render(
-            {"type": "chart", "chart_type": "bar", "title": "<b>unsafe</b>", "labels": ["A"], "values": [10]},
-            theme=_theme, template=_template, available_width=_width,
+            {
+                "type": "chart",
+                "chart_type": "bar",
+                "title": "<b>unsafe</b>",
+                "labels": ["A"],
+                "values": [10],
+            },
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         para = result[0]
         assert isinstance(para, Paragraph)
@@ -424,8 +559,14 @@ class TestTwoColumnBlock:
     def test_renders_with_blocks(self) -> None:
         r = TwoColumnBlock()
         result = r.render(
-            {"type": "two_column", "left": [{"type": "paragraph", "text": "Left"}], "right": [{"type": "paragraph", "text": "Right"}]},
-            theme=_theme, template=_template, available_width=_width,
+            {
+                "type": "two_column",
+                "left": [{"type": "paragraph", "text": "Left"}],
+                "right": [{"type": "paragraph", "text": "Right"}],
+            },
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         assert len(result) == 1
 
@@ -433,7 +574,9 @@ class TestTwoColumnBlock:
         r = TwoColumnBlock()
         result = r.render(
             {"type": "two_column"},
-            theme=_theme, template=_template, available_width=_width,
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         assert len(result) == 1
 
@@ -444,7 +587,12 @@ class TestTwoColumnBlock:
 class TestSpacerBlock:
     def test_renders(self) -> None:
         r = SpacerBlock()
-        result = r.render({"type": "spacer", "height": 20}, theme=_theme, template=_template, available_width=_width)
+        result = r.render(
+            {"type": "spacer", "height": 20},
+            theme=_theme,
+            template=_template,
+            available_width=_width,
+        )
         assert len(result) == 1
         assert isinstance(result[0], Spacer)
 
@@ -455,7 +603,9 @@ class TestSpacerBlock:
 class TestPageBreakBlock:
     def test_renders(self) -> None:
         r = PageBreakBlock()
-        result = r.render({"type": "page_break"}, theme=_theme, template=_template, available_width=_width)
+        result = r.render(
+            {"type": "page_break"}, theme=_theme, template=_template, available_width=_width
+        )
         assert len(result) == 1
         assert isinstance(result[0], PageBreak)
 
@@ -466,7 +616,12 @@ class TestPageBreakBlock:
 class TestDividerBlock:
     def test_renders(self) -> None:
         r = DividerBlock()
-        result = r.render({"type": "divider", "tone": "primary", "thickness": 2}, theme=_theme, template=_template, available_width=_width)
+        result = r.render(
+            {"type": "divider", "tone": "primary", "thickness": 2},
+            theme=_theme,
+            template=_template,
+            available_width=_width,
+        )
         assert len(result) == 3
 
 
@@ -476,7 +631,12 @@ class TestDividerBlock:
 class TestBadgeBlock:
     def test_renders(self) -> None:
         r = BadgeBlock()
-        result = r.render({"type": "badge", "label": "URGENT", "tone": "danger"}, theme=_theme, template=_template, available_width=_width)
+        result = r.render(
+            {"type": "badge", "label": "URGENT", "tone": "danger"},
+            theme=_theme,
+            template=_template,
+            available_width=_width,
+        )
         assert len(result) == 1
 
 
@@ -487,8 +647,15 @@ class TestSummaryBoxBlock:
     def test_renders_with_title(self) -> None:
         r = SummaryBoxBlock()
         result = r.render(
-            {"type": "summary_box", "title": "Summary", "text": "Key findings here.", "tone": "success"},
-            theme=_theme, template=_template, available_width=_width,
+            {
+                "type": "summary_box",
+                "title": "Summary",
+                "text": "Key findings here.",
+                "tone": "success",
+            },
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         assert len(result) >= 2
 
@@ -496,7 +663,9 @@ class TestSummaryBoxBlock:
         r = SummaryBoxBlock()
         result = r.render(
             {"type": "summary_box", "text": "Just text"},
-            theme=_theme, template=_template, available_width=_width,
+            theme=_theme,
+            template=_template,
+            available_width=_width,
         )
         assert len(result) >= 2
 
@@ -508,10 +677,25 @@ class TestRegistryIntegration:
     """Test that all block types are registered and dispatch correctly."""
 
     ALL_BLOCK_TYPES: ClassVar[list[str]] = [
-        "title", "section_header", "paragraph", "rich_text", "kpi_grid",
-        "callout", "callout_group", "table", "matrix_table", "insight_list",
-        "recommendations", "image", "chart", "two_column", "spacer",
-        "page_break", "divider", "badge", "summary_box",
+        "title",
+        "section_header",
+        "paragraph",
+        "rich_text",
+        "kpi_grid",
+        "callout",
+        "callout_group",
+        "table",
+        "matrix_table",
+        "insight_list",
+        "recommendations",
+        "image",
+        "chart",
+        "two_column",
+        "spacer",
+        "page_break",
+        "divider",
+        "badge",
+        "summary_box",
     ]
 
     def test_all_block_types_registered(self) -> None:
@@ -520,6 +704,7 @@ class TestRegistryIntegration:
 
     def test_all_renderers_are_base_block_subclass(self) -> None:
         from reportlab_json_renderer.blocks.base import BaseBlock
+
         for bt in self.ALL_BLOCK_TYPES:
             renderer = get_renderer(bt)
             assert isinstance(renderer, BaseBlock)

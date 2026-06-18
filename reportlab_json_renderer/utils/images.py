@@ -85,9 +85,7 @@ def load_local_image(
         try:
             p.relative_to(root)
         except ValueError as exc:
-            raise RenderError(
-                f"Image path escapes the allowed asset root: {raw_path}"
-            ) from exc
+            raise RenderError(f"Image path escapes the allowed asset root: {raw_path}") from exc
     else:
         p = raw_path.resolve()
     if not p.exists():
@@ -96,8 +94,7 @@ def load_local_image(
     supported = {".png", ".jpg", ".jpeg", ".gif", ".bmp", ".tiff", ".tif", ".webp"}
     if p.suffix.lower() not in supported:
         raise RenderError(
-            f"Unsupported image format {p.suffix!r}. "
-            f"Supported: {', '.join(sorted(supported))}"
+            f"Unsupported image format {p.suffix!r}. " f"Supported: {', '.join(sorted(supported))}"
         )
 
     # Verify the file can actually be opened as an image.
@@ -110,8 +107,7 @@ def load_local_image(
     width, height = get_image_dimensions(p)
     if width > MAX_IMAGE_DIMENSION or height > MAX_IMAGE_DIMENSION:
         raise RenderError(
-            f"Image dimensions exceed limit: {width}x{height} > "
-            f"{MAX_IMAGE_DIMENSION}px"
+            f"Image dimensions exceed limit: {width}x{height} > " f"{MAX_IMAGE_DIMENSION}px"
         )
     if width * height > MAX_IMAGE_PIXELS:
         raise RenderError(
@@ -152,13 +148,17 @@ def load_base64_image(
     # Re-open after verify() to detect format.
     img = PILImage.open(io.BytesIO(raw))
     fmt = (img.format or "PNG").lower()
-    ext = {"jpeg": ".jpg", "png": ".png", "gif": ".gif", "bmp": ".bmp",
-           "tiff": ".tiff", "webp": ".webp"}.get(fmt, ".png")
+    ext = {
+        "jpeg": ".jpg",
+        "png": ".png",
+        "gif": ".gif",
+        "bmp": ".bmp",
+        "tiff": ".tiff",
+        "webp": ".webp",
+    }.get(fmt, ".png")
 
     base_dir = output_dir if output_dir else None
-    temp_dir = Path(
-        tempfile.mkdtemp(dir=str(base_dir) if base_dir else None)
-    )
+    temp_dir = Path(tempfile.mkdtemp(dir=str(base_dir) if base_dir else None))
     tmp_path = temp_dir / f"decoded{ext}"
     tmp_path.write_bytes(raw)
     return ManagedTempImage(tmp_path, temp_dir)
@@ -174,9 +174,7 @@ def load_remote_image(url: str) -> Path:
     Raises:
         NotImplementedError: Remote image loading is intentionally unsupported.
     """
-    raise NotImplementedError(
-        "Remote image loading is not supported in this release."
-    )
+    raise NotImplementedError("Remote image loading is not supported in this release.")
 
 
 def get_image_dimensions(path: Path) -> tuple[int, int]:

@@ -31,11 +31,7 @@ class BadgeBlock(BaseBlock):
         bg_color = theme.resolve_tone(tone) if theme else "#7CB518"
         text_color = "#FFFFFF"
 
-        html = (
-            f'<font size="8" color="{text_color}">'
-            f'<b>{label}</b>'
-            f'</font>'
-        )
+        html = f'<font size="8" color="{text_color}">' f"<b>{label}</b>" f"</font>"
 
         style = ParagraphStyle(
             "Badge",

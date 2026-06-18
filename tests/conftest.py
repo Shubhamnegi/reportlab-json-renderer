@@ -56,11 +56,23 @@ def minimal_spec() -> dict[str, Any]:
 @pytest.fixture()
 def sample_spec(minimal_spec: dict[str, Any]) -> dict[str, Any]:
     """Return a spec with a few representative blocks for integration tests."""
-    spec = {**minimal_spec, "blocks": [
-        {"type": "title", "entity": "Demo Store", "title": "Weekly Report", "subtitle": "11 Jun – 17 Jun 2026"},
-        {"type": "section_header", "number": "1", "title": "Brand KPI Summary"},
-        {"type": "paragraph", "text": "Revenue declined by 12.3% week over week.", "style": "body"},
-    ]}
+    spec = {
+        **minimal_spec,
+        "blocks": [
+            {
+                "type": "title",
+                "entity": "Demo Store",
+                "title": "Weekly Report",
+                "subtitle": "11 Jun – 17 Jun 2026",
+            },
+            {"type": "section_header", "number": "1", "title": "Brand KPI Summary"},
+            {
+                "type": "paragraph",
+                "text": "Revenue declined by 12.3% week over week.",
+                "style": "body",
+            },
+        ],
+    }
     return spec
 
 

@@ -52,8 +52,7 @@ def resolve_tone(tone: str, theme_palette: dict[str, str] | None = None) -> str:
         hex_value = palette[tone]
     except KeyError:
         raise ThemeError(
-            f"Unknown tone {tone!r}. "
-            f"Available tones: {', '.join(sorted(palette))}"
+            f"Unknown tone {tone!r}. " f"Available tones: {', '.join(sorted(palette))}"
         ) from None
 
     return hex_value

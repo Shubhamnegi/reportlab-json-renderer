@@ -43,9 +43,9 @@ class InsightListBlock(BaseBlock):
             item_title = safe_paragraph_text(str(item.get("title", "")))
             item_text = safe_paragraph_text(str(item.get("text", ""))).replace("\n", "<br/>")
 
-            html_parts = [f'<b>{idx}. {item_title}</b>']
+            html_parts = [f"<b>{idx}. {item_title}</b>"]
             if item_text:
-                html_parts.append(f'<br/>{item_text}')
+                html_parts.append(f"<br/>{item_text}")
             html = "".join(html_parts)
 
             style = ParagraphStyle(

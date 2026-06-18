@@ -122,6 +122,7 @@ class TestTemplateRegistry:
         assert get_template("custom_test_tpl").name == "custom_test_tpl"
         # Clean up.
         from reportlab_json_renderer.templates.registry import _REGISTRY
+
         if _REGISTRY is not None:
             _REGISTRY.pop("custom_test_tpl", None)
 
@@ -132,5 +133,6 @@ class TestTemplateRegistry:
             register_template(custom, overwrite=False)
         # Clean up.
         from reportlab_json_renderer.templates.registry import _REGISTRY
+
         if _REGISTRY is not None:
             _REGISTRY.pop("dup_test_tpl", None)

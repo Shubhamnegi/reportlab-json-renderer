@@ -333,6 +333,7 @@ class ReportSpec(StrictModel):
 
     This is the root model that the JSON input must conform to.
     """
+
     version: Literal["1.0"] = "1.0"
     template: str
     theme: str = "green"

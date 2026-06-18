@@ -104,9 +104,17 @@ class TestRenderGroupedBar:
 class TestRenderChart:
     """Tests for the dispatcher function."""
 
-    @pytest.mark.parametrize("chart_type", [
-        "bar", "horizontal_bar", "line", "area", "pie", "donut",
-    ])
+    @pytest.mark.parametrize(
+        "chart_type",
+        [
+            "bar",
+            "horizontal_bar",
+            "line",
+            "area",
+            "pie",
+            "donut",
+        ],
+    )
     def test_single_series_types(self, chart_type: str) -> None:
         buf = render_chart(chart_type, labels=LABELS, values=VALUES, title=f"Test {chart_type}")
         _assert_valid_png(buf)

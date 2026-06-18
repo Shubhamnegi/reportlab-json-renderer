@@ -8,7 +8,6 @@ DejaVu Sans ships with matplotlib and is always available in the venv.
 
 from __future__ import annotations
 
-import os
 from pathlib import Path
 
 from reportlab.pdfbase import pdfmetrics
@@ -18,7 +17,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 def _find_dejavu_dir() -> Path | None:
     """Locate the DejaVu fonts directory via matplotlib."""
     try:
-        import matplotlib.font_manager as fm  # noqa: WPS433
+        import matplotlib.font_manager as fm
 
         sample = fm.findfont("DejaVu Sans")
         return Path(sample).parent
@@ -34,7 +33,7 @@ def ensure_unicode_fonts() -> None:
 
     Safe to call multiple times; only the first call has any effect.
     """
-    global _FONTS_REGISTERED  # noqa: PLW0603
+    global _FONTS_REGISTERED
     if _FONTS_REGISTERED:
         return
 

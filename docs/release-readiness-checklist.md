@@ -35,13 +35,13 @@ implemented and verified.
 
 - [x] Reduce non-deterministic PDF output where practical
 - [x] Add parsed-PDF verification beyond file-size/page-count checks
-- [ ] Add visual or structural smoke coverage for all built-in components
+- [x] Add visual or structural smoke coverage for all built-in components
 
 ## Packaging And Release
 
-- [ ] Add a public `LICENSE` file
-- [ ] Add release notes or changelog
-- [ ] Add project metadata suitable for public PyPI release
-- [ ] Verify clean wheel install in an isolated environment
-- [ ] Verify supported Python versions in CI
-- [ ] Run the full pre-commit pipeline successfully
+- [x] Add a public `LICENSE` file
+- [x] Add release notes or changelog
+- [x] Add project metadata suitable for public PyPI release
+- [x] Verify clean wheel install in an isolated environment
+- [x] Verify supported Python versions in CI
+- [x] Run the full pre-commit pipeline successfully

@@ -23,9 +23,15 @@ from reportlab_json_renderer.themes.base import (
 from reportlab_json_renderer.utils.errors import ThemeError
 
 _TEST_TONES = {
-    "primary": "#FF0000", "danger": "#00FF00", "success": "#0000FF",
-    "warning": "#AAAA00", "secondary": "#555555", "info": "#005555",
-    "light": "#EEE", "dark": "#111", "muted": "#999999",
+    "primary": "#FF0000",
+    "danger": "#00FF00",
+    "success": "#0000FF",
+    "warning": "#AAAA00",
+    "secondary": "#555555",
+    "info": "#005555",
+    "light": "#EEE",
+    "dark": "#111",
+    "muted": "#999999",
 }
 
 # ── Theme Base Class ─────────────────────────────────────────────────
@@ -145,5 +151,6 @@ class TestThemeRegistry:
             register_theme(custom, overwrite=False)
         # Clean up.
         from reportlab_json_renderer.themes.registry import _REGISTRY
+
         if _REGISTRY is not None:
             _REGISTRY.pop("dup_test_theme", None)
