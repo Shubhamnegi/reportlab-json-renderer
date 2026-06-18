@@ -91,6 +91,12 @@ def build_pdf(spec: dict[str, Any], output_path: str | None = None) -> dict[str,
     for idx, block in enumerate(parsed.blocks):
         try:
             block_dict = block.model_dump() if hasattr(block, "model_dump") else block
+            block_type = block_dict.get("type", "?")
+            if not tpl.is_block_allowed(block_type):
+                warnings.append(
+                    f"Block {idx} ({block_type}): not allowed by template {tpl.name}"
+                )
+                continue
             block_flowables = render_block(
                 block_dict,
                 theme=theme,
@@ -99,7 +105,7 @@ def build_pdf(spec: dict[str, Any], output_path: str | None = None) -> dict[str,
             )
             flowables.extend(block_flowables)
         except Exception as exc:
-            warnings.append(f"Block {idx} ({block_dict.get('type', '?')}): {exc}")
+            warnings.append(f"Block {idx} ({block_type}): {exc}")
 
     # ── 6. Build PDF ─────────────────────────────────────────────────
     if output_path is not None:

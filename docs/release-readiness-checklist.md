@@ -18,7 +18,7 @@ implemented and verified.
 ## Rendering Correctness
 
 - [ ] Fail closed on block rendering errors by default
-- [ ] Enforce template `allowed_blocks`
+- [x] Enforce template `allowed_blocks`
 - [ ] Define and test empty-report behavior
 - [ ] Escape and sanitize user-controlled text before ReportLab markup rendering
 - [ ] Ensure all input blocks either render or raise a clear failure

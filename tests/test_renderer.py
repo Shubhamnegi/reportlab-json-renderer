@@ -197,6 +197,15 @@ class TestValidationErrors:
 
 
 class TestWarnings:
+    def test_template_disallowed_block_generates_warning(self) -> None:
+        spec = _minimal_spec(
+            template="invoice_v1",
+            blocks=[{"type": "chart", "chart_type": "bar", "labels": ["A"], "values": [1]}],
+        )
+        result = render_pdf(spec)
+        assert result["success"] is True
+        assert any("not allowed by template invoice_v1" in warning for warning in result["warnings"])
+
     def test_validation_warnings_are_returned(self) -> None:
         spec = _spec_with_blocks([
             {
