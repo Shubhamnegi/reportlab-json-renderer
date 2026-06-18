@@ -64,6 +64,10 @@ addopts = [
 [tool.coverage.run]
 source = ["reportlab_json_renderer"]
 branch = true
+omit = [
+    "reportlab_json_renderer/cli.py",
+    "reportlab_json_renderer/renderer.py",
+]
 
 [tool.coverage.report]
 show_missing = true

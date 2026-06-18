@@ -22,11 +22,11 @@
 ## Phase 2 — Error & Utility Foundation
 
 - [x] `utils/errors.py` — custom exception hierarchy (`ValidationError`, `RenderError`, `ThemeError`, `TemplateError`)
-- [ ] `utils/units.py` — cm/mm/pt conversion helpers
-- [ ] `utils/colors.py` — tone-to-hex resolver (reads from theme, never raw hex from JSON)
-- [ ] `utils/text.py` — text truncation, sanitization, line-break helpers
-- [ ] `utils/images.py` — local file loader, optional HTTP/S3/base64 loader with validation
-- [ ] `utils/charts.py` — matplotlib chart renderers (bar, horizontal_bar, line, area, pie, donut, stacked_bar, grouped_bar)
+- [x] `utils/units.py` — cm/mm/pt conversion helpers
+- [x] `utils/colors.py` — tone-to-hex resolver (reads from theme, never raw hex from JSON)
+- [x] `utils/text.py` — text truncation, sanitization, line-break helpers
+- [x] `utils/images.py` — local file loader, optional HTTP/S3/base64 loader with validation
+- [x] `utils/charts.py` — matplotlib chart renderers (bar, horizontal_bar, line, area, pie, donut, stacked_bar, grouped_bar)
 
 ---
 
@@ -179,10 +179,10 @@ Tracked here for awareness. Do not implement until explicitly requested.
 
 | # | Decision | Status | Notes |
 |---|----------|--------|-------|
-| 1 | Charting library | Pending | Matplotlib is the spec default |
+| 1 | Charting library | ✅ Done | Matplotlib (Agg backend) |
 | 2 | Validation library | Pending | jsonschema or pydantic? |
-| 3 | CLI framework | Pending | argparse (stdlib) or click? |
-| 4 | Linting tool | Pending | ruff recommended |
+| 3 | CLI framework | ✅ Done | argparse (stdlib) |
+| 4 | Linting tool | ✅ Done | ruff |
 | 5 | PDF snapshot testing approach | Pending | Byte-level vs metadata comparison |
 
 ---
