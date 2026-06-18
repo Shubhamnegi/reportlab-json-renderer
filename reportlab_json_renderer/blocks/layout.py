@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import contextlib
 from typing import Any
 
 from reportlab.platypus import Flowable, Spacer, Table, TableStyle
@@ -35,18 +34,16 @@ class TwoColumnBlock(BaseBlock):
         # Render left column blocks.
         left_flowables: list[Flowable] = []
         for b in left_blocks:
-            with contextlib.suppress(Exception):
-                left_flowables.extend(render_block(
-                    b, theme=theme, template=template, available_width=left_w,
-                ))
+            left_flowables.extend(render_block(
+                b, theme=theme, template=template, available_width=left_w,
+            ))
 
         # Render right column blocks.
         right_flowables: list[Flowable] = []
         for b in right_blocks:
-            with contextlib.suppress(Exception):
-                right_flowables.extend(render_block(
-                    b, theme=theme, template=template, available_width=right_w,
-                ))
+            right_flowables.extend(render_block(
+                b, theme=theme, template=template, available_width=right_w,
+            ))
 
         # Combine into a table.
         left_cell = left_flowables if left_flowables else [Spacer(1, 12)]

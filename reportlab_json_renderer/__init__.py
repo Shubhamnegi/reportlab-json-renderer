@@ -12,6 +12,8 @@ __version__ = "0.1.0"
 def render_pdf(
     spec: dict[str, Any],
     output_path: str | None = None,
+    *,
+    allow_partial: bool = False,
 ) -> dict[str, Any]:
     """Render a PDF from a validated JSON specification.
 
@@ -19,6 +21,9 @@ def render_pdf(
         spec: The JSON document specification conforming to the report schema.
         output_path: Optional filesystem path for the generated PDF.
             If ``None``, the PDF is returned as bytes only.
+        allow_partial: If ``True``, continue after block-level render errors and
+            return them as warnings. If ``False``, raise on the first block-level
+            render failure.
 
     Returns:
         A result dictionary containing:
@@ -35,7 +40,7 @@ def render_pdf(
         reportlab_json_renderer.utils.errors.RenderError:
             If a block cannot be rendered.
     """
-    return build_pdf(spec, output_path=output_path)
+    return build_pdf(spec, output_path=output_path, allow_partial=allow_partial)
 
 
 __all__ = ["__version__", "render_pdf"]

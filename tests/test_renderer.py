@@ -15,7 +15,7 @@ from pathlib import Path
 import pytest
 
 from reportlab_json_renderer import render_pdf
-from reportlab_json_renderer.utils.errors import ValidationError
+from reportlab_json_renderer.utils.errors import RenderError, ValidationError
 
 # ── Helpers ──────────────────────────────────────────────────────────
 
@@ -219,15 +219,30 @@ class TestWarnings:
         assert any("widths sum" in warning for warning in result["warnings"])
         assert any("extra keys" in warning for warning in result["warnings"])
 
-    def test_broken_block_generates_warning(self) -> None:
-        """A block that causes a render error should generate a warning,
-        not crash the entire pipeline."""
+    def test_broken_block_raises_by_default(self) -> None:
+        """A block render failure should fail the render by default."""
         spec = _spec_with_blocks([
-            {"type": "chart", "chart_type": "bar"},  # missing labels/values
+            {
+                "type": "two_column",
+                "left": [{"type": "missing_renderer"}],
+                "right": [],
+            },
         ])
-        result = render_pdf(spec)
-        # The pipeline should still succeed even if a block fails.
+        with pytest.raises(RenderError, match="Block 0 \\(two_column\\):"):
+            render_pdf(spec)
+
+    def test_broken_block_can_be_downgraded_to_warning(self) -> None:
+        """Partial rendering remains an explicit opt-in."""
+        spec = _spec_with_blocks([
+            {
+                "type": "two_column",
+                "left": [{"type": "missing_renderer"}],
+                "right": [],
+            },
+        ])
+        result = render_pdf(spec, allow_partial=True)
         assert result["success"] is True
+        assert any("Block 0 (two_column):" in warning for warning in result["warnings"])
 
 
 # ── Header / Footer ─────────────────────────────────────────────────

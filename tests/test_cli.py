@@ -107,6 +107,26 @@ class TestRenderCommand:
         code = main(["render", "--input", str(input_file), "--output", str(tmp_path / "out.pdf")])
         assert code == 1
 
+    def test_render_block_failure_exits_nonzero(
+        self, tmp_path: Path, minimal_spec: dict[str, Any]
+    ) -> None:
+        """Render should fail closed when a block cannot be rendered."""
+        spec = {
+            **minimal_spec,
+            "blocks": [
+                {
+                    "type": "two_column",
+                    "left": [{"type": "missing_renderer"}],
+                    "right": [],
+                }
+            ],
+        }
+        input_file = _write_json(tmp_path / "spec.json", spec)
+
+        code = main(["render", "--input", str(input_file), "--output", str(tmp_path / "out.pdf")])
+
+        assert code == 1
+
 
 # ── validate ──────────────────────────────────────────────────────────────
 

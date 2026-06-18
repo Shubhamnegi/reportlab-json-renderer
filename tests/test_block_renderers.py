@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from typing import ClassVar
 
+import pytest
 from reportlab.platypus import Flowable, PageBreak, Spacer
 
 from reportlab_json_renderer.blocks.badge import BadgeBlock
@@ -31,6 +32,7 @@ from reportlab_json_renderer.blocks.table import TableBlock
 from reportlab_json_renderer.blocks.title import TitleBlock
 from reportlab_json_renderer.templates.analytics_report_v1 import ANALYTICS_REPORT_V1
 from reportlab_json_renderer.themes.green import GREEN_THEME
+from reportlab_json_renderer.utils.errors import RenderError
 
 # Shared test objects.
 _theme = GREEN_THEME
@@ -328,13 +330,13 @@ class TestRecommendationsBlock:
 
 
 class TestImageBlock:
-    def test_renders_with_missing_file(self) -> None:
+    def test_missing_file_raises(self) -> None:
         r = ImageBlock()
-        result = r.render(
-            {"type": "image", "src": "/nonexistent/path.png", "title": "Photo"},
-            theme=_theme, template=_template, available_width=_width,
-        )
-        assert len(result) >= 2
+        with pytest.raises(RenderError, match="Image file not found"):
+            r.render(
+                {"type": "image", "src": "/nonexistent/path.png", "title": "Photo"},
+                theme=_theme, template=_template, available_width=_width,
+            )
 
     def test_renders_empty_src(self) -> None:
         r = ImageBlock()

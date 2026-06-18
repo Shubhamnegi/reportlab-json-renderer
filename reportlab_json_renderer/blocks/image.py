@@ -10,6 +10,7 @@ from reportlab.platypus import Flowable, Paragraph, Spacer
 from reportlab.platypus import Image as RLImage
 
 from reportlab_json_renderer.blocks.base import BaseBlock
+from reportlab_json_renderer.utils.images import load_local_image
 from reportlab_json_renderer.utils.units import cm_to_pt
 
 
@@ -50,19 +51,10 @@ class ImageBlock(BaseBlock):
         w = cm_to_pt(width_cm) if width_cm else available_width * 0.8
         h = cm_to_pt(height_cm) if height_cm else w * 0.5
 
-        try:
-            img = RLImage(src, width=w, height=h)
-            img.hAlign = align.upper()
-            flowables.append(img)
-        except Exception:
-            # Fallback: show the path as text if image can't be loaded.
-            error_style = ParagraphStyle(
-                "ImageError",
-                fontName=theme.font_body if theme else "Helvetica",
-                fontSize=9,
-                textColor=colors.HexColor(theme.resolve_tone("danger") if theme else "#C62828"),
-            )
-            flowables.append(Paragraph(f"[Image not found: {src}]", error_style))
+        image_path = load_local_image(src)
+        img = RLImage(str(image_path), width=w, height=h)
+        img.hAlign = align.upper()
+        flowables.append(img)
 
         flowables.append(Spacer(1, 8))
         return flowables

@@ -20,7 +20,7 @@ from reportlab_json_renderer.blocks.registry import render_block
 from reportlab_json_renderer.schema.validators import validate_spec
 from reportlab_json_renderer.templates import get_template
 from reportlab_json_renderer.themes import get_theme
-from reportlab_json_renderer.utils.errors import ValidationError
+from reportlab_json_renderer.utils.errors import RenderError, ValidationError
 from reportlab_json_renderer.utils.units import cm_to_pt
 
 # Page size mapping.
@@ -32,7 +32,12 @@ _PAGE_SIZES: dict[str, tuple[float, float]] = {
 }
 
 
-def build_pdf(spec: dict[str, Any], output_path: str | None = None) -> dict[str, Any]:
+def build_pdf(
+    spec: dict[str, Any],
+    output_path: str | None = None,
+    *,
+    allow_partial: bool = False,
+) -> dict[str, Any]:
     """Execute the full render pipeline and return a result dict.
 
     Steps:
@@ -47,6 +52,9 @@ def build_pdf(spec: dict[str, Any], output_path: str | None = None) -> dict[str,
     Args:
         spec: Raw JSON specification dictionary.
         output_path: Where to write the PDF, or ``None`` for bytes-only.
+        allow_partial: If ``True``, continue after block-level render errors and
+            return them as warnings. If ``False``, raise on the first block-level
+            render failure.
 
     Returns:
         Result dictionary with keys: success, path, bytes, pages, warnings, metadata.
@@ -105,7 +113,11 @@ def build_pdf(spec: dict[str, Any], output_path: str | None = None) -> dict[str,
             )
             flowables.extend(block_flowables)
         except Exception as exc:
-            warnings.append(f"Block {idx} ({block_type}): {exc}")
+            message = f"Block {idx} ({block_type}): {exc}"
+            if allow_partial:
+                warnings.append(message)
+                continue
+            raise RenderError(message) from exc
 
     # ── 6. Build PDF ─────────────────────────────────────────────────
     if output_path is not None:

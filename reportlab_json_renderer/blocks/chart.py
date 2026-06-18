@@ -11,6 +11,7 @@ from reportlab.platypus import Image as RLImage
 
 from reportlab_json_renderer.blocks.base import BaseBlock
 from reportlab_json_renderer.utils.charts import render_chart
+from reportlab_json_renderer.utils.errors import RenderError
 
 
 class ChartBlock(BaseBlock):
@@ -54,20 +55,13 @@ class ChartBlock(BaseBlock):
                 tone=tone,
                 theme_palette=theme_palette,
             )
-
             img_width = available_width * 0.9
             img_height = img_width * 0.5
             img = RLImage(buf, width=img_width, height=img_height)
             img.hAlign = "CENTER"
             flowables.append(img)
         except Exception as exc:
-            error_style = ParagraphStyle(
-                "ChartError",
-                fontName=theme.font_body if theme else "Helvetica",
-                fontSize=9,
-                textColor=colors.HexColor(theme.resolve_tone("danger") if theme else "#C62828"),
-            )
-            flowables.append(Paragraph(f"[Chart error: {exc}]", error_style))
+            raise RenderError(f"Chart render failed: {exc}") from exc
 
         flowables.append(Spacer(1, 8))
         return flowables

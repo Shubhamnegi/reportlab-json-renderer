@@ -595,6 +595,9 @@ Validate only:
 
 pdf-renderer validate --input report.json
 
+Rendering should fail closed on block-level errors by default. Partial output is
+an explicit opt-in for host applications, not the default library behavior.
+
 List templates:
 
 pdf-renderer templates

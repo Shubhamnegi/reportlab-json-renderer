@@ -79,9 +79,11 @@ Render a PDF from a validated JSON specification.
 | `warnings` | `list[str]` | Non-fatal warnings collected during render. |
 | `metadata` | `dict` | Echo of template and theme used. |
 
-Warnings may come from schema post-validation checks or block-level render fallbacks.
+Warnings may come from schema post-validation checks, template block restrictions,
+or explicit partial-render mode (`allow_partial=True`).
 
-**Raises** `ValidationError` if the spec fails validation.
+**Raises** `ValidationError` if the spec fails validation and `RenderError` if a
+block cannot be rendered.
 
 ```python
 from reportlab_json_renderer import render_pdf
@@ -92,6 +94,9 @@ result = render_pdf(spec, output_path="/tmp/report.pdf")
 # Bytes-only (no file written)
 result = render_pdf(spec)
 pdf_bytes = result["bytes"]
+
+# Explicit partial rendering
+result = render_pdf(spec, allow_partial=True)
 ```
 
 ## JSON Contract
@@ -160,7 +165,8 @@ Current implementation notes:
 
 - `image` blocks currently support local filesystem paths only.
 - `image.fit` is accepted by the schema but not yet applied by the renderer.
-- Template `allowed_blocks` metadata exists, but enforcement is still pending.
+- Renders fail closed by default on block errors. Use `allow_partial=True` only if
+  your application explicitly accepts partial output.
 
 - **Custom blocks**: Subclass `BaseBlock` and register via the block registry. See [`docs/custom-blocks.md`](docs/custom-blocks.md).
 - **Custom themes**: Create a `Theme` dataclass and register via the theme registry. See [`docs/custom-themes.md`](docs/custom-themes.md).

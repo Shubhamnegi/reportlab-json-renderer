@@ -17,7 +17,7 @@ implemented and verified.
 
 ## Rendering Correctness
 
-- [ ] Fail closed on block rendering errors by default
+- [x] Fail closed on block rendering errors by default
 - [x] Enforce template `allowed_blocks`
 - [ ] Define and test empty-report behavior
 - [ ] Escape and sanitize user-controlled text before ReportLab markup rendering
@@ -25,7 +25,7 @@ implemented and verified.
 
 ## Images And Resource Safety
 
-- [ ] Route image loading through validated utilities
+- [x] Route image loading through validated utilities
 - [ ] Restrict local image access to safe paths and reject traversal
 - [ ] Add resource limits for large JSON payloads, large images, and oversized tables/charts
 - [ ] Clean up temporary files created during base64 image handling
