@@ -92,10 +92,45 @@ def safe_paragraph_text(text: str) -> str:
     return escape_xml(sanitize(normalize_line_breaks(text)))
 
 
+# ReportLab-recognised HTML tags that should NOT be escaped.
+_RECOGNISED_TAGS = re.compile(
+    r"<(/?)(\s*(?:b|i|u|br/?|font|a|sup|sub|para|strong|em)"
+    r"(?:\s[^>]*)?\s*/?)>",
+    re.IGNORECASE,
+)
+
+
+def safe_paragraph_html(text: str) -> str:
+    """Normalize, sanitize, and partially XML-escape user text.
+
+    Unlike :func:`safe_paragraph_text`, this function *preserves*
+    ReportLab-recognised HTML tags (``<b>``, ``<i>``, ``<br/>``, etc.)
+    so they render as styled markup rather than literal angle-bracket text.
+
+    Unrecognised ``<`` and ``>`` characters are still escaped.
+    """
+    text = sanitize(normalize_line_breaks(text))
+    # Replace <br> variants with self-closing <br/> for ReportLab.
+    text = re.sub(r"<br\s*/?>", "<br/>", text, flags=re.IGNORECASE)
+    # Protect recognised tags from escaping.
+    placeholder = "\x00TAG\x00"
+    protected: list[str] = []
+    offset = 0
+    for match in _RECOGNISED_TAGS.finditer(text):
+        protected.append(match.group(0))
+    # Strip recognised tags, escape the rest, then put them back.
+    stripped = _RECOGNISED_TAGS.sub(placeholder, text)
+    escaped = escape_xml(stripped)
+    for tag in protected:
+        escaped = escaped.replace(placeholder, tag, 1)
+    return escaped
+
+
 __all__ = [
     "escape_xml",
     "normalize_line_breaks",
     "normalize_whitespace",
+    "safe_paragraph_html",
     "safe_paragraph_text",
     "sanitize",
     "truncate",

@@ -9,7 +9,7 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.platypus import Flowable, Paragraph
 
 from reportlab_json_renderer.blocks.base import BaseBlock
-from reportlab_json_renderer.utils.text import safe_paragraph_text
+from reportlab_json_renderer.utils.text import safe_paragraph_html
 
 
 class ParagraphBlock(BaseBlock):
@@ -25,7 +25,7 @@ class ParagraphBlock(BaseBlock):
         template: Any,
         available_width: float,
     ) -> list[Flowable]:
-        text = safe_paragraph_text(str(block.get("text", "")))
+        text = safe_paragraph_html(str(block.get("text", "")))
         style_name = block.get("style", "body")
 
         font_map = {

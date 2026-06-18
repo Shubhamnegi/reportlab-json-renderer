@@ -127,7 +127,8 @@ class TestParagraphBlock:
         )
         para = result[0]
         assert isinstance(para, Paragraph)
-        assert para.getPlainText() == "<b>unsafe</b> & text"
+        # <b> is a recognised tag and is preserved as markup (not escaped).
+        assert para.getPlainText() == "unsafe & text"
 
 
 # ── Rich Text Block ─────────────────────────────────────────────────

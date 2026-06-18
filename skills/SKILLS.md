@@ -60,7 +60,6 @@ analytics_report_v1      → KPI/data-heavy reports
 business_report_v1       → general business summaries
 invoice_v1               → invoices/billing
 proposal_v1              → sales/proposal docs
-weekly_ops_report_v1     → operations performance reports
 compact_report_v1        → short 1–2 page reports
 
 When unsure, use:
@@ -77,15 +76,23 @@ Default:
 
 green
 
-Supported tones:
+Available themes:
+
+green
+neutral
+dark
+
+Use tones for per-block colour semantics. Supported tones:
 
 primary
-success
+secondary
 danger
+success
 warning
 info
+light
+dark
 muted
-neutral
 
 ⸻
 

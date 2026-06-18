@@ -18,6 +18,11 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
+from reportlab_json_renderer.utils.fonts import ensure_unicode_fonts
+
+# Register Unicode TTF fonts on first import of this module.
+ensure_unicode_fonts()
+
 # Tones every theme must define.
 DEFAULT_TONES: list[str] = [
     "primary",
@@ -49,9 +54,9 @@ class Theme:
 
     name: str
     tones: dict[str, str] = field(default_factory=dict)
-    font_body: str = "Helvetica"
-    font_bold: str = "Helvetica-Bold"
-    font_mono: str = "Courier"
+    font_body: str = "DejaVuSans"
+    font_bold: str = "DejaVuSans-Bold"
+    font_mono: str = "DejaVuSansMono"
     table_header_bg: str = "#F0F0F0"
     callout_border_width: float = 3.0
     kpi_card_padding: float = 8.0

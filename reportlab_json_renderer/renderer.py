@@ -27,6 +27,7 @@ from reportlab_json_renderer.schema.validators import validate_spec
 from reportlab_json_renderer.templates import get_template
 from reportlab_json_renderer.themes import get_theme
 from reportlab_json_renderer.utils.errors import RenderError, ValidationError
+from reportlab_json_renderer.utils.fonts import ensure_unicode_fonts
 from reportlab_json_renderer.utils.images import load_local_image
 from reportlab_json_renderer.utils.units import cm_to_pt
 
@@ -71,6 +72,9 @@ def build_pdf(
         Result dictionary with keys: success, path, bytes, pages, warnings, metadata.
     """
     warnings: list[str] = []
+
+    # ── 0. Register Unicode fonts ────────────────────────────────────
+    ensure_unicode_fonts()
 
     # ── 1. Validate ──────────────────────────────────────────────────
     validation_result = validate_spec(spec)
