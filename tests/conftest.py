@@ -28,13 +28,13 @@ def minimal_spec() -> dict[str, Any]:
     return {
         "version": "1.0",
         "template": "analytics_report_v1",
-        "theme": "limetray_green",
+        "theme": "green",
         "metadata": {
             "entity_name": "Test Entity",
             "report_title": "Test Report",
             "period": "1 Jan – 7 Jan 2026",
             "generated_at": "2026-01-07",
-            "powered_by": "Limetray",
+            "powered_by": "Public PDF Renderer",
             "confidential": True,
         },
         "page": {
@@ -57,7 +57,7 @@ def minimal_spec() -> dict[str, Any]:
 def sample_spec(minimal_spec: dict[str, Any]) -> dict[str, Any]:
     """Return a spec with a few representative blocks for integration tests."""
     spec = {**minimal_spec, "blocks": [
-        {"type": "title", "entity": "Pind Punjab", "title": "Weekly Report", "subtitle": "11 Jun – 17 Jun 2026"},
+        {"type": "title", "entity": "Demo Store", "title": "Weekly Report", "subtitle": "11 Jun – 17 Jun 2026"},
         {"type": "section_header", "number": "1", "title": "Brand KPI Summary"},
         {"type": "paragraph", "text": "Revenue declined by 12.3% week over week.", "style": "body"},
     ]}

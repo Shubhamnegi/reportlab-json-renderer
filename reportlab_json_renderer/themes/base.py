@@ -37,7 +37,7 @@ class Theme:
     """Immutable theme definition.
 
     Attributes:
-        name: Machine-readable identifier (e.g. ``"limetray_green"``).
+        name: Machine-readable identifier (e.g. ``"green"``).
         tones: Mapping of tone name → ``"#RRGGBB"`` hex string.
         font_body: Regular body font name.
         font_bold: Bold font name.

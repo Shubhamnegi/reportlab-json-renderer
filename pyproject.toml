@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
 authors = [
-    { name = "LimeTray" },
+    { name = "Maintainers" },
 ]
 dependencies = [
     "reportlab>=4.0,<5",

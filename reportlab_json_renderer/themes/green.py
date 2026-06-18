@@ -1,12 +1,12 @@
-"""Default LimeTray brand theme.
+"""Default public green theme.
 
 Green primary with a clean, professional palette suited for business reports.
 """
 
 from reportlab_json_renderer.themes.base import Theme, build_theme
 
-LIMETRAY_GREEN: Theme = build_theme(
-    name="limetray_green",
+GREEN_THEME: Theme = build_theme(
+    name="green",
     tones={
         "primary": "#7CB518",
         "secondary": "#5A8A12",

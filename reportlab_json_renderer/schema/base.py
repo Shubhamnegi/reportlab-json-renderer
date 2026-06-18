@@ -326,7 +326,7 @@ class ReportSpec(BaseModel):
     """
     version: str = "1.0"
     template: str
-    theme: str = "limetray_green"
+    theme: str = "green"
     metadata: ReportMetadata
     page: PageConfig = Field(default_factory=PageConfig)
     header: HeaderConfig = Field(default_factory=HeaderConfig)

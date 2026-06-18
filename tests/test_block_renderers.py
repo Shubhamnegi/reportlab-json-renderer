@@ -30,10 +30,10 @@ from reportlab_json_renderer.blocks.summary_box import SummaryBoxBlock
 from reportlab_json_renderer.blocks.table import TableBlock
 from reportlab_json_renderer.blocks.title import TitleBlock
 from reportlab_json_renderer.templates.analytics_report_v1 import ANALYTICS_REPORT_V1
-from reportlab_json_renderer.themes.limetray_green import LIMETRAY_GREEN
+from reportlab_json_renderer.themes.green import GREEN_THEME
 
 # Shared test objects.
-_theme = LIMETRAY_GREEN
+_theme = GREEN_THEME
 _template = ANALYTICS_REPORT_V1
 _width = 500.0
 

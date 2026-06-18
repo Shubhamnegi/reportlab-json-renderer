@@ -2,7 +2,7 @@
 
 Covers:
   - Theme base class (resolve_tone, hex_to_rgb, merge)
-  - All built-in themes (limetray_green, neutral, dark)
+  - All built-in themes (green, neutral, dark)
   - Theme registry (get_theme, register_theme, list_themes)
   - Missing / unknown theme errors
 """
@@ -89,9 +89,9 @@ class TestBuildTheme:
 
 
 class TestBuiltInThemes:
-    def test_limetray_green_loaded(self) -> None:
-        theme = get_theme("limetray_green")
-        assert theme.name == "limetray_green"
+    def test_green_loaded(self) -> None:
+        theme = get_theme("green")
+        assert theme.name == "green"
         assert theme.resolve_tone("primary") == "#7CB518"
 
     def test_neutral_loaded(self) -> None:
@@ -105,7 +105,7 @@ class TestBuiltInThemes:
         assert theme.resolve_tone("primary") == "#80CBC4"
 
     def test_all_builtins_have_all_default_tones(self) -> None:
-        for name in ("limetray_green", "neutral", "dark"):
+        for name in ("green", "neutral", "dark"):
             theme = get_theme(name)
             for tone in DEFAULT_TONES:
                 assert tone in theme.tones, f"{name} missing tone {tone}"
@@ -117,7 +117,7 @@ class TestBuiltInThemes:
 class TestThemeRegistry:
     def test_list_themes(self) -> None:
         names = list_themes()
-        assert "limetray_green" in names
+        assert "green" in names
         assert "neutral" in names
         assert "dark" in names
 

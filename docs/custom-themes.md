@@ -108,9 +108,9 @@ Use `theme.merge()` to create a variant of a built-in theme with some overrides:
 ```python
 from reportlab_json_renderer.themes.registry import get_theme
 
-base = get_theme("limetray_green")
+base = get_theme("green")
 custom = base.merge({
-    "name": "limetray_green_custom",
+    "name": "green_custom",
     "tones": {
         **base.tones,
         "primary": "#0055A4",  # override just primary

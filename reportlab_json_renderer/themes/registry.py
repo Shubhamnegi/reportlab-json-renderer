@@ -22,11 +22,11 @@ def _ensure_builtins() -> dict[str, Theme]:
         return _REGISTRY
 
     from reportlab_json_renderer.themes.dark import DARK
-    from reportlab_json_renderer.themes.limetray_green import LIMETRAY_GREEN
+    from reportlab_json_renderer.themes.green import GREEN_THEME
     from reportlab_json_renderer.themes.neutral import NEUTRAL
 
     _REGISTRY = {
-        "limetray_green": LIMETRAY_GREEN,
+        "green": GREEN_THEME,
         "neutral": NEUTRAL,
         "dark": DARK,
     }
@@ -37,7 +37,7 @@ def get_theme(name: str) -> Theme:
     """Look up a theme by name.
 
     Args:
-        name: Theme identifier (e.g. ``"limetray_green"``).
+        name: Theme identifier (e.g. ``"green"``).
 
     Returns:
         The matching :class:`Theme`.

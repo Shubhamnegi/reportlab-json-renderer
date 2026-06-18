@@ -8,7 +8,7 @@ Human-readable field reference for the report specification JSON contract.
 |-------|------|----------|---------|-------------|
 | `version` | `string` | No | `"1.0"` | Schema version. Must be `"1.0"`. |
 | `template` | `string` | **Yes** | — | Template identifier (e.g. `"analytics_report_v1"`). |
-| `theme` | `string` | No | `"limetray_green"` | Theme identifier (e.g. `"limetray_green"`, `"neutral"`, `"dark"`). |
+| `theme` | `string` | No | `"green"` | Theme identifier (e.g. `"green"`, `"neutral"`, `"dark"`). |
 | `metadata` | `object` | **Yes** | — | Report metadata (entity, title, period). |
 | `page` | `object` | No | See below | Page size, orientation, and margins. |
 | `header` | `object` | No | `{ "enabled": true }` | Header configuration. |

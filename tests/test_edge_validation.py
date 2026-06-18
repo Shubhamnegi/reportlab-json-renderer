@@ -41,7 +41,7 @@ class TestInvalidInputs:
     def test_missing_theme(self, minimal_spec: dict[str, Any]) -> None:
         spec = _copy_spec(minimal_spec)
         del spec["theme"]
-        # theme has a default value "limetray_green", so this should still pass
+        # theme has a default value "green", so this should still pass
         result = validate_spec(spec)
         assert result.valid
 

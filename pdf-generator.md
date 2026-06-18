@@ -113,7 +113,7 @@ reportlab_json_renderer/
 │   └── compact_report_v1.py
 ├── themes/
 │   ├── base.py
-│   ├── limetray_green.py
+│   ├── green.py
 │   ├── neutral.py
 │   └── dark.py
 ├── blocks/
@@ -159,13 +159,13 @@ Root Schema
 {
   "version": "1.0",
   "template": "analytics_report_v1",
-  "theme": "limetray_green",
+  "theme": "green",
   "metadata": {
-    "entity_name": "Pind Punjab",
+    "entity_name": "Demo Store",
     "report_title": "Order Performance Evaluation Report",
     "period": "11 Jun – 17 Jun 2026",
     "generated_at": "2026-06-18",
-    "powered_by": "Limetray",
+    "powered_by": "Public PDF Renderer",
     "confidential": true
   },
   "page": {
@@ -197,10 +197,10 @@ Root Schema
 
 {
   "type": "title",
-  "entity": "Pind Punjab",
+  "entity": "Demo Store",
   "title": "Order Performance Evaluation Report",
   "subtitle": "11 Jun – 17 Jun 2026",
-  "right_text": "Powered by Limetray"
+  "right_text": "Powered by Public PDF Renderer"
 }
 
 8.2 Section Header
@@ -295,7 +295,7 @@ Root Schema
   ],
   "rows": [
     {
-      "source": "Swiggy",
+      "source": "Online",
       "orders": "2,269",
       "share": "60.6%",
       "revenue": "₹10,72,625",
@@ -414,7 +414,7 @@ Charts should be rendered as images using matplotlib or another internal chart r
       "type": "chart",
       "chart_type": "pie",
       "title": "Promo by Source",
-      "labels": ["Zomato", "Swiggy"],
+      "labels": ["Mobile App", "Online"],
       "values": [1368806, 1003922]
     }
   ]
@@ -454,7 +454,7 @@ Charts should be rendered as images using matplotlib or another internal chart r
 {
   "type": "summary_box",
   "title": "Executive Summary",
-  "text": "Pind Punjab is experiencing sustained order decline across all periods.",
+  "text": "The business is experiencing sustained order decline across all periods.",
   "tone": "success"
 }
 
@@ -507,7 +507,7 @@ Themes control:
 Example theme:
 
 THEME = {
-    "name": "limetray_green",
+    "name": "green",
     "colors": {
         "primary": "#7CB518",
         "danger": "#C62828",
@@ -585,7 +585,7 @@ Result Object
     "warnings": [],
     "metadata": {
         "template": "analytics_report_v1",
-        "theme": "limetray_green"
+        "theme": "green"
     }
 }
 
@@ -744,7 +744,7 @@ Image loader should support:
 local:/safe/path/image.png
 s3://bucket/key
 https://example.com/image.png
-asset://logo/limetray
+asset://logo/default
 data:image/png;base64,...
 
 Recommended v1 support:
@@ -936,13 +936,13 @@ Avoid strict binary PDF comparison because metadata/timestamps may differ.
 {
   "version": "1.0",
   "template": "analytics_report_v1",
-  "theme": "limetray_green",
+  "theme": "green",
   "metadata": {
-    "entity_name": "Pind Punjab",
+    "entity_name": "Demo Store",
     "report_title": "Order Performance Evaluation Report",
     "period": "11 Jun – 17 Jun 2026 (vs Last Week, Last Month, Last Quarter)",
     "generated_at": "2026-06-18",
-    "powered_by": "Limetray"
+    "powered_by": "Public PDF Renderer"
   },
   "blocks": [
     {
@@ -989,8 +989,8 @@ Avoid strict binary PDF comparison because metadata/timestamps may differ.
         {"key": "assessment", "label": "Assessment", "width": 0.32}
       ],
       "rows": [
-        {"source": "Swiggy", "orders": "2,269", "share": "60.6%", "revenue": "₹10,72,625", "assessment": "High dependency"},
-        {"source": "Zomato", "orders": "1,410", "share": "37.7%", "revenue": "₹7,84,042", "assessment": "Healthy mix"},
+        {"source": "Online", "orders": "2,269", "share": "60.6%", "revenue": "₹10,72,625", "assessment": "High dependency"},
+        {"source": "Mobile App", "orders": "1,410", "share": "37.7%", "revenue": "₹7,84,042", "assessment": "Healthy mix"},
         {"source": "POS", "orders": "64", "share": "1.7%", "revenue": "₹1,05,594", "assessment": "Underutilized"}
       ]
     },
@@ -998,7 +998,7 @@ Avoid strict binary PDF comparison because metadata/timestamps may differ.
       "type": "chart",
       "chart_type": "pie",
       "title": "Order Share by Source",
-      "labels": ["Swiggy", "Zomato", "POS"],
+      "labels": ["Online", "Mobile App", "POS"],
       "values": [2269, 1410, 64]
     },
     {
@@ -1135,7 +1135,7 @@ The output must be valid JSON with this root structure:
 {
   "version": "1.0",
   "template": "analytics_report_v1",
-  "theme": "limetray_green",
+  "theme": "green",
   "metadata": {},
   "blocks": []
 }
@@ -1165,7 +1165,7 @@ Use theme names, not raw colors.
 
 Default:
 
-limetray_green
+green
 
 Supported tones:
 
@@ -1221,9 +1221,9 @@ Good Example
 {
   "version": "1.0",
   "template": "analytics_report_v1",
-  "theme": "limetray_green",
+  "theme": "green",
   "metadata": {
-    "entity_name": "Pind Punjab",
+    "entity_name": "Demo Store",
     "report_title": "Order Performance Evaluation Report",
     "period": "11 Jun – 17 Jun 2026"
   },

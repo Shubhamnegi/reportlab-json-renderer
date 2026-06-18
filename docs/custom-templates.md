@@ -92,7 +92,7 @@ You can now use `"template": "my_report_v1"` in your JSON spec.
 {
   "version": "1.0",
   "template": "my_report_v1",
-  "theme": "limetray_green",
+  "theme": "green",
   "metadata": {
     "entity_name": "Acme Corp",
     "report_title": "Quarterly Summary",

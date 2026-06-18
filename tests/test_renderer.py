@@ -25,7 +25,7 @@ def _minimal_spec(**overrides: object) -> dict:
     spec: dict = {
         "version": "1.0",
         "template": "analytics_report_v1",
-        "theme": "limetray_green",
+        "theme": "green",
         "metadata": {
             "entity_name": "Test Entity",
             "report_title": "Test Report",
@@ -40,12 +40,12 @@ def _spec_with_blocks(blocks: list[dict]) -> dict:
     return {
         "version": "1.0",
         "template": "analytics_report_v1",
-        "theme": "limetray_green",
+        "theme": "green",
         "metadata": {
             "entity_name": "Test Entity",
             "report_title": "Test Report",
             "period": "1 Jun - 7 Jun 2026",
-            "powered_by": "Limetray",
+            "powered_by": "Public PDF Renderer",
         },
         "blocks": blocks,
     }
@@ -63,7 +63,7 @@ class TestRenderPDFMinimal:
         assert len(result["bytes"]) > 0
         assert result["warnings"] == []
         assert result["metadata"]["template"] == "analytics_report_v1"
-        assert result["metadata"]["theme"] == "limetray_green"
+        assert result["metadata"]["theme"] == "green"
 
     def test_empty_blocks_to_file(self, tmp_path: Path) -> None:
         out = tmp_path / "output.pdf"

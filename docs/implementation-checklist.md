@@ -1,5 +1,8 @@
 # Implementation Checklist
 
+Release work is now tracked in [release-readiness-checklist.md](release-readiness-checklist.md).
+This document remains the implementation history for the original build-out.
+
 > Track progress by checking off items as they are completed.  
 > Source of truth: [`pdf-generator.md`](../pdf-generator.md)
 
@@ -41,7 +44,7 @@
 ## Phase 4 — Theme System
 
 - [x] `themes/base.py` — `Theme` class with color palette, font config, tone resolution
-- [x] `themes/limetray_green.py` — default LimeTray theme
+- [x] `themes/green.py` — default public green theme
 - [x] `themes/neutral.py` — grayscale / neutral theme
 - [x] `themes/dark.py` — dark background theme
 - [x] `themes/registry.py` — Theme resolver: look up theme by name, register custom themes

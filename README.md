@@ -103,13 +103,13 @@ Minimal example:
 {
   "version": "1.0",
   "template": "analytics_report_v1",
-  "theme": "limetray_green",
+  "theme": "green",
   "metadata": {
-    "entity_name": "Pind Punjab",
+    "entity_name": "Demo Store",
     "report_title": "Weekly Report",
     "period": "11 Jun – 17 Jun 2026",
     "generated_at": "2026-06-18",
-    "powered_by": "Limetray",
+    "powered_by": "Public PDF Renderer",
     "confidential": true
   },
   "page": {
@@ -120,7 +120,7 @@ Minimal example:
   "header": { "enabled": true, "variant": "default" },
   "footer": { "enabled": true, "show_page_number": true },
   "blocks": [
-    { "type": "title", "entity": "Pind Punjab", "title": "Weekly Report", "subtitle": "11 Jun – 17 Jun 2026" }
+    { "type": "title", "entity": "Demo Store", "title": "Weekly Report", "subtitle": "11 Jun – 17 Jun 2026" }
   ]
 }
 ```
@@ -139,7 +139,7 @@ Minimal example:
 
 | Theme | Description |
 |-------|-------------|
-| `limetray_green` | Lime green brand colours with dark text |
+| `green` | Green accent palette with dark text |
 | `neutral` | Professional grayscale palette |
 | `dark` | Dark background with light text |
 
@@ -202,4 +202,5 @@ reportlab_json_renderer/
 ## Implementation Progress
 
 See [`docs/implementation-checklist.md`](docs/implementation-checklist.md) for the
-full build checklist and current status.
+original build checklist and [`docs/release-readiness-checklist.md`](docs/release-readiness-checklist.md)
+for current release work.

@@ -316,13 +316,13 @@ def _cmd_sample(args: argparse.Namespace) -> int:
     sample = {
         "version": "1.0",
         "template": "analytics_report_v1",
-        "theme": "limetray_green",
+        "theme": "green",
         "metadata": {
-            "entity_name": "Demo Restaurant",
+            "entity_name": "Demo Business",
             "report_title": "Weekly Performance Report",
             "period": "1 Jun – 7 Jun 2026",
             "generated_at": "2026-06-08",
-            "powered_by": "Limetray",
+            "powered_by": "Public PDF Renderer",
             "confidential": False,
         },
         "page": {
@@ -340,7 +340,7 @@ def _cmd_sample(args: argparse.Namespace) -> int:
         "blocks": [
             {
                 "type": "title",
-                "entity_name": "Demo Restaurant",
+                "entity": "Demo Business",
                 "title": "Weekly Performance",
                 "subtitle": "1 Jun – 7 Jun 2026",
             },

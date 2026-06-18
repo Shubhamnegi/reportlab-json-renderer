@@ -1,13 +1,13 @@
 {
   "version": "1.0",
   "template": "compact_report_v1",
-  "theme": "limetray_green",
+  "theme": "green",
   "metadata": {
     "entity_name": "Quick Bites",
     "report_title": "Daily Ops Summary",
     "period": "18 Jun 2026",
     "generated_at": "2026-06-18",
-    "powered_by": "Limetray",
+    "powered_by": "Public PDF Renderer",
     "confidential": false
   },
   "page": { "size": "A4", "orientation": "portrait" },

@@ -31,7 +31,7 @@ class TestValidSpec:
         assert result.parsed is not None
         assert result.parsed.version == "1.0"
         assert result.parsed.template == "analytics_report_v1"
-        assert result.parsed.theme == "limetray_green"
+        assert result.parsed.theme == "green"
 
     def test_sample_spec_with_blocks(self, sample_spec: dict) -> None:
         result = validate_spec(sample_spec)

@@ -1,13 +1,13 @@
 {
   "version": "1.0",
   "template": "analytics_report_v1",
-  "theme": "limetray_green",
+  "theme": "green",
   "metadata": {
     "entity_name": "Empty Test",
     "report_title": "No Blocks",
     "period": "2026",
     "generated_at": "2026-06-18",
-    "powered_by": "Limetray",
+    "powered_by": "Public PDF Renderer",
     "confidential": false
   },
   "page": { "size": "A4", "orientation": "portrait" },

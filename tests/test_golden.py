@@ -199,7 +199,7 @@ class TestBytesOnlyRendering:
 class TestThemeCoverage:
     """Verify all built-in themes render without errors."""
 
-    @pytest.mark.parametrize("theme", ["limetray_green", "neutral", "dark"])
+    @pytest.mark.parametrize("theme", ["green", "neutral", "dark"])
     def test_theme_renders(self, tmp_path: Path, theme: str, minimal_spec: dict[str, Any]) -> None:
         """Each built-in theme produces a valid PDF."""
         spec = {**minimal_spec, "theme": theme}
