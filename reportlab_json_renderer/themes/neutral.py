@@ -17,6 +17,7 @@ NEUTRAL: Theme = build_theme(
         "info": "#0D47A1",
         "light": "#FAFAFA",
         "dark": "#212121",
+        "muted": "#9E9E9E",
     },
     font_body="Helvetica",
     font_bold="Helvetica-Bold",

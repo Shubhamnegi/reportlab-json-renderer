@@ -22,51 +22,45 @@ from reportlab_json_renderer.themes.base import (
 )
 from reportlab_json_renderer.utils.errors import ThemeError
 
+_TEST_TONES = {
+    "primary": "#FF0000", "danger": "#00FF00", "success": "#0000FF",
+    "warning": "#AAAA00", "secondary": "#555555", "info": "#005555",
+    "light": "#EEE", "dark": "#111", "muted": "#999999",
+}
+
 # ── Theme Base Class ─────────────────────────────────────────────────
 
 
 class TestThemeBase:
     def test_resolve_known_tone(self) -> None:
-        theme = build_theme("t", tones={"primary": "#FF0000", "danger": "#00FF00",
-            "success": "#0000FF", "warning": "#AAAA00", "secondary": "#555555",
-            "info": "#005555", "light": "#EEE", "dark": "#111"})
+        theme = build_theme("t", tones=dict(_TEST_TONES))
         assert theme.resolve_tone("primary") == "#FF0000"
 
     def test_resolve_unknown_tone_passthrough(self) -> None:
-        theme = build_theme("t", tones={"primary": "#FF0000", "danger": "#00FF00",
-            "success": "#0000FF", "warning": "#AAAA00", "secondary": "#555555",
-            "info": "#005555", "light": "#EEE", "dark": "#111"})
+        theme = build_theme("t", tones=dict(_TEST_TONES))
         # Unknown tone falls back to the raw value.
         assert theme.resolve_tone("#ABCDEF") == "#ABCDEF"
 
     def test_hex_to_rgb(self) -> None:
-        theme = build_theme("t", tones={"primary": "#FF0000", "danger": "#00FF00",
-            "success": "#0000FF", "warning": "#AAAA00", "secondary": "#555555",
-            "info": "#005555", "light": "#EEE", "dark": "#111"})
+        theme = build_theme("t", tones=dict(_TEST_TONES))
         assert theme.hex_to_rgb("#FF0000") == (255, 0, 0)
         assert theme.hex_to_rgb("#00FF00") == (0, 255, 0)
         assert theme.hex_to_rgb("#FFFFFF") == (255, 255, 255)
         assert theme.hex_to_rgb("#000000") == (0, 0, 0)
 
     def test_merge_returns_new_theme(self) -> None:
-        theme = build_theme("t", tones={"primary": "#FF0000", "danger": "#00FF00",
-            "success": "#0000FF", "warning": "#AAAA00", "secondary": "#555555",
-            "info": "#005555", "light": "#EEE", "dark": "#111"})
+        theme = build_theme("t", tones=dict(_TEST_TONES))
         new = theme.merge({"font_body": "Arial"})
         assert new.font_body == "Arial"
         assert new.font_bold == "Helvetica-Bold"  # unchanged
 
     def test_merge_raises_on_bad_key(self) -> None:
-        theme = build_theme("t", tones={"primary": "#FF0000", "danger": "#00FF00",
-            "success": "#0000FF", "warning": "#AAAA00", "secondary": "#555555",
-            "info": "#005555", "light": "#EEE", "dark": "#111"})
+        theme = build_theme("t", tones=dict(_TEST_TONES))
         with pytest.raises(ValueError, match="Unknown theme override"):
             theme.merge({"nonexistent_field": "x"})
 
     def test_theme_is_frozen(self) -> None:
-        theme = build_theme("t", tones={"primary": "#FF0000", "danger": "#00FF00",
-            "success": "#0000FF", "warning": "#AAAA00", "secondary": "#555555",
-            "info": "#005555", "light": "#EEE", "dark": "#111"})
+        theme = build_theme("t", tones=dict(_TEST_TONES))
         with pytest.raises(AttributeError):
             theme.name = "changed"  # type: ignore[misc]
 

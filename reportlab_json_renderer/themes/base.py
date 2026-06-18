@@ -28,6 +28,7 @@ DEFAULT_TONES: list[str] = [
     "info",
     "light",
     "dark",
+    "muted",
 ]
 
 

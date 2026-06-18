@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import Any
 
+from reportlab_json_renderer.renderer import build_pdf
+
 __version__ = "0.1.0"
 
 
@@ -32,11 +34,8 @@ def render_pdf(
             If the spec fails schema validation.
         reportlab_json_renderer.utils.errors.RenderError:
             If a block cannot be rendered.
-
-    Note:
-        This is a stub. Full implementation will be added in Phase 8.
     """
-    raise NotImplementedError("render_pdf will be implemented in Phase 8")
+    return build_pdf(spec, output_path=output_path)
 
 
 __all__ = ["__version__", "render_pdf"]

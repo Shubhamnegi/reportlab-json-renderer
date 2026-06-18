@@ -16,6 +16,7 @@ LIMETRAY_GREEN: Theme = build_theme(
         "info": "#1565C0",
         "light": "#F5F5F5",
         "dark": "#2D2D2D",
+        "muted": "#757575",
     },
     font_body="Helvetica",
     font_bold="Helvetica-Bold",

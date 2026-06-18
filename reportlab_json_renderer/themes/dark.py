@@ -19,6 +19,7 @@ DARK: Theme = build_theme(
         "info": "#42A5F5",
         "light": "#37474F",
         "dark": "#ECEFF1",
+        "muted": "#90A4AE",
     },
     font_body="Helvetica",
     font_bold="Helvetica-Bold",

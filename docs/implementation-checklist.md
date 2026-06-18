@@ -70,37 +70,37 @@
 
 ---
 
-## Phase 7 — Block Renderers (Individual)
+## Phase 7 — Block Renderers (Individual) ✅
 
-- [ ] `blocks/title.py` — title block (entity, title, subtitle, right_text)
-- [ ] `blocks/section.py` — section header (number + title)
-- [ ] `blocks/paragraph.py` — paragraph with style variants
-- [ ] `blocks/rich_text.py` — inline styled runs (bold, italic, color tones)
-- [ ] `blocks/kpi_grid.py` — KPI cards in grid layout (columns, tone per card)
-- [ ] `blocks/table.py` — striped/standard table with column widths, per-cell styling
-- [ ] `blocks/callout.py` — colored callout box (tone, title, text)
-- [ ] `blocks/insight_list.py` — numbered/bulleted insight items
-- [ ] `blocks/recommendations.py` — priority/action/owner/impact table
-- [ ] `blocks/image.py` — image block (local, HTTP, S3, base64, contain/cover fit, alignment)
-- [ ] `blocks/chart.py` — chart block (renders via matplotlib utils, embeds as image flowable)
-- [ ] `blocks/layout.py` — two-column (and future multi-column) layout container
-- [ ] `blocks/spacer.py` — vertical spacer
-- [ ] `blocks/page_break.py` — explicit page break
-- [ ] `blocks/matrix_table.py` — matrix/comparison table (column-based, no key mapping)
-- [ ] `blocks/callout_group.py` — grouped callouts under a shared title
-- [ ] `blocks/divider.py` — horizontal line with tone and thickness
-- [ ] `blocks/badge.py` — small inline badge label
-- [ ] `blocks/summary_box.py` — executive summary card
+- [x] `blocks/title.py` — title block (entity, title, subtitle, right_text)
+- [x] `blocks/section.py` — section header (number + title)
+- [x] `blocks/paragraph.py` — paragraph with style variants
+- [x] `blocks/rich_text.py` — inline styled runs (bold, italic, color tones)
+- [x] `blocks/kpi_grid.py` — KPI cards in grid layout (columns, tone per card)
+- [x] `blocks/table.py` — striped/standard table with column widths, per-cell styling
+- [x] `blocks/callout.py` — colored callout box (tone, title, text)
+- [x] `blocks/insight_list.py` — numbered/bulleted insight items
+- [x] `blocks/recommendations.py` — priority/action/owner/impact table
+- [x] `blocks/image.py` — image block (local, HTTP, S3, base64, contain/cover fit, alignment)
+- [x] `blocks/chart.py` — chart block (renders via matplotlib utils, embeds as image flowable)
+- [x] `blocks/layout.py` — two-column (and future multi-column) layout container
+- [x] `blocks/spacer.py` — vertical spacer
+- [x] `blocks/page_break.py` — explicit page break
+- [x] `blocks/matrix_table.py` — matrix/comparison table (column-based, no key mapping)
+- [x] `blocks/callout_group.py` — grouped callouts under a shared title
+- [x] `blocks/divider.py` — horizontal line with tone and thickness
+- [x] `blocks/badge.py` — small inline badge label
+- [x] `blocks/summary_box.py` — executive summary card
 
 Each block renderer must have:
-- [ ] Unit tests with at least one fixture JSON → flowable assertion
-- [ ] Edge case tests (empty data, missing optional fields)
+- [x] Unit tests with at least one fixture JSON → flowable assertion
+- [x] Edge case tests (empty data, missing optional fields)
 
 ---
 
-## Phase 8 — PDF Builder & Core Renderer
+## Phase 8 — PDF Builder & Core Renderer ✅
 
-- [ ] `renderer.py` — `render_pdf(spec, output_path)` pipeline:
+- [x] `renderer.py` — `build_pdf(spec, output_path)` pipeline:
   1. Validate JSON
   2. Normalize / preprocess
   3. Resolve template
@@ -108,11 +108,11 @@ Each block renderer must have:
   5. Iterate blocks → dispatch to registry → collect flowables
   6. Build PDF with header/footer
   7. Return result object
-- [ ] Header renderer (logo, title, date, powered-by)
-- [ ] Footer renderer (page numbers, disclaimer)
-- [ ] Page setup (size, orientation, margins from template + JSON overrides)
-- [ ] Result object: `{ success, path, pages, warnings, metadata }`
-- [ ] Unit tests for full render pipeline with sample JSON
+- [x] Header renderer (logo, title, date, powered-by)
+- [x] Footer renderer (page numbers, disclaimer)
+- [x] Page setup (size, orientation, margins from template + JSON overrides)
+- [x] Result object: `{ success, path, bytes, pages, warnings, metadata }`
+- [x] Unit tests for full render pipeline with sample JSON
 
 ---
 
