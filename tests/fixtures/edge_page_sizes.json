@@ -1,0 +1,20 @@
+{
+  "version": "1.0",
+  "template": "analytics_report_v1",
+  "theme": "limetray_green",
+  "metadata": {
+    "entity_name": "Letter Size",
+    "report_title": "Letter Page Test",
+    "period": "2026",
+    "generated_at": "2026-06-18",
+    "powered_by": "Limetray",
+    "confidential": false
+  },
+  "page": { "size": "letter", "orientation": "landscape" },
+  "header": { "enabled": true },
+  "footer": { "enabled": true, "show_page_number": true },
+  "blocks": [
+    { "type": "title", "entity": "Letter Size", "title": "Landscape Layout" },
+    { "type": "paragraph", "text": "This document uses US Letter landscape orientation." }
+  ]
+}

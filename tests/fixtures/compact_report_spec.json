@@ -1,0 +1,33 @@
+{
+  "version": "1.0",
+  "template": "compact_report_v1",
+  "theme": "limetray_green",
+  "metadata": {
+    "entity_name": "Quick Bites",
+    "report_title": "Daily Ops Summary",
+    "period": "18 Jun 2026",
+    "generated_at": "2026-06-18",
+    "powered_by": "Limetray",
+    "confidential": false
+  },
+  "page": { "size": "A4", "orientation": "portrait" },
+  "header": { "enabled": true },
+  "footer": { "enabled": true, "show_page_number": true },
+  "blocks": [
+    { "type": "title", "entity": "Quick Bites", "title": "Daily Ops Summary" },
+    { "type": "kpi_grid", "columns": 4, "items": [
+      { "label": "Orders", "value": "312", "tone": "primary" },
+      { "label": "Revenue", "value": "₹1,28,000", "tone": "success" },
+      { "label": "Avg Time", "value": "22 min", "tone": "warning" },
+      { "label": "Rating", "value": "4.3★", "tone": "info" }
+    ]},
+    { "type": "table", "style": "standard", "columns": [
+      { "key": "outlet", "label": "Outlet", "width": 0.4 },
+      { "key": "orders", "label": "Orders", "width": 0.3 },
+      { "key": "revenue", "label": "Revenue", "width": 0.3 }
+    ], "rows": [
+      { "outlet": "Koramangala", "orders": "150", "revenue": "₹62,000" },
+      { "outlet": "HSR Layout", "orders": "162", "revenue": "₹66,000" }
+    ]}
+  ]
+}

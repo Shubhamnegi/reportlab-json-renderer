@@ -1,0 +1,38 @@
+{
+  "version": "1.0",
+  "template": "proposal_v1",
+  "theme": "dark",
+  "metadata": {
+    "entity_name": "FoodieHub",
+    "report_title": "Growth Partnership Proposal",
+    "period": "FY 2026-27",
+    "generated_at": "2026-06-18",
+    "powered_by": "Limetray",
+    "confidential": true
+  },
+  "page": { "size": "A4", "orientation": "portrait" },
+  "header": { "enabled": true },
+  "footer": { "enabled": true, "show_page_number": true },
+  "blocks": [
+    { "type": "title", "entity": "FoodieHub", "title": "Growth Partnership Proposal", "subtitle": "FY 2026-27" },
+    { "type": "callout", "tone": "info", "title": "Opportunity", "text": "Expand to 50 new cities with our managed marketplace model." },
+    { "type": "section_header", "number": "1", "title": "Market Overview" },
+    { "type": "paragraph", "text": "The Indian food delivery market is projected to reach $12B by 2027." },
+    { "type": "insight_list", "title": "Key Findings", "items": [
+      { "title": "Growth", "text": "Tier-2 cities grew 45% YoY" },
+      { "title": "AOV", "text": "Average order value up 12%" },
+      { "title": "Retention", "text": "Customer retention improved by 8pp" }
+    ]},
+    { "type": "page_break" },
+    { "type": "section_header", "number": "2", "title": "Proposed Investment" },
+    { "type": "kpi_grid", "columns": 3, "items": [
+      { "label": "Investment", "value": "₹5 Cr", "tone": "primary" },
+      { "label": "Expected ROI", "value": "3.2x", "tone": "success" },
+      { "label": "Timeline", "value": "12 months", "tone": "info" }
+    ]},
+    { "type": "recommendations", "title": "Action Plan", "items": [
+      { "action": "Launch in 10 pilot cities", "priority": "high", "owner": "Expansion Team", "impact": "Revenue +₹2Cr" },
+      { "action": "Onboard 500 new restaurants", "priority": "medium", "owner": "Supply Team", "impact": "Catalog +30%" }
+    ]}
+  ]
+}

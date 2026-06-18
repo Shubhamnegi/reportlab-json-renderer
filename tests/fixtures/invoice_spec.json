@@ -1,0 +1,33 @@
+{
+  "version": "1.0",
+  "template": "invoice_v1",
+  "theme": "neutral",
+  "metadata": {
+    "entity_name": "Spice Junction",
+    "report_title": "Invoice #INV-2026-0042",
+    "period": "Jun 2026",
+    "generated_at": "2026-06-18",
+    "powered_by": "Limetray",
+    "confidential": true
+  },
+  "page": { "size": "A4", "orientation": "portrait" },
+  "header": { "enabled": true },
+  "footer": { "enabled": true, "show_page_number": false },
+  "blocks": [
+    { "type": "title", "entity": "Spice Junction", "title": "Invoice #INV-2026-0042", "subtitle": "Jun 2026" },
+    { "type": "divider", "tone": "primary" },
+    { "type": "badge", "label": "PAID", "tone": "success" },
+    { "type": "table", "style": "striped", "columns": [
+      { "key": "desc", "label": "Description", "width": 0.5 },
+      { "key": "qty", "label": "Qty", "width": 0.15 },
+      { "key": "rate", "label": "Rate", "width": 0.15 },
+      { "key": "amount", "label": "Amount", "width": 0.2 }
+    ], "rows": [
+      { "desc": "Commission — May 2026", "qty": "1", "rate": "₹45,000", "amount": "₹45,000" },
+      { "desc": "Platform Fee", "qty": "1", "rate": "₹5,000", "amount": "₹5,000" },
+      { "desc": "GST @18%", "qty": "1", "rate": "₹9,000", "amount": "₹9,000" }
+    ]},
+    { "type": "spacer", "height_cm": 1.0 },
+    { "type": "paragraph", "text": "Total Payable: ₹59,000 — Due by 30 Jun 2026", "style": "bold" }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "version": "1.0",
+  "template": "analytics_report_v1",
+  "theme": "limetray_green",
+  "metadata": {
+    "entity_name": "Full Blocks Test",
+    "report_title": "All Block Types",
+    "period": "2026",
+    "generated_at": "2026-06-18",
+    "powered_by": "Limetray",
+    "confidential": false
+  },
+  "page": { "size": "A4", "orientation": "portrait" },
+  "header": { "enabled": true },
+  "footer": { "enabled": true, "show_page_number": true },
+  "blocks": [
+    { "type": "title", "entity": "Full Test", "title": "All Blocks", "subtitle": "Every block type" },
+    { "type": "section_header", "number": "1", "title": "Typography" },
+    { "type": "paragraph", "text": "Body paragraph.", "style": "body" },
+    { "type": "rich_text", "runs": [
+      { "text": "Normal " },
+      { "text": "Bold", "bold": true },
+      { "text": " " },
+      { "text": "Italic", "italic": true },
+      { "text": " " },
+      { "text": "Colored", "tone": "primary" }
+    ]},
+    { "type": "divider", "tone": "primary", "thickness": 1.5 },
+    { "type": "badge", "label": "NEW", "tone": "success" },
+    { "type": "spacer", "height_cm": 0.5 },
+    { "type": "section_header", "number": "2", "title": "Data" },
+    { "type": "kpi_grid", "columns": 2, "items": [
+      { "label": "A", "value": "100", "tone": "primary" },
+      { "label": "B", "value": "200", "tone": "success" }
+    ]},
+    { "type": "callout", "tone": "info", "title": "Note", "text": "An informational callout." },
+    { "type": "callout_group", "title": "Group", "items": [
+      { "tone": "success", "title": "Good", "text": "This is good." },
+      { "tone": "danger", "title": "Bad", "text": "This is bad." }
+    ]},
+    { "type": "insight_list", "title": "Insights", "items": [
+      { "title": "First", "text": "First insight" },
+      { "title": "Second", "text": "Second insight" }
+    ]},
+    { "type": "recommendations", "title": "Actions", "items": [
+      { "action": "Do something", "priority": "high", "owner": "Team A", "impact": "High" }
+    ]},
+    { "type": "summary_box", "title": "Summary", "text": "This is a summary." },
+    { "type": "section_header", "number": "3", "title": "Tables" },
+    { "type": "table", "style": "striped", "columns": [
+      { "key": "name", "label": "Name", "width": 0.5 },
+      { "key": "value", "label": "Value", "width": 0.5 }
+    ], "rows": [
+      { "name": "Row 1", "value": "100" },
+      { "name": "Row 2", "value": "200" }
+    ]},
+    { "type": "matrix_table", "title": "Comparison", "columns": ["Metric", "This Week", "Last Week"], "rows": [
+      ["Orders", "500", "450"],
+      ["Revenue", "₹2L", "₹1.8L"]
+    ]},
+    { "type": "two_column", "left_width": 0.5, "right_width": 0.5, "left": [
+      { "type": "paragraph", "text": "Left column." }
+    ], "right": [
+      { "type": "paragraph", "text": "Right column." }
+    ]},
+    { "type": "page_break" },
+    { "type": "section_header", "number": "4", "title": "After Page Break" },
+    { "type": "paragraph", "text": "Content after page break." }
+  ]
+}

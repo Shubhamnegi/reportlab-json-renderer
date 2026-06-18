@@ -1,0 +1,31 @@
+{
+  "version": "1.0",
+  "template": "business_report_v1",
+  "theme": "neutral",
+  "metadata": {
+    "entity_name": "Sunrise Cafe",
+    "report_title": "Quarterly Business Review",
+    "period": "Q1 2026",
+    "generated_at": "2026-04-01",
+    "powered_by": "Limetray",
+    "confidential": false
+  },
+  "page": {
+    "size": "A4",
+    "orientation": "portrait"
+  },
+  "header": { "enabled": true },
+  "footer": { "enabled": true, "show_page_number": true },
+  "blocks": [
+    { "type": "title", "entity": "Sunrise Cafe", "title": "Quarterly Business Review", "subtitle": "Q1 2026" },
+    { "type": "section_header", "number": "1", "title": "Executive Summary" },
+    { "type": "paragraph", "text": "Revenue grew 8% QoQ, driven by increased dine-in traffic.", "style": "body" },
+    { "type": "divider", "tone": "light" },
+    { "type": "section_header", "number": "2", "title": "Financial Highlights" },
+    { "type": "kpi_grid", "title": "Q1 Metrics", "columns": 2, "items": [
+      { "label": "Revenue", "value": "₹45,00,000", "sub": "+8% QoQ", "tone": "success" },
+      { "label": "Expenses", "value": "₹32,00,000", "sub": "On budget", "tone": "info" }
+    ]},
+    { "type": "summary_box", "title": "Key Takeaway", "text": "Profit margin improved by 3 percentage points." }
+  ]
+}

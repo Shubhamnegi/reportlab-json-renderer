@@ -126,7 +126,7 @@ def build_pdf(spec: dict[str, Any], output_path: str | None = None) -> dict[str,
         "success": True,
         "path": output_path,
         "bytes": result_bytes,
-        "pages": 0,  # populated after build
+        "pages": doc.page,
         "warnings": warnings,
         "metadata": {
             "template": parsed.template,

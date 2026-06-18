@@ -1,0 +1,17 @@
+{
+  "version": "1.0",
+  "template": "analytics_report_v1",
+  "theme": "limetray_green",
+  "metadata": {
+    "entity_name": "Empty Test",
+    "report_title": "No Blocks",
+    "period": "2026",
+    "generated_at": "2026-06-18",
+    "powered_by": "Limetray",
+    "confidential": false
+  },
+  "page": { "size": "A4", "orientation": "portrait" },
+  "header": { "enabled": true },
+  "footer": { "enabled": true, "show_page_number": true },
+  "blocks": []
+}

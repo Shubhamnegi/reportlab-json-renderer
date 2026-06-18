@@ -129,13 +129,14 @@ Each block renderer must have:
 
 ---
 
-## Phase 10 — Testing & Quality
+## Phase 10 — Testing & Quality ✅
 
-- [ ] Golden PDF / snapshot metadata tests for each template
-- [ ] Fixtures: one valid JSON per template type
-- [ ] Fixtures: edge-case JSONs (empty blocks, unknown types, minimal fields)
-- [ ] Coverage target ≥ 90%
-- [ ] All tests pass via `pytest`
+- [x] Golden PDF / snapshot metadata tests for each template
+- [x] Fixtures: one valid JSON per template type (5 templates + 1 full spec)
+- [x] Fixtures: edge-case JSONs (empty blocks, minimal fields, all block types, page sizes)
+- [x] Edge-case validation tests (invalid inputs, post-validation warnings)
+- [x] Coverage target ≥ 90% (99.07%)
+- [x] All tests pass via `pytest` (309 tests)
 
 ---
 

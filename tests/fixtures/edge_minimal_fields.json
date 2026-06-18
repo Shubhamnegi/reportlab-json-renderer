@@ -1,0 +1,19 @@
+{
+  "version": "1.0",
+  "template": "analytics_report_v1",
+  "theme": "limetray_green",
+  "metadata": {
+    "entity_name": "Minimal",
+    "report_title": "Minimal Spec",
+    "period": "2026",
+    "generated_at": "2026-06-18",
+    "powered_by": "Limetray",
+    "confidential": false
+  },
+  "page": { "size": "A4", "orientation": "portrait" },
+  "header": { "enabled": false },
+  "footer": { "enabled": false },
+  "blocks": [
+    { "type": "paragraph", "text": "Hello world." }
+  ]
+}
