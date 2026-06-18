@@ -9,10 +9,12 @@ all block types, page size overrides).
 from __future__ import annotations
 
 import json
+from io import BytesIO
 from pathlib import Path
 from typing import Any
 
 import pytest
+from pypdf import PdfReader
 
 from reportlab_json_renderer.renderer import build_pdf
 from reportlab_json_renderer.schema.validators import validate_spec
@@ -194,6 +196,49 @@ class TestBytesOnlyRendering:
         )
 
 
+# ── Parsed PDF verification ──────────────────────────────────────────────
+
+
+class TestParsedPdfVerification:
+    """Verify generated PDFs are structurally readable and contain expected text."""
+
+    def test_reader_page_count_matches_result(self, minimal_spec: dict[str, Any]) -> None:
+        result = build_pdf(minimal_spec)
+        reader = PdfReader(BytesIO(result["bytes"]))
+
+        assert len(reader.pages) == result["pages"]
+
+    def test_extracted_text_contains_core_fields(self) -> None:
+        spec = {
+            "version": "1.0",
+            "template": "analytics_report_v1",
+            "theme": "green",
+            "metadata": {
+                "entity_name": "Test Entity",
+                "report_title": "Test Report",
+                "period": "1 Jun - 7 Jun 2026",
+                "powered_by": "Public PDF Renderer",
+            },
+            "blocks": [
+                {
+                    "type": "title",
+                    "entity": "Test Entity",
+                    "title": "Test Report",
+                    "subtitle": "1 Jun - 7 Jun 2026",
+                },
+                {"type": "paragraph", "text": "Hello world"},
+            ],
+        }
+
+        result = build_pdf(spec)
+        reader = PdfReader(BytesIO(result["bytes"]))
+        extracted = "\n".join(page.extract_text() or "" for page in reader.pages)
+
+        assert "Test Entity" in extracted
+        assert "Test Report" in extracted
+        assert "Hello world" in extracted
+
+
 # ── Theme coverage ───────────────────────────────────────────────────────
 
 
@@ -218,10 +263,11 @@ class TestThemeCoverage:
 class TestIdempotency:
     """Rendering the same spec twice should produce equivalent results."""
 
-    def test_same_page_count(self, minimal_spec: dict[str, Any]) -> None:
-        """Two renders of the same spec produce the same page count."""
+    def test_same_bytes(self, minimal_spec: dict[str, Any]) -> None:
+        """Two renders of the same spec produce identical PDF bytes."""
         r1 = build_pdf(minimal_spec)
         r2 = build_pdf(minimal_spec)
 
         assert r1["success"] == r2["success"]
         assert r1["pages"] == r2["pages"]
+        assert r1["bytes"] == r2["bytes"]

@@ -178,6 +178,8 @@ Current implementation notes:
 - `image.fit` is accepted by the schema but not yet applied by the renderer.
 - Renders fail closed by default on block errors. Use `allow_partial=True` only if
   your application explicitly accepts partial output.
+- The renderer enables deterministic PDF generation settings where practical so
+  repeated renders of the same spec can produce identical bytes.
 
 - **Custom blocks**: Subclass `BaseBlock` and register via the block registry. See [`docs/custom-blocks.md`](docs/custom-blocks.md).
 - **Custom themes**: Create a `Theme` dataclass and register via the theme registry. See [`docs/custom-themes.md`](docs/custom-themes.md).
@@ -197,6 +199,9 @@ pytest
 
 # Test with coverage
 pytest --cov --cov-report=term-missing
+
+# Rendered-PDF structural verification
+pytest tests/test_golden.py
 ```
 
 ## Project Structure

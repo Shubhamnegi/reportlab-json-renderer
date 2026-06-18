@@ -603,6 +603,8 @@ pdf-renderer validate --input report.json
 
 Rendering should fail closed on block-level errors by default. Partial output is
 an explicit opt-in for host applications, not the default library behavior.
+The renderer should also enable deterministic PDF settings where practical so
+identical input can produce identical output bytes.
 
 List templates:
 

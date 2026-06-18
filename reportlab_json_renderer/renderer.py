@@ -7,10 +7,14 @@ block dispatch, and PDF assembly.
 from __future__ import annotations
 
 import io
+import json
+import re
+from hashlib import md5
 from pathlib import Path
 from typing import Any
 
 from reportlab.lib.pagesizes import A3, A4, LEGAL, LETTER
+from reportlab.pdfgen.canvas import Canvas
 from reportlab.platypus import (
     Frame,
     PageTemplate,
@@ -155,13 +159,19 @@ def build_pdf(
         theme=theme,
     )
 
-    doc.build(flowables)
+    doc.build(flowables, canvasmaker=_build_canvas)
 
     # ── 7. Assemble result ───────────────────────────────────────────
     result_bytes = None
+    normalized_bytes = None
     if output_path is None and isinstance(buf, io.BytesIO):
         buf.seek(0)
-        result_bytes = buf.read()
+        normalized_bytes = _normalize_pdf_bytes(buf.read(), spec)
+        result_bytes = normalized_bytes
+    elif output_path is not None:
+        output_file = Path(output_path)
+        normalized_bytes = _normalize_pdf_bytes(output_file.read_bytes(), spec)
+        output_file.write_bytes(normalized_bytes)
 
     return {
         "success": True,
@@ -258,6 +268,32 @@ def _build_document(
     doc.addPageTemplates([template])
 
     return doc
+
+
+def _build_canvas(*args: Any, **kwargs: Any) -> Canvas:
+    """Create a deterministic ReportLab canvas where practical."""
+    kwargs.setdefault("invariant", 1)
+    kwargs.setdefault("pageCompression", 1)
+    return Canvas(*args, **kwargs)
+
+
+def _normalize_pdf_bytes(pdf_bytes: bytes, spec: dict[str, Any]) -> bytes:
+    """Normalize volatile PDF metadata that still varies across renders."""
+    normalized = re.sub(
+        rb"D:\d{14}(?:[+-]\d{2}'\d{2}')?",
+        b"D:20000101000000+00'00'",
+        pdf_bytes,
+    )
+    spec_digest = md5(
+        json.dumps(spec, sort_keys=True, separators=(",", ":")).encode("utf-8"),
+        usedforsecurity=False,
+    ).hexdigest().encode("ascii")
+    normalized = re.sub(
+        rb"/ID\s*\[\s*<[^>]{32}>\s*<[^>]{32}>\s*\]",
+        b"/ID [<" + spec_digest + b"><" + spec_digest + b">]",
+        normalized,
+    )
+    return normalized
 
 
 def _resolve_asset_root(asset_root: str | Path | None) -> Path:

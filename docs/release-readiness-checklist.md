@@ -33,8 +33,8 @@ implemented and verified.
 
 ## Determinism And Output Quality
 
-- [ ] Reduce non-deterministic PDF output where practical
-- [ ] Add parsed-PDF verification beyond file-size/page-count checks
+- [x] Reduce non-deterministic PDF output where practical
+- [x] Add parsed-PDF verification beyond file-size/page-count checks
 - [ ] Add visual or structural smoke coverage for all built-in components
 
 ## Packaging And Release
