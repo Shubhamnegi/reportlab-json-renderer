@@ -336,7 +336,7 @@ def _cmd_sample(args: argparse.Namespace) -> int:
             },
         },
         "header": {"enabled": True, "variant": "default"},
-        "footer": {"enabled": True, "variant": "default"},
+        "footer": {"enabled": True, "show_page_number": True},
         "blocks": [
             {
                 "type": "title",

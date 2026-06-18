@@ -9,7 +9,7 @@ from __future__ import annotations
 from enum import StrEnum
 from typing import Annotated, Any, Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 # ── Enums ────────────────────────────────────────────────────────────
 
@@ -44,33 +44,39 @@ class TableStyle(StrEnum):
     COMPACT = "compact"
 
 
+class StrictModel(BaseModel):
+    """Base model for public JSON schema objects."""
+
+    model_config = ConfigDict(extra="forbid")
+
+
 # ── Common sub-models ────────────────────────────────────────────────
 
 
-class PageMargins(BaseModel):
+class PageMargins(StrictModel):
     left_cm: float = Field(default=1.5, ge=0)
     right_cm: float = Field(default=1.5, ge=0)
     top_cm: float = Field(default=2.2, ge=0)
     bottom_cm: float = Field(default=2.0, ge=0)
 
 
-class PageConfig(BaseModel):
+class PageConfig(StrictModel):
     size: PageSize = PageSize.A4
     orientation: Orientation = Orientation.PORTRAIT
     margins: PageMargins = Field(default_factory=PageMargins)
 
 
-class HeaderConfig(BaseModel):
+class HeaderConfig(StrictModel):
     enabled: bool = True
     variant: str = "default"
 
 
-class FooterConfig(BaseModel):
+class FooterConfig(StrictModel):
     enabled: bool = True
     show_page_number: bool = True
 
 
-class ReportMetadata(BaseModel):
+class ReportMetadata(StrictModel):
     entity_name: str
     report_title: str
     period: str | None = None
@@ -82,7 +88,7 @@ class ReportMetadata(BaseModel):
 # ── Block models ─────────────────────────────────────────────────────
 
 
-class TitleBlock(BaseModel):
+class TitleBlock(StrictModel):
     type: Literal["title"] = "title"
     entity: str | None = None
     title: str | None = None
@@ -90,68 +96,71 @@ class TitleBlock(BaseModel):
     right_text: str | None = None
 
 
-class SectionHeaderBlock(BaseModel):
+class SectionHeaderBlock(StrictModel):
     type: Literal["section_header"] = "section_header"
     number: str | None = None
     title: str
 
 
-class ParagraphBlock(BaseModel):
+class ParagraphBlock(StrictModel):
     type: Literal["paragraph"] = "paragraph"
     text: str
     style: str = "body"
 
 
-class RichTextRun(BaseModel):
+class RichTextRun(StrictModel):
     text: str
     style: str = "normal"
+    bold: bool = False
+    italic: bool = False
+    tone: str | None = None
 
 
-class RichTextBlock(BaseModel):
+class RichTextBlock(StrictModel):
     type: Literal["rich_text"] = "rich_text"
     runs: list[RichTextRun]
 
 
-class KPIItem(BaseModel):
+class KPIItem(StrictModel):
     label: str
     value: str
     sub: str | None = None
     tone: str | None = None
 
 
-class KPIGridBlock(BaseModel):
+class KPIGridBlock(StrictModel):
     type: Literal["kpi_grid"] = "kpi_grid"
     title: str | None = None
     columns: int = Field(default=4, ge=1, le=12)
     items: list[KPIItem]
 
 
-class CalloutBlock(BaseModel):
+class CalloutBlock(StrictModel):
     type: Literal["callout"] = "callout"
     tone: str = "primary"
     title: str | None = None
     text: str
 
 
-class CalloutItem(BaseModel):
+class CalloutItem(StrictModel):
     tone: str = "primary"
     title: str | None = None
     text: str
 
 
-class CalloutGroupBlock(BaseModel):
+class CalloutGroupBlock(StrictModel):
     type: Literal["callout_group"] = "callout_group"
     title: str | None = None
     items: list[CalloutItem]
 
 
-class TableColumn(BaseModel):
+class TableColumn(StrictModel):
     key: str
     label: str
     width: float = Field(default=0.2, gt=0, le=1)
 
 
-class TableBlock(BaseModel):
+class TableBlock(StrictModel):
     type: Literal["table"] = "table"
     title: str | None = None
     style: TableStyle = TableStyle.STANDARD
@@ -159,38 +168,38 @@ class TableBlock(BaseModel):
     rows: list[dict[str, str]]
 
 
-class MatrixTableBlock(BaseModel):
+class MatrixTableBlock(StrictModel):
     type: Literal["matrix_table"] = "matrix_table"
     title: str | None = None
     columns: list[str]
     rows: list[list[str]]
 
 
-class InsightItem(BaseModel):
+class InsightItem(StrictModel):
     title: str
     text: str
 
 
-class InsightListBlock(BaseModel):
+class InsightListBlock(StrictModel):
     type: Literal["insight_list"] = "insight_list"
     title: str | None = None
     items: list[InsightItem]
 
 
-class RecommendationItem(BaseModel):
+class RecommendationItem(StrictModel):
     priority: str
     action: str
     owner: str | None = None
     impact: str | None = None
 
 
-class RecommendationsBlock(BaseModel):
+class RecommendationsBlock(StrictModel):
     type: Literal["recommendations"] = "recommendations"
     title: str | None = None
     items: list[RecommendationItem]
 
 
-class ImageBlock(BaseModel):
+class ImageBlock(StrictModel):
     type: Literal["image"] = "image"
     title: str | None = None
     src: str
@@ -200,7 +209,7 @@ class ImageBlock(BaseModel):
     align: ImageAlign = ImageAlign.CENTER
 
 
-class ChartBlock(BaseModel):
+class ChartBlock(StrictModel):
     type: Literal["chart"] = "chart"
     chart_type: str
     title: str | None = None
@@ -210,7 +219,7 @@ class ChartBlock(BaseModel):
     tone: str | None = None
 
 
-class TwoColumnBlock(BaseModel):
+class TwoColumnBlock(StrictModel):
     type: Literal["two_column"] = "two_column"
     left_width: float = Field(default=0.5, gt=0, lt=1)
     right_width: float = Field(default=0.5, gt=0, lt=1)
@@ -218,28 +227,28 @@ class TwoColumnBlock(BaseModel):
     right: list[dict[str, Any]] = Field(default_factory=list)
 
 
-class PageBreakBlock(BaseModel):
+class PageBreakBlock(StrictModel):
     type: Literal["page_break"] = "page_break"
 
 
-class SpacerBlock(BaseModel):
+class SpacerBlock(StrictModel):
     type: Literal["spacer"] = "spacer"
     height: float = Field(default=6, ge=0)
 
 
-class DividerBlock(BaseModel):
+class DividerBlock(StrictModel):
     type: Literal["divider"] = "divider"
     tone: str = "primary"
     thickness: float = Field(default=1, gt=0)
 
 
-class BadgeBlock(BaseModel):
+class BadgeBlock(StrictModel):
     type: Literal["badge"] = "badge"
     label: str
     tone: str = "primary"
 
 
-class SummaryBoxBlock(BaseModel):
+class SummaryBoxBlock(StrictModel):
     type: Literal["summary_box"] = "summary_box"
     title: str | None = None
     text: str
@@ -319,12 +328,12 @@ SUPPORTED_TONES: list[str] = [
 # ── Root spec ────────────────────────────────────────────────────────
 
 
-class ReportSpec(BaseModel):
+class ReportSpec(StrictModel):
     """Top-level report specification.
 
     This is the root model that the JSON input must conform to.
     """
-    version: str = "1.0"
+    version: Literal["1.0"] = "1.0"
     template: str
     theme: str = "green"
     metadata: ReportMetadata

@@ -34,9 +34,8 @@ class TestInvalidInputs:
     def test_wrong_version(self, minimal_spec: dict[str, Any]) -> None:
         spec = _copy_spec(minimal_spec)
         spec["version"] = "99.0"
-        # No enum constraint on version, so this passes validation
         result = validate_spec(spec)
-        assert result.valid
+        assert not result.valid
 
     def test_missing_theme(self, minimal_spec: dict[str, Any]) -> None:
         spec = _copy_spec(minimal_spec)
@@ -98,6 +97,24 @@ class TestInvalidInputs:
         # Empty items might still pass schema (list with 0 items)
         # This tests that it doesn't crash
         assert result is not None
+
+    def test_unknown_top_level_field_is_rejected(self, minimal_spec: dict[str, Any]) -> None:
+        spec = _copy_spec(minimal_spec)
+        spec["unexpected"] = True
+        result = validate_spec(spec)
+        assert not result.valid
+
+    def test_unknown_metadata_field_is_rejected(self, minimal_spec: dict[str, Any]) -> None:
+        spec = _copy_spec(minimal_spec)
+        spec["metadata"]["unexpected"] = "value"
+        result = validate_spec(spec)
+        assert not result.valid
+
+    def test_unknown_block_field_is_rejected(self, minimal_spec: dict[str, Any]) -> None:
+        spec = _copy_spec(minimal_spec)
+        spec["blocks"] = [{"type": "paragraph", "text": "hello", "unexpected": True}]
+        result = validate_spec(spec)
+        assert not result.valid
 
 
 class TestPostValidationWarnings:

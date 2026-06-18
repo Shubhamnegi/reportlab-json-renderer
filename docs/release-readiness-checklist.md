@@ -10,8 +10,8 @@ implemented and verified.
 
 ## Validation And Contracts
 
-- [ ] Enforce strict schema inputs (`extra="forbid"` where appropriate)
-- [ ] Enforce schema version compatibility explicitly
+- [x] Enforce strict schema inputs (`extra="forbid"` where appropriate)
+- [x] Enforce schema version compatibility explicitly
 - [ ] Propagate validation warnings into render results
 - [ ] Align public documentation with implemented behavior
 

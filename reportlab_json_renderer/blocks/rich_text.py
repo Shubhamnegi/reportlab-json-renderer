@@ -43,6 +43,11 @@ class RichTextBlock(BaseBlock):
             text = run.get("text", "")
             style = run.get("style", "normal")
             suffix, is_bold, _is_italic = _STYLE_MAP.get(style, ("", False, False))
+            if run.get("bold") is True:
+                is_bold = True
+            if run.get("italic") is True and not is_bold:
+                style = "italic"
+                suffix = _STYLE_MAP["italic"][0]
 
             font_tag = f'font face="{base_family}{suffix}"'
 
@@ -52,6 +57,9 @@ class RichTextBlock(BaseBlock):
                 tone_map = {"bold_danger": "danger", "bold_success": "success", "bold_warning": "warning"}
                 tone_name = tone_map[style]
                 tone_color = theme.resolve_tone(tone_name) if theme else "#C62828"
+            elif run.get("tone"):
+                tone_name = run["tone"]
+                tone_color = theme.resolve_tone(tone_name) if theme else "#2D2D2D"
 
             tags_open = f"<{font_tag}"
             if tone_color:

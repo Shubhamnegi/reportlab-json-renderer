@@ -27,7 +27,7 @@
       { "desc": "Platform Fee", "qty": "1", "rate": "₹5,000", "amount": "₹5,000" },
       { "desc": "GST @18%", "qty": "1", "rate": "₹9,000", "amount": "₹9,000" }
     ]},
-    { "type": "spacer", "height_cm": 1.0 },
+    { "type": "spacer", "height": 28 },
     { "type": "paragraph", "text": "Total Payable: ₹59,000 — Due by 30 Jun 2026", "style": "bold" }
   ]
 }

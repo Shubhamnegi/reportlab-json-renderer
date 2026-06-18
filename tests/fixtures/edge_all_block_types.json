@@ -27,7 +27,7 @@
     ]},
     { "type": "divider", "tone": "primary", "thickness": 1.5 },
     { "type": "badge", "label": "NEW", "tone": "success" },
-    { "type": "spacer", "height_cm": 0.5 },
+    { "type": "spacer", "height": 14 },
     { "type": "section_header", "number": "2", "title": "Data" },
     { "type": "kpi_grid", "columns": 2, "items": [
       { "label": "A", "value": "100", "tone": "primary" },

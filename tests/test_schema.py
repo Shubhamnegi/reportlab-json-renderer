@@ -85,6 +85,27 @@ class TestMissingFields:
         assert result.valid is False
         assert len(result.errors) >= 1
 
+    def test_wrong_version_is_rejected(self) -> None:
+        spec = {
+            "version": "2.0",
+            "template": "analytics_report_v1",
+            "metadata": {"entity_name": "X", "report_title": "Y"},
+            "blocks": [],
+        }
+        result = validate_spec(spec)
+        assert result.valid is False
+
+    def test_extra_top_level_field_is_rejected(self) -> None:
+        spec = {
+            "version": "1.0",
+            "template": "analytics_report_v1",
+            "metadata": {"entity_name": "X", "report_title": "Y"},
+            "blocks": [],
+            "unexpected": True,
+        }
+        result = validate_spec(spec)
+        assert result.valid is False
+
 
 # ── Block type validation ────────────────────────────────────────────
 
