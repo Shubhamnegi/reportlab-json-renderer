@@ -116,12 +116,16 @@ Each block renderer must have:
 
 ---
 
-## Phase 9 — CLI
+## Phase 9 — CLI ✅
 
-- [ ] `cli.py` — `pdf-renderer render --input report.json --output report.pdf`
-- [ ] `pdf-renderer validate --input report.json` (validate-only mode)
-- [ ] Argument parsing, help text, exit codes
-- [ ] CLI integration tests
+- [x] `cli.py` — `pdf-renderer render --input report.json --output report.pdf`
+- [x] `pdf-renderer validate --input report.json` (validate-only mode)
+- [x] `pdf-renderer schema [--output schema.json]` (export JSON Schema)
+- [x] `pdf-renderer templates` (list available templates)
+- [x] `pdf-renderer blocks` (list registered block types)
+- [x] `pdf-renderer sample [--output sample.json]` (generate sample spec)
+- [x] Argument parsing, help text, exit codes
+- [x] CLI integration tests (27 test cases)
 
 ---
 
