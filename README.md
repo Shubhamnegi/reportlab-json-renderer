@@ -22,6 +22,39 @@ For development (includes pytest, ruff, pre-commit):
 pip install -e ".[dev]"
 ```
 
+## Quick Run (No Installation Needed)
+
+Run the CLI directly from GitHub without installing it permanently. Perfect for one-off usage or testing.
+
+### Using `uvx` (Recommended - Fast)
+
+```bash
+# Run once without installing
+uvx --from git+https://github.com/Shubhamnegi/reportlab-json-renderer.git pdf-renderer --help
+
+# Render a PDF directly from GitHub
+uvx --from git+https://github.com/Shubhamnegi/reportlab-json-renderer.git pdf-renderer render --input report.json --output report.pdf
+```
+
+### Using `pipx`
+
+```bash
+# Run once without installing
+pipx run git+https://github.com/Shubhamnegi/reportlab-json-renderer.git --help
+
+# Or install permanently from GitHub
+pipx install git+https://github.com/Shubhamnegi/reportlab-json-renderer.git
+pdf-renderer --help
+```
+
+### From Local Clone
+
+```bash
+# If you have the repo cloned locally
+uvx --from . pdf-renderer --help
+pipx run . pdf-renderer --help
+```
+
 ## Quick Start
 
 ### Python API
