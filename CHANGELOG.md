@@ -82,6 +82,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] — 2026-06-20
+
 ### Fixed
 - **CRITICAL**: Fixed invalid `LINEBEFORETABLE` ReportLab command in `kpi_grid.py` and `callout.py` — replaced with correct `LINEBEFORE` command to enable left-border accent on KPI cards and callouts.
 - Fixed 25 ruff lint errors including unused imports, unsorted `__all__`, and unused variables.
