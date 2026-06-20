@@ -14,21 +14,28 @@ from reportlab_json_renderer.blocks.badge import BadgeBlock
 from reportlab_json_renderer.blocks.callout import CalloutBlock
 from reportlab_json_renderer.blocks.callout_group import CalloutGroupBlock
 from reportlab_json_renderer.blocks.chart import ChartBlock
+from reportlab_json_renderer.blocks.comparison_card import ComparisonCardBlock
 from reportlab_json_renderer.blocks.divider import DividerBlock
 from reportlab_json_renderer.blocks.image import ImageBlock
 from reportlab_json_renderer.blocks.insight_list import InsightListBlock
 from reportlab_json_renderer.blocks.kpi_grid import KPIGridBlock
 from reportlab_json_renderer.blocks.layout import TwoColumnBlock
+from reportlab_json_renderer.blocks.markdown_block import MarkdownBlock
 from reportlab_json_renderer.blocks.matrix_table import MatrixTableBlock
+from reportlab_json_renderer.blocks.metric_delta import MetricDeltaBlock
+from reportlab_json_renderer.blocks.milestone_list import MilestoneListBlock
 from reportlab_json_renderer.blocks.page_break import PageBreakBlock
 from reportlab_json_renderer.blocks.paragraph import ParagraphBlock
 from reportlab_json_renderer.blocks.recommendations import RecommendationsBlock
 from reportlab_json_renderer.blocks.registry import _REGISTRY, get_renderer
 from reportlab_json_renderer.blocks.rich_text import RichTextBlock
+from reportlab_json_renderer.blocks.risk_register import RiskRegisterBlock
 from reportlab_json_renderer.blocks.section import SectionHeaderBlock
 from reportlab_json_renderer.blocks.spacer import SpacerBlock
+from reportlab_json_renderer.blocks.status_table import StatusTableBlock
 from reportlab_json_renderer.blocks.summary_box import SummaryBoxBlock
 from reportlab_json_renderer.blocks.table import TableBlock
+from reportlab_json_renderer.blocks.timeline import TimelineBlock
 from reportlab_json_renderer.blocks.title import TitleBlock
 from reportlab_json_renderer.templates.analytics_report_v1 import ANALYTICS_REPORT_V1
 from reportlab_json_renderer.themes.green import GREEN_THEME
@@ -670,6 +677,298 @@ class TestSummaryBoxBlock:
         assert len(result) >= 2
 
 
+# ── Comparison Card Block ─────────────────────────────────────────
+
+
+class TestComparisonCardBlock:
+    def test_renders_with_items(self) -> None:
+        r = ComparisonCardBlock()
+        result = r.render(
+            {
+                "type": "comparison_card",
+                "title": "Comparison",
+                "left": {"label": "Item A", "value": "100", "delta": "+5%", "tone": "success"},
+                "right": {"label": "Item B", "value": "200", "delta": "-2%", "tone": "danger"},
+            },
+            theme=_theme,
+            template=_template,
+            available_width=_width,
+        )
+        assert len(result) >= 2
+
+    def test_renders_without_title(self) -> None:
+        r = ComparisonCardBlock()
+        result = r.render(
+            {
+                "type": "comparison_card",
+                "left": {"label": "X", "value": "Y"},
+                "right": {"label": "Z", "value": "W"},
+            },
+            theme=_theme,
+            template=_template,
+            available_width=_width,
+        )
+        assert len(result) >= 1
+
+    def test_renders_without_theme(self) -> None:
+        r = ComparisonCardBlock()
+        result = r.render(
+            {
+                "type": "comparison_card",
+                "left": {"value": "1"},
+                "right": {"value": "2"},
+            },
+            theme=None,
+            template=None,
+            available_width=_width,
+        )
+        assert len(result) >= 1
+
+
+# ── Metric Delta Block ────────────────────────────────────────────
+
+
+class TestMetricDeltaBlock:
+    def test_renders_with_all_fields(self) -> None:
+        r = MetricDeltaBlock()
+        result = r.render(
+            {
+                "type": "metric_delta",
+                "label": "Revenue",
+                "value": "$100k",
+                "delta": "+5%",
+                "delta_tone": "success",
+                "subtitle": "vs last month",
+                "tone": "primary",
+            },
+            theme=_theme,
+            template=_template,
+            available_width=_width,
+        )
+        assert len(result) >= 2
+
+    def test_renders_minimal(self) -> None:
+        r = MetricDeltaBlock()
+        result = r.render(
+            {"type": "metric_delta", "value": "42"},
+            theme=_theme,
+            template=_template,
+            available_width=_width,
+        )
+        assert len(result) >= 2
+
+
+# ── Timeline Block ────────────────────────────────────────────────
+
+
+class TestTimelineBlock:
+    def test_renders_with_items(self) -> None:
+        r = TimelineBlock()
+        result = r.render(
+            {
+                "type": "timeline",
+                "title": "Timeline",
+                "items": [
+                    {
+                        "date": "2026-01-01",
+                        "title": "Start",
+                        "description": "Kickoff",
+                        "tone": "primary",
+                    },
+                    {
+                        "date": "2026-02-01",
+                        "title": "Milestone",
+                        "description": "Alpha",
+                        "tone": "success",
+                    },
+                ],
+            },
+            theme=_theme,
+            template=_template,
+            available_width=_width,
+        )
+        assert len(result) >= 2
+
+    def test_renders_empty_items(self) -> None:
+        r = TimelineBlock()
+        result = r.render(
+            {"type": "timeline", "items": []},
+            theme=_theme,
+            template=_template,
+            available_width=_width,
+        )
+        assert len(result) == 0
+
+
+# ── Milestone List Block ──────────────────────────────────────────
+
+
+class TestMilestoneListBlock:
+    def test_renders_with_items(self) -> None:
+        r = MilestoneListBlock()
+        result = r.render(
+            {
+                "type": "milestone_list",
+                "title": "Milestones",
+                "items": [
+                    {
+                        "title": "M1",
+                        "description": "Completed",
+                        "status": "done",
+                        "date": "2026-01-01",
+                    },
+                    {
+                        "title": "M2",
+                        "description": "In progress",
+                        "status": "in_progress",
+                        "date": "2026-02-01",
+                    },
+                ],
+            },
+            theme=_theme,
+            template=_template,
+            available_width=_width,
+        )
+        assert len(result) >= 2
+
+    def test_renders_empty_items(self) -> None:
+        r = MilestoneListBlock()
+        result = r.render(
+            {"type": "milestone_list", "items": []},
+            theme=_theme,
+            template=_template,
+            available_width=_width,
+        )
+        assert len(result) == 0
+
+
+# ── Risk Register Block ───────────────────────────────────────────
+
+
+class TestRiskRegisterBlock:
+    def test_renders_with_rows(self) -> None:
+        r = RiskRegisterBlock()
+        result = r.render(
+            {
+                "type": "risk_register",
+                "title": "Risk Register",
+                "columns": [
+                    {"key": "risk", "label": "Risk", "width": "0.35"},
+                    {"key": "impact", "label": "Impact", "width": "0.15"},
+                    {"key": "likelihood", "label": "Likelihood", "width": "0.15"},
+                    {"key": "mitigation", "label": "Mitigation", "width": "0.35"},
+                ],
+                "rows": [
+                    {
+                        "risk": "Risk A",
+                        "impact": "High",
+                        "likelihood": "Medium",
+                        "mitigation": "Plan A",
+                    },
+                    {
+                        "risk": "Risk B",
+                        "impact": "Low",
+                        "likelihood": "High",
+                        "mitigation": "Monitor",
+                    },
+                ],
+            },
+            theme=_theme,
+            template=_template,
+            available_width=_width,
+        )
+        assert len(result) >= 2
+
+    def test_renders_empty_rows(self) -> None:
+        r = RiskRegisterBlock()
+        result = r.render(
+            {"type": "risk_register", "columns": [{"key": "risk", "label": "Risk"}], "rows": []},
+            theme=_theme,
+            template=_template,
+            available_width=_width,
+        )
+        assert len(result) >= 1
+
+
+# ── Status Table Block ────────────────────────────────────────────
+
+
+class TestStatusTableBlock:
+    def test_renders_with_status(self) -> None:
+        r = StatusTableBlock()
+        result = r.render(
+            {
+                "type": "status_table",
+                "title": "Status",
+                "columns": [
+                    {"key": "item", "label": "Item", "width": "0.4"},
+                    {"key": "status", "label": "Status", "width": "0.3"},
+                    {"key": "owner", "label": "Owner", "width": "0.3"},
+                ],
+                "rows": [
+                    {"item": "Task A", "status": "done", "owner": "Alice"},
+                    {"item": "Task B", "status": "in_progress", "owner": "Bob"},
+                ],
+            },
+            theme=_theme,
+            template=_template,
+            available_width=_width,
+        )
+        assert len(result) >= 2
+
+    def test_renders_empty_rows(self) -> None:
+        r = StatusTableBlock()
+        result = r.render(
+            {"type": "status_table", "columns": [{"key": "x", "label": "X"}], "rows": []},
+            theme=_theme,
+            template=_template,
+            available_width=_width,
+        )
+        assert len(result) >= 1
+
+
+# ── Markdown Block ────────────────────────────────────────────────
+
+
+class TestMarkdownBlock:
+    def test_renders_basic_markdown(self) -> None:
+        r = MarkdownBlock()
+        result = r.render(
+            {
+                "type": "markdown_block",
+                "title": "Notes",
+                "markdown": "# Heading\n\nSome **bold** text.\n\n- item 1\n- item 2",
+            },
+            theme=_theme,
+            template=_template,
+            available_width=_width,
+        )
+        assert len(result) >= 2
+
+    def test_renders_empty_markdown(self) -> None:
+        r = MarkdownBlock()
+        result = r.render(
+            {"type": "markdown_block", "markdown": ""},
+            theme=_theme,
+            template=_template,
+            available_width=_width,
+        )
+        assert len(result) == 0
+
+    def test_renders_code_blocks(self) -> None:
+        r = MarkdownBlock()
+        result = r.render(
+            {
+                "type": "markdown_block",
+                "markdown": "```python\nprint('hello')\n```",
+            },
+            theme=_theme,
+            template=_template,
+            available_width=_width,
+        )
+        assert len(result) >= 1
+
+
 # ── Registry Integration ────────────────────────────────────────────
 
 
@@ -696,6 +995,13 @@ class TestRegistryIntegration:
         "divider",
         "badge",
         "summary_box",
+        "comparison_card",
+        "metric_delta",
+        "timeline",
+        "milestone_list",
+        "risk_register",
+        "status_table",
+        "markdown_block",
     ]
 
     def test_all_block_types_registered(self) -> None:

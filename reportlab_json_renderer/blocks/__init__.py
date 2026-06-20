@@ -36,21 +36,28 @@ def _register_builtins() -> None:
     from reportlab_json_renderer.blocks.callout import CalloutBlock
     from reportlab_json_renderer.blocks.callout_group import CalloutGroupBlock
     from reportlab_json_renderer.blocks.chart import ChartBlock
+    from reportlab_json_renderer.blocks.comparison_card import ComparisonCardBlock
     from reportlab_json_renderer.blocks.divider import DividerBlock
     from reportlab_json_renderer.blocks.image import ImageBlock
     from reportlab_json_renderer.blocks.insight_list import InsightListBlock
     from reportlab_json_renderer.blocks.kpi_grid import KPIGridBlock
     from reportlab_json_renderer.blocks.layout import TwoColumnBlock
+    from reportlab_json_renderer.blocks.markdown_block import MarkdownBlock
     from reportlab_json_renderer.blocks.matrix_table import MatrixTableBlock
+    from reportlab_json_renderer.blocks.metric_delta import MetricDeltaBlock
+    from reportlab_json_renderer.blocks.milestone_list import MilestoneListBlock
     from reportlab_json_renderer.blocks.page_break import PageBreakBlock
     from reportlab_json_renderer.blocks.paragraph import ParagraphBlock
     from reportlab_json_renderer.blocks.recommendations import RecommendationsBlock
     from reportlab_json_renderer.blocks.registry import _REGISTRY
     from reportlab_json_renderer.blocks.rich_text import RichTextBlock
+    from reportlab_json_renderer.blocks.risk_register import RiskRegisterBlock
     from reportlab_json_renderer.blocks.section import SectionHeaderBlock
     from reportlab_json_renderer.blocks.spacer import SpacerBlock
+    from reportlab_json_renderer.blocks.status_table import StatusTableBlock
     from reportlab_json_renderer.blocks.summary_box import SummaryBoxBlock
     from reportlab_json_renderer.blocks.table import TableBlock
+    from reportlab_json_renderer.blocks.timeline import TimelineBlock
     from reportlab_json_renderer.blocks.title import TitleBlock
 
     for renderer_cls in (
@@ -73,6 +80,13 @@ def _register_builtins() -> None:
         DividerBlock,
         BadgeBlock,
         SummaryBoxBlock,
+        ComparisonCardBlock,
+        MetricDeltaBlock,
+        TimelineBlock,
+        MilestoneListBlock,
+        RiskRegisterBlock,
+        StatusTableBlock,
+        MarkdownBlock,
     ):
         r = renderer_cls()
         if r.block_type not in _REGISTRY:

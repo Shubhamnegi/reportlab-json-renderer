@@ -255,6 +255,76 @@ class SummaryBoxBlock(StrictModel):
     tone: str = "primary"
 
 
+class ComparisonCardItem(StrictModel):
+    label: str
+    value: str
+    delta: str | None = None
+    tone: str | None = None
+
+
+class ComparisonCardBlock(StrictModel):
+    type: Literal["comparison_card"] = "comparison_card"
+    title: str | None = None
+    left: ComparisonCardItem = Field(default_factory=ComparisonCardItem)
+    right: ComparisonCardItem = Field(default_factory=ComparisonCardItem)
+
+
+class MetricDeltaBlock(StrictModel):
+    type: Literal["metric_delta"] = "metric_delta"
+    label: str | None = None
+    value: str
+    delta: str | None = None
+    delta_tone: str | None = None
+    subtitle: str | None = None
+    tone: str = "primary"
+
+
+class TimelineItem(StrictModel):
+    date: str | None = None
+    title: str
+    description: str | None = None
+    tone: str = "primary"
+
+
+class TimelineBlock(StrictModel):
+    type: Literal["timeline"] = "timeline"
+    title: str | None = None
+    items: list[TimelineItem] = Field(default_factory=list)
+
+
+class MilestoneItem(StrictModel):
+    title: str
+    description: str | None = None
+    status: str = "pending"
+    date: str | None = None
+
+
+class MilestoneListBlock(StrictModel):
+    type: Literal["milestone_list"] = "milestone_list"
+    title: str | None = None
+    items: list[MilestoneItem] = Field(default_factory=list)
+
+
+class RiskRegisterBlock(StrictModel):
+    type: Literal["risk_register"] = "risk_register"
+    title: str | None = None
+    columns: list[TableColumn] = Field(default_factory=list)
+    rows: list[dict[str, str]] = Field(default_factory=list)
+
+
+class StatusTableBlock(StrictModel):
+    type: Literal["status_table"] = "status_table"
+    title: str | None = None
+    columns: list[TableColumn] = Field(default_factory=list)
+    rows: list[dict[str, str]] = Field(default_factory=list)
+
+
+class MarkdownBlock(StrictModel):
+    type: Literal["markdown_block"] = "markdown_block"
+    title: str | None = None
+    markdown: str
+
+
 # ── Union of all block types ─────────────────────────────────────────
 
 Block = Annotated[
@@ -276,7 +346,14 @@ Block = Annotated[
     | SpacerBlock
     | DividerBlock
     | BadgeBlock
-    | SummaryBoxBlock,
+    | SummaryBoxBlock
+    | ComparisonCardBlock
+    | MetricDeltaBlock
+    | TimelineBlock
+    | MilestoneListBlock
+    | RiskRegisterBlock
+    | StatusTableBlock
+    | MarkdownBlock,
     Field(discriminator="type"),
 ]
 
@@ -300,6 +377,13 @@ SUPPORTED_BLOCK_TYPES: list[str] = [
     "divider",
     "badge",
     "summary_box",
+    "comparison_card",
+    "metric_delta",
+    "timeline",
+    "milestone_list",
+    "risk_register",
+    "status_table",
+    "markdown_block",
 ]
 
 SUPPORTED_CHART_TYPES: list[str] = [
@@ -354,6 +438,8 @@ __all__ = [
     "CalloutGroupBlock",
     "CalloutItem",
     "ChartBlock",
+    "ComparisonCardBlock",
+    "ComparisonCardItem",
     "DividerBlock",
     "FooterConfig",
     "HeaderConfig",
@@ -364,7 +450,11 @@ __all__ = [
     "InsightListBlock",
     "KPIGridBlock",
     "KPIItem",
+    "MarkdownBlock",
     "MatrixTableBlock",
+    "MetricDeltaBlock",
+    "MilestoneItem",
+    "MilestoneListBlock",
     "Orientation",
     "PageBreakBlock",
     "PageConfig",
@@ -377,11 +467,15 @@ __all__ = [
     "ReportSpec",
     "RichTextBlock",
     "RichTextRun",
+    "RiskRegisterBlock",
     "SectionHeaderBlock",
     "SpacerBlock",
+    "StatusTableBlock",
     "SummaryBoxBlock",
     "TableColumn",
     "TableStyle",
+    "TimelineBlock",
+    "TimelineItem",
     "TitleBlock",
     "TwoColumnBlock",
 ]
