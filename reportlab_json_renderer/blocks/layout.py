@@ -72,6 +72,8 @@ class TwoColumnBlock(BaseBlock):
                     ("RIGHTPADDING", (0, 0), (-1, -1), 4),
                     ("TOPPADDING", (0, 0), (-1, -1), 0),
                     ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+                    # Asymmetric padding: 8pt gap between columns.
+                    # Left column gets right padding, right column gets left padding.
                     ("RIGHTPADDING", (0, 0), (0, -1), 8),
                     ("LEFTPADDING", (1, 0), (1, -1), 8),
                 ]

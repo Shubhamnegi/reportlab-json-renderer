@@ -62,7 +62,7 @@ class CalloutBlock(BaseBlock):
                     ("TOPPADDING", (0, 0), (-1, -1), 6),
                     ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
                     (
-                        "LINEBEFORETABLE",
+                        "LINEBEFORE",
                         (0, 0),
                         (0, -1),
                         border_width,

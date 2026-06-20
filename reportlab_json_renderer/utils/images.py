@@ -191,9 +191,9 @@ def get_image_dimensions(path: Path) -> tuple[int, int]:
 
 
 __all__ = [
+    "ManagedTempImage",
     "get_image_dimensions",
     "load_base64_image",
     "load_local_image",
     "load_remote_image",
-    "ManagedTempImage",
 ]

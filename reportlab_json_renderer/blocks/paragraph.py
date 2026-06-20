@@ -41,14 +41,25 @@ class ParagraphBlock(BaseBlock):
         )
         text_color = theme.resolve_tone("dark") if theme else "#2D2D2D"
 
+        # Style-specific spacing and leading.
+        if style_name == "lead":
+            leading = font_size * 1.5
+            space_after = 10
+        elif style_name == "caption":
+            leading = font_size * 1.4
+            space_after = 4
+        else:
+            leading = font_size * 1.4
+            space_after = 6
+
         style = ParagraphStyle(
             "Paragraph",
             fontName=font_name,
             fontSize=font_size,
-            leading=font_size * 1.5 if style_name == "lead" else font_size * 1.4,
+            leading=leading,
             textColor=colors.HexColor(text_color),
             spaceBefore=2,
-            spaceAfter=10 if style_name == "lead" else (4 if style_name == "caption" else 6),
+            spaceAfter=space_after,
         )
 
         if style_name == "caption":

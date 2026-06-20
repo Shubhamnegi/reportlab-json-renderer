@@ -79,3 +79,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Ruff linting and formatting.
 - Pre-commit hook configuration.
 - pytest with coverage (90% threshold).
+
+## [Unreleased]
+
+### Fixed
+- **CRITICAL**: Fixed invalid `LINEBEFORETABLE` ReportLab command in `kpi_grid.py` and `callout.py` — replaced with correct `LINEBEFORE` command to enable left-border accent on KPI cards and callouts.
+- Fixed 25 ruff lint errors including unused imports, unsorted `__all__`, and unused variables.
+
+### Changed
+- **Typography & Spacing**: Increased section header font size from 13 to 14pt, added `keepWithNext=True` for better paragraph flow, increased spacing before section headers.
+- **Title Block**: Increased horizontal line width from 1.5 to 2.0, increased spacing after title.
+- **Paragraph Styles**: Added `spaceBefore=2` for better vertical rhythm, increased `lead` style spacing and leading, adjusted `caption` style spacing.
+- **Rich Text**: Added `spaceBefore=2` for consistent spacing.
+- **KPI Grid**: Added rounded corners, increased padding from 6 to 8, added left-border accent via `LINEBEFORE`.
+- **Callout**: Increased left padding from 10 to 14, added rounded corners, added subtle border, increased spacers.
+- **Summary Box**: Added rounded corners, increased padding.
+- **Badge**: Rewritten from `Paragraph` to `Table` wrapper for rounded corners support with horizontal padding.
+- **Two-Column Layout**: Fixed asymmetric padding (8pt gap between columns), increased empty column spacer from 12 to 20.
+- **Header/Footer**: Added subtle header background, added footer separator line, increased footer page number font from 7pt to 8pt, increased footer text offset.
+- **Theme**: Darkened green theme table header background from `#E8F5E9` to `#C8E6C9`.
+- **Insight List**: Increased `spaceBefore/spaceAfter` from 4 to 6.
+- **Divider**: Increased spacer from 4 to 6 on both sides.
+- **Tables**: Normalized column widths to sum to `available_width`, added `keepWithNext` to titles, increased cell leading from 12 to 14, replaced manual striping with `ROWBACKGROUNDS`, added `REPEATROWS=1` for multi-page tables.

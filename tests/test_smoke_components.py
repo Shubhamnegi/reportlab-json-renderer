@@ -15,7 +15,6 @@ The tests validate:
 
 from __future__ import annotations
 
-import base64
 from io import BytesIO
 from pathlib import Path
 from typing import Any
@@ -75,7 +74,7 @@ class TestTitleSmoke:
             "subtitle": "Jan–Mar 2026",
             "right_text": "Confidential",
         })
-        result, reader = _render_and_parse(spec)
+        _result, reader = _render_and_parse(spec)
         text = _extract_text(reader)
         assert "Q1 Revenue Report" in text
 
@@ -94,7 +93,7 @@ class TestSectionHeaderSmoke:
             "number": "1",
             "title": "Executive Summary",
         })
-        result, reader = _render_and_parse(spec)
+        _result, reader = _render_and_parse(spec)
         text = _extract_text(reader)
         assert "Executive Summary" in text
 
@@ -116,7 +115,7 @@ class TestParagraphSmoke:
             "text": "Revenue increased by 15% year-over-year.",
             "style": "body",
         })
-        result, reader = _render_and_parse(spec)
+        _result, reader = _render_and_parse(spec)
         text = _extract_text(reader)
         assert "Revenue increased" in text
 
@@ -127,7 +126,7 @@ class TestParagraphSmoke:
                 "text": f"Style test: {style}",
                 "style": style,
             })
-            result, reader = _render_and_parse(spec)
+            _result, reader = _render_and_parse(spec)
             text = _extract_text(reader)
             assert style in text
 
@@ -145,7 +144,7 @@ class TestRichTextSmoke:
                 {"text": " this month.", "style": "normal"},
             ],
         })
-        result, reader = _render_and_parse(spec)
+        _result, reader = _render_and_parse(spec)
         text = _extract_text(reader)
         assert "Orders grew" in text
         assert "12%" in text
@@ -158,7 +157,7 @@ class TestRichTextSmoke:
                 {"text": " issue detected", "style": "normal"},
             ],
         })
-        result, reader = _render_and_parse(spec)
+        _result, reader = _render_and_parse(spec)
         text = _extract_text(reader)
         assert "Critical" in text
 
@@ -178,7 +177,7 @@ class TestKPIGridSmoke:
                 {"label": "Returns", "value": "34", "sub": "↓ 5%", "tone": "danger"},
             ],
         })
-        result, reader = _render_and_parse(spec)
+        _result, reader = _render_and_parse(spec)
         text = _extract_text(reader)
         assert "Key Metrics" in text
         assert "Orders" in text
@@ -196,7 +195,7 @@ class TestCalloutSmoke:
             "title": "Alert",
             "text": "Order volume dropped 15% WoW.",
         })
-        result, reader = _render_and_parse(spec)
+        _result, reader = _render_and_parse(spec)
         text = _extract_text(reader)
         assert "15%" in text
 
@@ -222,7 +221,7 @@ class TestCalloutGroupSmoke:
                 {"tone": "success", "title": "Win", "text": "Retention up"},
             ],
         })
-        result, reader = _render_and_parse(spec)
+        _result, reader = _render_and_parse(spec)
         text = _extract_text(reader)
         assert "Sales declining" in text
         assert "Retention up" in text
@@ -247,7 +246,7 @@ class TestTableSmoke:
                 {"source": "Offline", "orders": "500", "revenue": "₹1.2L"},
             ],
         })
-        result, reader = _render_and_parse(spec)
+        _result, reader = _render_and_parse(spec)
         text = _extract_text(reader)
         assert "Online" in text
         assert "2,000" in text
@@ -277,7 +276,7 @@ class TestMatrixTableSmoke:
                 ["Revenue", "₹2L", "₹1.8L"],
             ],
         })
-        result, reader = _render_and_parse(spec)
+        _result, reader = _render_and_parse(spec)
         text = _extract_text(reader)
         assert "Metric" in text
         assert "This Week" in text
@@ -296,7 +295,7 @@ class TestInsightListSmoke:
                 {"title": "Risk", "text": "Churn rose in Tier-2 cities."},
             ],
         })
-        result, reader = _render_and_parse(spec)
+        _result, reader = _render_and_parse(spec)
         text = _extract_text(reader)
         assert "Mobile adoption" in text
         assert "Churn" in text
@@ -315,7 +314,7 @@ class TestRecommendationsSmoke:
                 {"priority": "Medium", "action": "Run promo", "owner": "Marketing", "impact": "AOV"},
             ],
         })
-        result, reader = _render_and_parse(spec)
+        _result, reader = _render_and_parse(spec)
         text = _extract_text(reader)
         assert "Fix checkout bug" in text
         assert "Eng" in text
@@ -332,7 +331,7 @@ class TestSummaryBoxSmoke:
             "text": "Overall performance is strong with 15% YoY growth.",
             "tone": "success",
         })
-        result, reader = _render_and_parse(spec)
+        _result, reader = _render_and_parse(spec)
         text = _extract_text(reader)
         assert "Executive Summary" in text
 
@@ -351,7 +350,7 @@ class TestSummaryBoxSmoke:
 class TestImageSmoke:
     def test_local_image_renders(self, tmp_path: Path) -> None:
         """Create a tiny PNG on disk and render it via the image block."""
-        # 1×1 red PNG generated via Pillow to guarantee a valid file.
+        # 1x1 red PNG generated via Pillow to guarantee a valid file.
         img_path = tmp_path / "test.png"
         Image.new("RGB", (1, 1), "red").save(img_path, "PNG")
 
@@ -360,8 +359,8 @@ class TestImageSmoke:
             "src": str(img_path),
             "title": "Test Image",
         })
-        result, reader = _render_and_parse(spec, asset_root=tmp_path)
-        assert result["pages"] >= 1
+        _result, _reader = _render_and_parse(spec, asset_root=tmp_path)
+        assert _result["pages"] >= 1
 
     def test_nonexistent_image_raises(self) -> None:
         spec = _base_spec({
@@ -385,8 +384,8 @@ class TestChartSmoke:
             "values": [100, 150, 120],
             "tone": "primary",
         })
-        result, reader = _render_and_parse(spec)
-        assert result["pages"] >= 1
+        _result, _reader = _render_and_parse(spec)
+        assert _result["pages"] >= 1
 
     def test_pie_chart_renders(self) -> None:
         spec = _base_spec({
@@ -428,7 +427,7 @@ class TestTwoColumnSmoke:
                 {"type": "paragraph", "text": "Right column content."},
             ],
         })
-        result, reader = _render_and_parse(spec)
+        _result, reader = _render_and_parse(spec)
         text = _extract_text(reader)
         # Both columns should appear somewhere in the PDF.
         assert "Left column" in text
@@ -445,8 +444,8 @@ class TestTwoColumnSmoke:
 class TestSpacerSmoke:
     def test_spacer_renders(self) -> None:
         spec = _base_spec({"type": "spacer", "height": 20})
-        result, reader = _render_and_parse(spec)
-        assert result["pages"] >= 1
+        _result, _reader = _render_and_parse(spec)
+        assert _result["pages"] >= 1
 
 
 # ── Page Break ────────────────────────────────────────────────────────
@@ -459,7 +458,7 @@ class TestPageBreakSmoke:
             {"type": "page_break"},
             {"type": "paragraph", "text": "Page two."},
         )
-        result, reader = _render_and_parse(spec)
+        _result, reader = _render_and_parse(spec)
         assert len(reader.pages) >= 2
 
 
@@ -473,8 +472,8 @@ class TestDividerSmoke:
             "tone": "primary",
             "thickness": 1.5,
         })
-        result, reader = _render_and_parse(spec)
-        assert result["pages"] >= 1
+        _result, _reader = _render_and_parse(spec)
+        assert _result["pages"] >= 1
 
 
 # ── Badge ─────────────────────────────────────────────────────────────
@@ -487,7 +486,7 @@ class TestBadgeSmoke:
             "label": "URGENT",
             "tone": "danger",
         })
-        result, reader = _render_and_parse(spec)
+        _result, reader = _render_and_parse(spec)
         text = _extract_text(reader)
         assert "URGENT" in text
 
