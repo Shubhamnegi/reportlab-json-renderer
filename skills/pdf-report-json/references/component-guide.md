@@ -23,6 +23,13 @@
 | `page_break` | Force a page break between major sections | _(none)_ |
 | `image` | Image from local filesystem | `src`, `title`, `width_cm`, `height_cm`, `align` |
 | `two_column` | Two short charts/tables side by side | `left[]`, `right[]`, `left_width`, `right_width` |
+| `comparison_card` | Side-by-side comparison of two items with optional delta indicators | `title`, `left{}`, `right{}` |
+| `metric_delta` | Single metric with delta/change indicator | `label`, `value`, `delta`, `delta_tone`, `subtitle`, `tone` |
+| `timeline` | Vertical timeline with events | `title`, `items[]` |
+| `milestone_list` | Milestone list with status and date | `title`, `items[]` |
+| `risk_register` | Risk register table with impact, likelihood, mitigation | `title`, `columns[]`, `rows[]` |
+| `status_table` | Table with status badges | `title`, `columns[]`, `rows[]` |
+| `markdown_block` | Render markdown text as PDF paragraphs | `title`, `markdown` |
 
 ## Tones
 

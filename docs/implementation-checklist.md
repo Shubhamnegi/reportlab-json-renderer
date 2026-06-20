@@ -94,6 +94,13 @@ This document remains the implementation history for the original build-out.
 - [x] `blocks/divider.py` — horizontal line with tone and thickness
 - [x] `blocks/badge.py` — small inline badge label
 - [x] `blocks/summary_box.py` — executive summary card
+- [x] `blocks/comparison_card.py` — side-by-side comparison card with optional delta indicators
+- [x] `blocks/metric_delta.py` — single metric with delta/change indicator
+- [x] `blocks/timeline.py` — vertical timeline with events
+- [x] `blocks/milestone_list.py` — milestone list with status and date
+- [x] `blocks/risk_register.py` — risk register table with impact, likelihood, mitigation
+- [x] `blocks/status_table.py` — table with status badges
+- [x] `blocks/markdown_block.py` — markdown text renderer
 
 Each block renderer must have:
 - [x] Unit tests with at least one fixture JSON → flowable assertion
@@ -159,12 +166,12 @@ Each block renderer must have:
 
 Tracked here for awareness. Do not implement until explicitly requested.
 
-- [ ] `comparison_card`
-- [ ] `metric_delta`
-- [ ] `timeline`
-- [ ] `milestone_list`
-- [ ] `risk_register`
-- [ ] `status_table`
+- [x] `comparison_card`
+- [x] `metric_delta`
+- [x] `timeline`
+- [x] `milestone_list`
+- [x] `risk_register`
+- [x] `status_table`
 - [ ] `financial_statement`
 - [ ] `invoice_line_items`
 - [ ] `signature_block`
@@ -177,7 +184,7 @@ Tracked here for awareness. Do not implement until explicitly requested.
 - [ ] `sparkline_grid`
 - [ ] `grouped_kpi_section`
 - [ ] `nested_sections`
-- [ ] `markdown_block`
+- [x] `markdown_block`
 - [ ] `raw_html_to_image`
 - [ ] `external_chart_image`
 
