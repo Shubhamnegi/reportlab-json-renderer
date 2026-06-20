@@ -769,8 +769,18 @@ class TestTimelineBlock:
                 "type": "timeline",
                 "title": "Timeline",
                 "items": [
-                    {"date": "2026-01-01", "title": "Start", "description": "Kickoff", "tone": "primary"},
-                    {"date": "2026-02-01", "title": "Milestone", "description": "Alpha", "tone": "success"},
+                    {
+                        "date": "2026-01-01",
+                        "title": "Start",
+                        "description": "Kickoff",
+                        "tone": "primary",
+                    },
+                    {
+                        "date": "2026-02-01",
+                        "title": "Milestone",
+                        "description": "Alpha",
+                        "tone": "success",
+                    },
                 ],
             },
             theme=_theme,
@@ -801,8 +811,18 @@ class TestMilestoneListBlock:
                 "type": "milestone_list",
                 "title": "Milestones",
                 "items": [
-                    {"title": "M1", "description": "Completed", "status": "done", "date": "2026-01-01"},
-                    {"title": "M2", "description": "In progress", "status": "in_progress", "date": "2026-02-01"},
+                    {
+                        "title": "M1",
+                        "description": "Completed",
+                        "status": "done",
+                        "date": "2026-01-01",
+                    },
+                    {
+                        "title": "M2",
+                        "description": "In progress",
+                        "status": "in_progress",
+                        "date": "2026-02-01",
+                    },
                 ],
             },
             theme=_theme,
@@ -839,8 +859,18 @@ class TestRiskRegisterBlock:
                     {"key": "mitigation", "label": "Mitigation", "width": "0.35"},
                 ],
                 "rows": [
-                    {"risk": "Risk A", "impact": "High", "likelihood": "Medium", "mitigation": "Plan A"},
-                    {"risk": "Risk B", "impact": "Low", "likelihood": "High", "mitigation": "Monitor"},
+                    {
+                        "risk": "Risk A",
+                        "impact": "High",
+                        "likelihood": "Medium",
+                        "mitigation": "Plan A",
+                    },
+                    {
+                        "risk": "Risk B",
+                        "impact": "Low",
+                        "likelihood": "High",
+                        "mitigation": "Monitor",
+                    },
                 ],
             },
             theme=_theme,
