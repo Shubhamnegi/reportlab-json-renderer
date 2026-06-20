@@ -83,7 +83,7 @@ class TitleBlock(BaseBlock):
             flowables.append(Paragraph(right_text, right_style))
 
         # Bottom separator line
-        flowables.append(Spacer(1, 6))
+        flowables.append(Spacer(1, 12))
         line = _HorizontalLine(available_width, theme)
         flowables.append(line)
         flowables.append(Spacer(1, 12))
@@ -103,5 +103,5 @@ class _HorizontalLine(Flowable):
     def draw(self) -> None:
         hex_color = self.theme.resolve_tone("primary") if self.theme else "#7CB518"
         self.canv.setStrokeColor(colors.HexColor(hex_color))
-        self.canv.setLineWidth(1.5)
+        self.canv.setLineWidth(2.0)
         self.canv.line(0, 0, self.width, 0)

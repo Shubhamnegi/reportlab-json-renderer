@@ -36,10 +36,12 @@ class SectionHeaderBlock(BaseBlock):
         style = ParagraphStyle(
             "SectionHeader",
             fontName=theme.font_bold if theme else "Helvetica-Bold",
-            fontSize=13,
-            leading=16,
+            fontSize=14,
+            leading=18,
             textColor=colors.HexColor(theme.resolve_tone("dark")) if theme else colors.black,
             spaceAfter=6,
+            spaceBefore=10,
+            keepWithNext=True,
         )
         flowables.append(Paragraph(display, style))
 

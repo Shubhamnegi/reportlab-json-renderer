@@ -54,11 +54,12 @@ class SummaryBoxBlock(BaseBlock):
             TableStyle(
                 [
                     ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor(bg_color)),
-                    ("LEFTPADDING", (0, 0), (-1, -1), 12),
-                    ("RIGHTPADDING", (0, 0), (-1, -1), 12),
-                    ("TOPPADDING", (0, 0), (-1, -1), 8),
-                    ("BOTTOMPADDING", (0, 0), (-1, -1), 8),
+                    ("LEFTPADDING", (0, 0), (-1, -1), 14),
+                    ("RIGHTPADDING", (0, 0), (-1, -1), 14),
+                    ("TOPPADDING", (0, 0), (-1, -1), 10),
+                    ("BOTTOMPADDING", (0, 0), (-1, -1), 10),
                     ("BOX", (0, 0), (-1, -1), 2, colors.HexColor(border_color)),
+                    ("ROUNDEDCORNERS", [4, 4, 4, 4]),
                 ]
             )
         )

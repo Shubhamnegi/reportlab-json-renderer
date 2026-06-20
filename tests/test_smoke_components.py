@@ -15,7 +15,6 @@ The tests validate:
 
 from __future__ import annotations
 
-import base64
 from io import BytesIO
 from pathlib import Path
 from typing import Any
@@ -46,7 +45,9 @@ def _base_spec(*blocks: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _render_and_parse(spec: dict[str, Any], **build_kwargs: Any) -> tuple[dict[str, Any], PdfReader]:
+def _render_and_parse(
+    spec: dict[str, Any], **build_kwargs: Any
+) -> tuple[dict[str, Any], PdfReader]:
     """Render a spec and return (result, parsed reader)."""
     result = build_pdf(spec, **build_kwargs)
     assert result["success"] is True, f"Render failed: {result}"
@@ -68,14 +69,16 @@ def _extract_text(reader: PdfReader) -> str:
 
 class TestTitleSmoke:
     def test_title_renders_to_pdf(self) -> None:
-        spec = _base_spec({
-            "type": "title",
-            "entity": "Acme Corp",
-            "title": "Q1 Revenue Report",
-            "subtitle": "Jan–Mar 2026",
-            "right_text": "Confidential",
-        })
-        result, reader = _render_and_parse(spec)
+        spec = _base_spec(
+            {
+                "type": "title",
+                "entity": "Acme Corp",
+                "title": "Q1 Revenue Report",
+                "subtitle": "Jan–Mar 2026",
+                "right_text": "Confidential",
+            }
+        )
+        _result, reader = _render_and_parse(spec)
         text = _extract_text(reader)
         assert "Q1 Revenue Report" in text
 
@@ -89,20 +92,24 @@ class TestTitleSmoke:
 
 class TestSectionHeaderSmoke:
     def test_numbered_section_renders(self) -> None:
-        spec = _base_spec({
-            "type": "section_header",
-            "number": "1",
-            "title": "Executive Summary",
-        })
-        result, reader = _render_and_parse(spec)
+        spec = _base_spec(
+            {
+                "type": "section_header",
+                "number": "1",
+                "title": "Executive Summary",
+            }
+        )
+        _result, reader = _render_and_parse(spec)
         text = _extract_text(reader)
         assert "Executive Summary" in text
 
     def test_unnumbered_section_renders(self) -> None:
-        spec = _base_spec({
-            "type": "section_header",
-            "title": "Appendix",
-        })
+        spec = _base_spec(
+            {
+                "type": "section_header",
+                "title": "Appendix",
+            }
+        )
         _render_and_parse(spec)
 
 
@@ -111,23 +118,27 @@ class TestSectionHeaderSmoke:
 
 class TestParagraphSmoke:
     def test_body_paragraph_renders(self) -> None:
-        spec = _base_spec({
-            "type": "paragraph",
-            "text": "Revenue increased by 15% year-over-year.",
-            "style": "body",
-        })
-        result, reader = _render_and_parse(spec)
+        spec = _base_spec(
+            {
+                "type": "paragraph",
+                "text": "Revenue increased by 15% year-over-year.",
+                "style": "body",
+            }
+        )
+        _result, reader = _render_and_parse(spec)
         text = _extract_text(reader)
         assert "Revenue increased" in text
 
     def test_all_styles_render(self) -> None:
         for style in ("body", "bold", "caption"):
-            spec = _base_spec({
-                "type": "paragraph",
-                "text": f"Style test: {style}",
-                "style": style,
-            })
-            result, reader = _render_and_parse(spec)
+            spec = _base_spec(
+                {
+                    "type": "paragraph",
+                    "text": f"Style test: {style}",
+                    "style": style,
+                }
+            )
+            _result, reader = _render_and_parse(spec)
             text = _extract_text(reader)
             assert style in text
 
@@ -137,28 +148,32 @@ class TestParagraphSmoke:
 
 class TestRichTextSmoke:
     def test_mixed_runs_render(self) -> None:
-        spec = _base_spec({
-            "type": "rich_text",
-            "runs": [
-                {"text": "Orders grew ", "style": "normal"},
-                {"text": "12%", "style": "bold"},
-                {"text": " this month.", "style": "normal"},
-            ],
-        })
-        result, reader = _render_and_parse(spec)
+        spec = _base_spec(
+            {
+                "type": "rich_text",
+                "runs": [
+                    {"text": "Orders grew ", "style": "normal"},
+                    {"text": "12%", "style": "bold"},
+                    {"text": " this month.", "style": "normal"},
+                ],
+            }
+        )
+        _result, reader = _render_and_parse(spec)
         text = _extract_text(reader)
         assert "Orders grew" in text
         assert "12%" in text
 
     def test_tone_colored_runs_render(self) -> None:
-        spec = _base_spec({
-            "type": "rich_text",
-            "runs": [
-                {"text": "Critical", "style": "bold_danger"},
-                {"text": " issue detected", "style": "normal"},
-            ],
-        })
-        result, reader = _render_and_parse(spec)
+        spec = _base_spec(
+            {
+                "type": "rich_text",
+                "runs": [
+                    {"text": "Critical", "style": "bold_danger"},
+                    {"text": " issue detected", "style": "normal"},
+                ],
+            }
+        )
+        _result, reader = _render_and_parse(spec)
         text = _extract_text(reader)
         assert "Critical" in text
 
@@ -168,17 +183,19 @@ class TestRichTextSmoke:
 
 class TestKPIGridSmoke:
     def test_kpi_grid_renders_to_pdf(self) -> None:
-        spec = _base_spec({
-            "type": "kpi_grid",
-            "title": "Key Metrics",
-            "columns": 3,
-            "items": [
-                {"label": "Orders", "value": "1,250", "sub": "This Week", "tone": "primary"},
-                {"label": "Revenue", "value": "₹2.5L", "sub": "↑ 12%", "tone": "success"},
-                {"label": "Returns", "value": "34", "sub": "↓ 5%", "tone": "danger"},
-            ],
-        })
-        result, reader = _render_and_parse(spec)
+        spec = _base_spec(
+            {
+                "type": "kpi_grid",
+                "title": "Key Metrics",
+                "columns": 3,
+                "items": [
+                    {"label": "Orders", "value": "1,250", "sub": "This Week", "tone": "primary"},
+                    {"label": "Revenue", "value": "₹2.5L", "sub": "↑ 12%", "tone": "success"},
+                    {"label": "Returns", "value": "34", "sub": "↓ 5%", "tone": "danger"},
+                ],
+            }
+        )
+        _result, reader = _render_and_parse(spec)
         text = _extract_text(reader)
         assert "Key Metrics" in text
         assert "Orders" in text
@@ -190,22 +207,26 @@ class TestKPIGridSmoke:
 
 class TestCalloutSmoke:
     def test_callout_with_title_renders(self) -> None:
-        spec = _base_spec({
-            "type": "callout",
-            "tone": "danger",
-            "title": "Alert",
-            "text": "Order volume dropped 15% WoW.",
-        })
-        result, reader = _render_and_parse(spec)
+        spec = _base_spec(
+            {
+                "type": "callout",
+                "tone": "danger",
+                "title": "Alert",
+                "text": "Order volume dropped 15% WoW.",
+            }
+        )
+        _result, reader = _render_and_parse(spec)
         text = _extract_text(reader)
         assert "15%" in text
 
     def test_callout_without_title_renders(self) -> None:
-        spec = _base_spec({
-            "type": "callout",
-            "tone": "success",
-            "text": "All systems operational.",
-        })
+        spec = _base_spec(
+            {
+                "type": "callout",
+                "tone": "success",
+                "text": "All systems operational.",
+            }
+        )
         _render_and_parse(spec)
 
 
@@ -214,15 +235,17 @@ class TestCalloutSmoke:
 
 class TestCalloutGroupSmoke:
     def test_callout_group_renders(self) -> None:
-        spec = _base_spec({
-            "type": "callout_group",
-            "title": "Insights",
-            "items": [
-                {"tone": "danger", "title": "Issue", "text": "Sales declining"},
-                {"tone": "success", "title": "Win", "text": "Retention up"},
-            ],
-        })
-        result, reader = _render_and_parse(spec)
+        spec = _base_spec(
+            {
+                "type": "callout_group",
+                "title": "Insights",
+                "items": [
+                    {"tone": "danger", "title": "Issue", "text": "Sales declining"},
+                    {"tone": "success", "title": "Win", "text": "Retention up"},
+                ],
+            }
+        )
+        _result, reader = _render_and_parse(spec)
         text = _extract_text(reader)
         assert "Sales declining" in text
         assert "Retention up" in text
@@ -233,33 +256,37 @@ class TestCalloutGroupSmoke:
 
 class TestTableSmoke:
     def test_table_renders_to_pdf(self) -> None:
-        spec = _base_spec({
-            "type": "table",
-            "title": "Source Mix",
-            "style": "striped",
-            "columns": [
-                {"key": "source", "label": "Source", "width": 0.4},
-                {"key": "orders", "label": "Orders", "width": 0.3},
-                {"key": "revenue", "label": "Revenue", "width": 0.3},
-            ],
-            "rows": [
-                {"source": "Online", "orders": "2,000", "revenue": "₹5L"},
-                {"source": "Offline", "orders": "500", "revenue": "₹1.2L"},
-            ],
-        })
-        result, reader = _render_and_parse(spec)
+        spec = _base_spec(
+            {
+                "type": "table",
+                "title": "Source Mix",
+                "style": "striped",
+                "columns": [
+                    {"key": "source", "label": "Source", "width": 0.4},
+                    {"key": "orders", "label": "Orders", "width": 0.3},
+                    {"key": "revenue", "label": "Revenue", "width": 0.3},
+                ],
+                "rows": [
+                    {"source": "Online", "orders": "2,000", "revenue": "₹5L"},
+                    {"source": "Offline", "orders": "500", "revenue": "₹1.2L"},
+                ],
+            }
+        )
+        _result, reader = _render_and_parse(spec)
         text = _extract_text(reader)
         assert "Online" in text
         assert "2,000" in text
 
     def test_standard_style_renders(self) -> None:
-        spec = _base_spec({
-            "type": "table",
-            "title": "Standard",
-            "style": "standard",
-            "columns": [{"key": "a", "label": "A"}],
-            "rows": [{"a": "1"}],
-        })
+        spec = _base_spec(
+            {
+                "type": "table",
+                "title": "Standard",
+                "style": "standard",
+                "columns": [{"key": "a", "label": "A"}],
+                "rows": [{"a": "1"}],
+            }
+        )
         _render_and_parse(spec)
 
 
@@ -268,16 +295,18 @@ class TestTableSmoke:
 
 class TestMatrixTableSmoke:
     def test_matrix_renders_to_pdf(self) -> None:
-        spec = _base_spec({
-            "type": "matrix_table",
-            "title": "Comparison",
-            "columns": ["Metric", "This Week", "Last Week"],
-            "rows": [
-                ["Orders", "500", "450"],
-                ["Revenue", "₹2L", "₹1.8L"],
-            ],
-        })
-        result, reader = _render_and_parse(spec)
+        spec = _base_spec(
+            {
+                "type": "matrix_table",
+                "title": "Comparison",
+                "columns": ["Metric", "This Week", "Last Week"],
+                "rows": [
+                    ["Orders", "500", "450"],
+                    ["Revenue", "₹2L", "₹1.8L"],
+                ],
+            }
+        )
+        _result, reader = _render_and_parse(spec)
         text = _extract_text(reader)
         assert "Metric" in text
         assert "This Week" in text
@@ -288,15 +317,17 @@ class TestMatrixTableSmoke:
 
 class TestInsightListSmoke:
     def test_insight_list_renders(self) -> None:
-        spec = _base_spec({
-            "type": "insight_list",
-            "title": "Key Insights",
-            "items": [
-                {"title": "Growth Driver", "text": "Mobile adoption increased 30%."},
-                {"title": "Risk", "text": "Churn rose in Tier-2 cities."},
-            ],
-        })
-        result, reader = _render_and_parse(spec)
+        spec = _base_spec(
+            {
+                "type": "insight_list",
+                "title": "Key Insights",
+                "items": [
+                    {"title": "Growth Driver", "text": "Mobile adoption increased 30%."},
+                    {"title": "Risk", "text": "Churn rose in Tier-2 cities."},
+                ],
+            }
+        )
+        _result, reader = _render_and_parse(spec)
         text = _extract_text(reader)
         assert "Mobile adoption" in text
         assert "Churn" in text
@@ -307,15 +338,27 @@ class TestInsightListSmoke:
 
 class TestRecommendationsSmoke:
     def test_recommendations_renders(self) -> None:
-        spec = _base_spec({
-            "type": "recommendations",
-            "title": "Next Steps",
-            "items": [
-                {"priority": "High", "action": "Fix checkout bug", "owner": "Eng", "impact": "Revenue"},
-                {"priority": "Medium", "action": "Run promo", "owner": "Marketing", "impact": "AOV"},
-            ],
-        })
-        result, reader = _render_and_parse(spec)
+        spec = _base_spec(
+            {
+                "type": "recommendations",
+                "title": "Next Steps",
+                "items": [
+                    {
+                        "priority": "High",
+                        "action": "Fix checkout bug",
+                        "owner": "Eng",
+                        "impact": "Revenue",
+                    },
+                    {
+                        "priority": "Medium",
+                        "action": "Run promo",
+                        "owner": "Marketing",
+                        "impact": "AOV",
+                    },
+                ],
+            }
+        )
+        _result, reader = _render_and_parse(spec)
         text = _extract_text(reader)
         assert "Fix checkout bug" in text
         assert "Eng" in text
@@ -326,22 +369,26 @@ class TestRecommendationsSmoke:
 
 class TestSummaryBoxSmoke:
     def test_summary_box_renders(self) -> None:
-        spec = _base_spec({
-            "type": "summary_box",
-            "title": "Executive Summary",
-            "text": "Overall performance is strong with 15% YoY growth.",
-            "tone": "success",
-        })
-        result, reader = _render_and_parse(spec)
+        spec = _base_spec(
+            {
+                "type": "summary_box",
+                "title": "Executive Summary",
+                "text": "Overall performance is strong with 15% YoY growth.",
+                "tone": "success",
+            }
+        )
+        _result, reader = _render_and_parse(spec)
         text = _extract_text(reader)
         assert "Executive Summary" in text
 
     def test_summary_box_without_title_renders(self) -> None:
-        spec = _base_spec({
-            "type": "summary_box",
-            "text": "Quick summary.",
-            "tone": "info",
-        })
+        spec = _base_spec(
+            {
+                "type": "summary_box",
+                "text": "Quick summary.",
+                "tone": "info",
+            }
+        )
         _render_and_parse(spec)
 
 
@@ -351,23 +398,27 @@ class TestSummaryBoxSmoke:
 class TestImageSmoke:
     def test_local_image_renders(self, tmp_path: Path) -> None:
         """Create a tiny PNG on disk and render it via the image block."""
-        # 1×1 red PNG generated via Pillow to guarantee a valid file.
+        # 1x1 red PNG generated via Pillow to guarantee a valid file.
         img_path = tmp_path / "test.png"
         Image.new("RGB", (1, 1), "red").save(img_path, "PNG")
 
-        spec = _base_spec({
-            "type": "image",
-            "src": str(img_path),
-            "title": "Test Image",
-        })
-        result, reader = _render_and_parse(spec, asset_root=tmp_path)
-        assert result["pages"] >= 1
+        spec = _base_spec(
+            {
+                "type": "image",
+                "src": str(img_path),
+                "title": "Test Image",
+            }
+        )
+        _result, _reader = _render_and_parse(spec, asset_root=tmp_path)
+        assert _result["pages"] >= 1
 
     def test_nonexistent_image_raises(self) -> None:
-        spec = _base_spec({
-            "type": "image",
-            "src": "/nonexistent/path.png",
-        })
+        spec = _base_spec(
+            {
+                "type": "image",
+                "src": "/nonexistent/path.png",
+            }
+        )
         with pytest.raises(RenderError):
             build_pdf(spec)
 
@@ -377,38 +428,44 @@ class TestImageSmoke:
 
 class TestChartSmoke:
     def test_bar_chart_renders(self) -> None:
-        spec = _base_spec({
-            "type": "chart",
-            "chart_type": "bar",
-            "title": "Monthly Sales",
-            "labels": ["Jan", "Feb", "Mar"],
-            "values": [100, 150, 120],
-            "tone": "primary",
-        })
-        result, reader = _render_and_parse(spec)
-        assert result["pages"] >= 1
+        spec = _base_spec(
+            {
+                "type": "chart",
+                "chart_type": "bar",
+                "title": "Monthly Sales",
+                "labels": ["Jan", "Feb", "Mar"],
+                "values": [100, 150, 120],
+                "tone": "primary",
+            }
+        )
+        _result, _reader = _render_and_parse(spec)
+        assert _result["pages"] >= 1
 
     def test_pie_chart_renders(self) -> None:
-        spec = _base_spec({
-            "type": "chart",
-            "chart_type": "pie",
-            "title": "Share",
-            "labels": ["Direct", "Organic", "Referral"],
-            "values": [40, 35, 25],
-        })
+        spec = _base_spec(
+            {
+                "type": "chart",
+                "chart_type": "pie",
+                "title": "Share",
+                "labels": ["Direct", "Organic", "Referral"],
+                "values": [40, 35, 25],
+            }
+        )
         _render_and_parse(spec)
 
     def test_grouped_bar_chart_renders(self) -> None:
-        spec = _base_spec({
-            "type": "chart",
-            "chart_type": "grouped_bar",
-            "title": "Multi-Series",
-            "labels": ["Q1", "Q2"],
-            "series": {
-                "Product A": [100, 120],
-                "Product B": [80, 90],
-            },
-        })
+        spec = _base_spec(
+            {
+                "type": "chart",
+                "chart_type": "grouped_bar",
+                "title": "Multi-Series",
+                "labels": ["Q1", "Q2"],
+                "series": {
+                    "Product A": [100, 120],
+                    "Product B": [80, 90],
+                },
+            }
+        )
         _render_and_parse(spec)
 
 
@@ -417,18 +474,20 @@ class TestChartSmoke:
 
 class TestTwoColumnSmoke:
     def test_two_column_renders(self) -> None:
-        spec = _base_spec({
-            "type": "two_column",
-            "left_width": 0.5,
-            "right_width": 0.5,
-            "left": [
-                {"type": "paragraph", "text": "Left column content."},
-            ],
-            "right": [
-                {"type": "paragraph", "text": "Right column content."},
-            ],
-        })
-        result, reader = _render_and_parse(spec)
+        spec = _base_spec(
+            {
+                "type": "two_column",
+                "left_width": 0.5,
+                "right_width": 0.5,
+                "left": [
+                    {"type": "paragraph", "text": "Left column content."},
+                ],
+                "right": [
+                    {"type": "paragraph", "text": "Right column content."},
+                ],
+            }
+        )
+        _result, reader = _render_and_parse(spec)
         text = _extract_text(reader)
         # Both columns should appear somewhere in the PDF.
         assert "Left column" in text
@@ -445,8 +504,8 @@ class TestTwoColumnSmoke:
 class TestSpacerSmoke:
     def test_spacer_renders(self) -> None:
         spec = _base_spec({"type": "spacer", "height": 20})
-        result, reader = _render_and_parse(spec)
-        assert result["pages"] >= 1
+        _result, _reader = _render_and_parse(spec)
+        assert _result["pages"] >= 1
 
 
 # ── Page Break ────────────────────────────────────────────────────────
@@ -459,7 +518,7 @@ class TestPageBreakSmoke:
             {"type": "page_break"},
             {"type": "paragraph", "text": "Page two."},
         )
-        result, reader = _render_and_parse(spec)
+        _result, reader = _render_and_parse(spec)
         assert len(reader.pages) >= 2
 
 
@@ -468,13 +527,15 @@ class TestPageBreakSmoke:
 
 class TestDividerSmoke:
     def test_divider_renders(self) -> None:
-        spec = _base_spec({
-            "type": "divider",
-            "tone": "primary",
-            "thickness": 1.5,
-        })
-        result, reader = _render_and_parse(spec)
-        assert result["pages"] >= 1
+        spec = _base_spec(
+            {
+                "type": "divider",
+                "tone": "primary",
+                "thickness": 1.5,
+            }
+        )
+        _result, _reader = _render_and_parse(spec)
+        assert _result["pages"] >= 1
 
 
 # ── Badge ─────────────────────────────────────────────────────────────
@@ -482,12 +543,14 @@ class TestDividerSmoke:
 
 class TestBadgeSmoke:
     def test_badge_renders(self) -> None:
-        spec = _base_spec({
-            "type": "badge",
-            "label": "URGENT",
-            "tone": "danger",
-        })
-        result, reader = _render_and_parse(spec)
+        spec = _base_spec(
+            {
+                "type": "badge",
+                "label": "URGENT",
+                "tone": "danger",
+            }
+        )
+        _result, reader = _render_and_parse(spec)
         text = _extract_text(reader)
         assert "URGENT" in text
 
@@ -532,8 +595,13 @@ class TestCrossBlockSmoke:
                 {"type": "paragraph", "text": "Hello from the smoke test."},
             ],
         }
-        for tpl in ("analytics_report_v1", "business_report_v1", "compact_report_v1",
-                     "invoice_v1", "proposal_v1"):
+        for tpl in (
+            "analytics_report_v1",
+            "business_report_v1",
+            "compact_report_v1",
+            "invoice_v1",
+            "proposal_v1",
+        ):
             spec = {**minimal, "template": tpl}
             result = build_pdf(spec)
             assert result["success"] is True, f"Template {tpl} failed"

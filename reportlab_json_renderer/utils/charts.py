@@ -454,8 +454,7 @@ def render_chart(
     renderer = _CHART_RENDERERS.get(chart_type)
     if renderer is None:
         raise RenderError(
-            f"Unknown chart type {chart_type!r}. "
-            f"Supported: {', '.join(sorted(_CHART_RENDERERS))}"
+            f"Unknown chart type {chart_type!r}. Supported: {', '.join(sorted(_CHART_RENDERERS))}"
         )
 
     if chart_type in ("stacked_bar", "grouped_bar"):

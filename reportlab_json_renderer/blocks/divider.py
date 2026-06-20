@@ -26,7 +26,7 @@ class DividerBlock(BaseBlock):
         tone = block.get("tone", "primary")
         thickness = block.get("thickness", 1.0)
         line = _DividerLine(available_width, tone, thickness, theme)
-        return [Spacer(1, 4), line, Spacer(1, 4)]
+        return [Spacer(1, 6), line, Spacer(1, 6)]
 
 
 class _DividerLine(Flowable):

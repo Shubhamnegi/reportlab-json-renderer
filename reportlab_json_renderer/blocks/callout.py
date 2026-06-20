@@ -57,19 +57,21 @@ class CalloutBlock(BaseBlock):
             TableStyle(
                 [
                     ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor(bg_color)),
-                    ("LEFTPADDING", (0, 0), (-1, -1), 10),
+                    ("LEFTPADDING", (0, 0), (-1, -1), 14),
                     ("RIGHTPADDING", (0, 0), (-1, -1), 8),
                     ("TOPPADDING", (0, 0), (-1, -1), 6),
                     ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
                     (
-                        "LINEBEFORETABLE",
+                        "LINEBEFORE",
                         (0, 0),
                         (0, -1),
                         border_width,
                         colors.HexColor(border_color),
                     ),
+                    ("BOX", (0, 0), (-1, -1), 0.5, colors.HexColor(border_color)),
+                    ("ROUNDEDCORNERS", [4, 4, 4, 4]),
                 ]
             )
         )
 
-        return [Spacer(1, 4), table, Spacer(1, 6)]
+        return [Spacer(1, 6), table, Spacer(1, 8)]

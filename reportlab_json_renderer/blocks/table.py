@@ -38,6 +38,7 @@ class TableBlock(BaseBlock):
                 fontSize=11,
                 textColor=colors.HexColor(theme.resolve_tone("dark") if theme else "#2D2D2D"),
                 spaceAfter=6,
+                keepWithNext=True,
             )
             flowables.append(Paragraph(title, title_style))
 
@@ -64,7 +65,7 @@ class TableBlock(BaseBlock):
             "TableCell",
             fontName=theme.font_body if theme else "Helvetica",
             fontSize=9,
-            leading=12,
+            leading=14,
         )
         for row in rows:
             data_rows.append(
@@ -79,8 +80,10 @@ class TableBlock(BaseBlock):
 
         all_data = [header, *data_rows]
 
-        # Column widths.
-        col_widths = [col.get("width", 1.0 / len(columns)) * available_width for col in columns]
+        # Column widths — normalize so they sum to available_width.
+        raw_widths = [col.get("width", 1.0 / len(columns)) for col in columns]
+        total = sum(raw_widths) or 1.0
+        col_widths = [(w / total) * available_width for w in raw_widths]
 
         table = Table(all_data, colWidths=col_widths, hAlign="LEFT")
 
@@ -106,14 +109,15 @@ class TableBlock(BaseBlock):
             ),
         ]
 
-        # Striping.
+        # Striping via ROWBACKGROUNDS.
         if style == "striped":
             stripe_color = theme.resolve_tone("light") if theme else "#F5F5F5"
-            for i in range(1, len(all_data)):
-                if i % 2 == 0:
-                    style_cmds.append(
-                        ("BACKGROUND", (0, i), (-1, i), colors.HexColor(stripe_color))
-                    )
+            style_cmds.append(
+                ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor(stripe_color)])
+            )
+
+        # Repeat header row on multi-page tables.
+        style_cmds.append(("REPEATROWS", (0, 0), (-1, 0)))
 
         # Borders.
         style_cmds.append(

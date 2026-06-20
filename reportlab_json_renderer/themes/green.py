@@ -21,7 +21,7 @@ GREEN_THEME: Theme = build_theme(
     font_body="DejaVuSans",
     font_bold="DejaVuSans-Bold",
     font_mono="DejaVuSansMono",
-    table_header_bg="#E8F5E9",
+    table_header_bg="#C8E6C9",
     callout_border_width=3.0,
     kpi_card_padding=8.0,
 )

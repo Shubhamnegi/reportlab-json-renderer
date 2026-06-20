@@ -59,13 +59,13 @@ class KPIGridBlock(BaseBlock):
         col_width = (available_width - (num_cols - 1) * 6) / num_cols
         table = Table(rows, colWidths=[col_width] * num_cols, hAlign="LEFT")
 
-        # Style: light background per card.
+        # Style: light background per card with rounded corners.
         style_cmds = [
             ("VALIGN", (0, 0), (-1, -1), "TOP"),
-            ("LEFTPADDING", (0, 0), (-1, -1), 6),
-            ("RIGHTPADDING", (0, 0), (-1, -1), 6),
-            ("TOPPADDING", (0, 0), (-1, -1), 6),
-            ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
+            ("LEFTPADDING", (0, 0), (-1, -1), 8),
+            ("RIGHTPADDING", (0, 0), (-1, -1), 8),
+            ("TOPPADDING", (0, 0), (-1, -1), 8),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 8),
             (
                 "BACKGROUND",
                 (0, 0),
@@ -77,6 +77,14 @@ class KPIGridBlock(BaseBlock):
                 (0, 0),
                 (-1, -1),
                 0.5,
+                colors.HexColor(theme.resolve_tone("primary") if theme else "#7CB518"),
+            ),
+            ("ROUNDEDCORNERS", [4, 4, 4, 4]),
+            (
+                "LINEBEFORE",
+                (0, 0),
+                (0, -1),
+                3,
                 colors.HexColor(theme.resolve_tone("primary") if theme else "#7CB518"),
             ),
         ]

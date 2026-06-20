@@ -105,8 +105,7 @@ def _post_validate(spec: ReportSpec) -> list[str]:
                 total_width = sum(c.get("width", 0.2) for c in columns)
                 if abs(total_width - 1.0) > 0.15:
                     warnings.append(
-                        f"Block {idx}: table column widths sum to {total_width:.2f}, "
-                        f"expected ~1.0"
+                        f"Block {idx}: table column widths sum to {total_width:.2f}, expected ~1.0"
                     )
 
         # Check table row keys match columns.
