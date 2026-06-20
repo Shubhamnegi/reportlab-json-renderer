@@ -95,6 +95,7 @@ class RichTextBlock(BaseBlock):
             fontSize=10,
             leading=14,
             textColor=colors.HexColor(theme.resolve_tone("dark") if theme else "#2D2D2D"),
+            spaceBefore=2,
             spaceAfter=6,
         )
 

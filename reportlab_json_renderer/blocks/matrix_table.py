@@ -37,6 +37,7 @@ class MatrixTableBlock(BaseBlock):
                 fontSize=11,
                 textColor=colors.HexColor(theme.resolve_tone("dark") if theme else "#2D2D2D"),
                 spaceAfter=6,
+                keepWithNext=True,
             )
             flowables.append(Paragraph(title, title_style))
 
@@ -52,7 +53,7 @@ class MatrixTableBlock(BaseBlock):
             "MatrixCell",
             fontName=theme.font_body if theme else "Helvetica",
             fontSize=9,
-            leading=12,
+            leading=14,
         )
 
         header = [
@@ -89,16 +90,14 @@ class MatrixTableBlock(BaseBlock):
             ),
         ]
 
-        for i in range(1, len(all_data)):
-            if i % 2 == 0:
-                style_cmds.append(
-                    (
-                        "BACKGROUND",
-                        (0, i),
-                        (-1, i),
-                        colors.HexColor(theme.resolve_tone("light") if theme else "#F5F5F5"),
-                    )
-                )
+        # Striping via ROWBACKGROUNDS.
+        stripe_color = theme.resolve_tone("light") if theme else "#F5F5F5"
+        style_cmds.append(
+            ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor(stripe_color)])
+        )
+
+        # Repeat header row on multi-page tables.
+        style_cmds.append(("REPEATROWS", (0, 0), (-1, 0)))
 
         table.setStyle(TableStyle(style_cmds))
 

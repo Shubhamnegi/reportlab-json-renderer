@@ -36,6 +36,7 @@ class RecommendationsBlock(BaseBlock):
                 fontSize=12,
                 textColor=colors.HexColor(theme.resolve_tone("dark") if theme else "#2D2D2D"),
                 spaceAfter=8,
+                keepWithNext=True,
             )
             flowables.append(Paragraph(title, title_style))
 
@@ -52,7 +53,7 @@ class RecommendationsBlock(BaseBlock):
             "RecsCell",
             fontName=theme.font_body if theme else "Helvetica",
             fontSize=9,
-            leading=12,
+            leading=14,
         )
 
         header = [Paragraph(f"<b>{h}</b>", header_style) for h in headers]
@@ -67,7 +68,10 @@ class RecommendationsBlock(BaseBlock):
         ]
 
         all_data = [header, *data_rows]
-        col_widths = [available_width * w for w in [0.15, 0.40, 0.20, 0.25]]
+        # Column widths — normalize ratios so they sum to available_width.
+        default_ratios = [0.15, 0.40, 0.20, 0.25]
+        total = sum(default_ratios) or 1.0
+        col_widths = [(r / total) * available_width for r in default_ratios]
 
         table = Table(all_data, colWidths=col_widths, hAlign="LEFT")
 
@@ -90,6 +94,8 @@ class RecommendationsBlock(BaseBlock):
                 0.5,
                 colors.HexColor(theme.resolve_tone("primary") if theme else "#7CB518"),
             ),
+            ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor(theme.resolve_tone("light") if theme else "#F5F5F5")]),
+            ("REPEATROWS", (0, 0), (-1, 0)),
         ]
 
         table.setStyle(TableStyle(style_cmds))

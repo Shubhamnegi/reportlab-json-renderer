@@ -45,9 +45,13 @@ class ParagraphBlock(BaseBlock):
             "Paragraph",
             fontName=font_name,
             fontSize=font_size,
-            leading=font_size * 1.4,
+            leading=font_size * 1.5 if style_name == "lead" else font_size * 1.4,
             textColor=colors.HexColor(text_color),
-            spaceAfter=6,
+            spaceBefore=2,
+            spaceAfter=10 if style_name == "lead" else (4 if style_name == "caption" else 6),
         )
+
+        if style_name == "caption":
+            style.spaceBefore = 2
 
         return [Paragraph(text, style)]

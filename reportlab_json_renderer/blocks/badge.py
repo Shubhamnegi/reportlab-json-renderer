@@ -6,7 +6,7 @@ from typing import Any
 
 from reportlab.lib import colors
 from reportlab.lib.styles import ParagraphStyle
-from reportlab.platypus import Flowable, Paragraph
+from reportlab.platypus import Flowable, Paragraph, Table, TableStyle
 
 from reportlab_json_renderer.blocks.base import BaseBlock
 from reportlab_json_renderer.utils.text import safe_paragraph_text
@@ -31,15 +31,30 @@ class BadgeBlock(BaseBlock):
         bg_color = theme.resolve_tone(tone) if theme else "#7CB518"
         text_color = "#FFFFFF"
 
-        html = f'<font size="8" color="{text_color}">' f"<b>{label}</b>" f"</font>"
+        html = f'<font size="8" color="{text_color}"><b>{label}</b></font>'
 
         style = ParagraphStyle(
-            "Badge",
+            "BadgeInner",
             fontName=theme.font_bold if theme else "Helvetica-Bold",
             fontSize=8,
             textColor=colors.HexColor(text_color),
-            backColor=colors.HexColor(bg_color),
-            spaceAfter=4,
+            spaceAfter=0,
         )
 
-        return [Paragraph(html, style)]
+        para = Paragraph(html, style)
+        table = Table([[para]], colWidths=[available_width * 0.3])
+        table.setStyle(
+            TableStyle(
+                [
+                    ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor(bg_color)),
+                    ("LEFTPADDING", (0, 0), (-1, -1), 8),
+                    ("RIGHTPADDING", (0, 0), (-1, -1), 8),
+                    ("TOPPADDING", (0, 0), (-1, -1), 3),
+                    ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
+                    ("ROUNDEDCORNERS", [4, 4, 4, 4]),
+                    ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+                ]
+            )
+        )
+
+        return [table]

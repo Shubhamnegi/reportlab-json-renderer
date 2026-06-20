@@ -54,8 +54,8 @@ class InsightListBlock(BaseBlock):
                 fontSize=10,
                 leading=14,
                 textColor=colors.HexColor(theme.resolve_tone("dark") if theme else "#2D2D2D"),
-                spaceBefore=4,
-                spaceAfter=4,
+                spaceBefore=6,
+                spaceAfter=6,
             )
             flowables.append(Paragraph(html, style))
 

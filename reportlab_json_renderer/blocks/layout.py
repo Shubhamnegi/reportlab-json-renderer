@@ -56,8 +56,8 @@ class TwoColumnBlock(BaseBlock):
             )
 
         # Combine into a table.
-        left_cell = left_flowables if left_flowables else [Spacer(1, 12)]
-        right_cell = right_flowables if right_flowables else [Spacer(1, 12)]
+        left_cell = left_flowables if left_flowables else [Spacer(1, 20)]
+        right_cell = right_flowables if right_flowables else [Spacer(1, 20)]
 
         table = Table(
             [[left_cell, right_cell]],
@@ -72,6 +72,8 @@ class TwoColumnBlock(BaseBlock):
                     ("RIGHTPADDING", (0, 0), (-1, -1), 4),
                     ("TOPPADDING", (0, 0), (-1, -1), 0),
                     ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+                    ("RIGHTPADDING", (0, 0), (0, -1), 8),
+                    ("LEFTPADDING", (1, 0), (1, -1), 8),
                 ]
             )
         )

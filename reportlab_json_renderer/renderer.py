@@ -237,6 +237,10 @@ def _build_document(
 
         # Header.
         if header_enabled:
+            # Subtle header background.
+            canvas.setFillColor(_hex_color(theme.resolve_tone("light") if theme else "#F5F5F5"))
+            canvas.rect(0, page_h - top_margin - 5, page_w, top_margin + 5, fill=True, stroke=False)
+
             canvas.setFont(theme.font_bold if theme else "Helvetica-Bold", 8)
             canvas.setFillColor(_hex_color(theme.resolve_tone("muted") if theme else "#757575"))
             entity = metadata.entity_name if metadata and metadata.entity_name else ""
@@ -258,16 +262,21 @@ def _build_document(
 
         # Footer.
         if footer_enabled:
-            canvas.setFont(theme.font_body if theme else "Helvetica", 7)
+            # Footer separator line.
+            canvas.setStrokeColor(_hex_color(theme.resolve_tone("primary") if theme else "#7CB518"))
+            canvas.setLineWidth(0.5)
+            canvas.line(left_margin, bottom_margin, page_w - right_margin, bottom_margin)
+
+            canvas.setFont(theme.font_body if theme else "Helvetica", 8)
             canvas.setFillColor(_hex_color(theme.resolve_tone("muted") if theme else "#757575"))
             if show_page_num:
                 canvas.drawCentredString(
-                    page_w / 2, bottom_margin - 10, f"Page {canvas.getPageNumber()}"
+                    page_w / 2, bottom_margin - 12, f"Page {canvas.getPageNumber()}"
                 )
 
             powered_by = metadata.powered_by if metadata and metadata.powered_by else ""
             if powered_by:
-                canvas.drawRightString(page_w - right_margin, bottom_margin - 10, powered_by)
+                canvas.drawRightString(page_w - right_margin, bottom_margin - 12, powered_by)
 
         canvas.restoreState()
 
