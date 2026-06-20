@@ -80,7 +80,13 @@ class KPIGridBlock(BaseBlock):
                 colors.HexColor(theme.resolve_tone("primary") if theme else "#7CB518"),
             ),
             ("ROUNDEDCORNERS", [4, 4, 4, 4]),
-            ("LINEBEFORE", (0, 0), (0, -1), 3, colors.HexColor(theme.resolve_tone("primary") if theme else "#7CB518")),
+            (
+                "LINEBEFORE",
+                (0, 0),
+                (0, -1),
+                3,
+                colors.HexColor(theme.resolve_tone("primary") if theme else "#7CB518"),
+            ),
         ]
         table.setStyle(TableStyle(style_cmds))
 

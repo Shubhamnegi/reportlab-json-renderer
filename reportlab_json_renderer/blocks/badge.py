@@ -42,6 +42,8 @@ class BadgeBlock(BaseBlock):
         )
 
         para = Paragraph(html, style)
+        # Constrain badge to 30% of available width for compact inline appearance.
+        # Long text may clip; callers should keep badge labels short.
         table = Table([[para]], colWidths=[available_width * 0.3])
         table.setStyle(
             TableStyle(

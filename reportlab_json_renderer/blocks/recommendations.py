@@ -94,7 +94,15 @@ class RecommendationsBlock(BaseBlock):
                 0.5,
                 colors.HexColor(theme.resolve_tone("primary") if theme else "#7CB518"),
             ),
-            ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor(theme.resolve_tone("light") if theme else "#F5F5F5")]),
+            (
+                "ROWBACKGROUNDS",
+                (0, 1),
+                (-1, -1),
+                [
+                    colors.white,
+                    colors.HexColor(theme.resolve_tone("light") if theme else "#F5F5F5"),
+                ],
+            ),
             ("REPEATROWS", (0, 0), (-1, 0)),
         ]
 

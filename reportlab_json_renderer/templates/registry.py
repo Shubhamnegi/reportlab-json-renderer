@@ -68,7 +68,7 @@ def register_template(template: Template, *, overwrite: bool = False) -> None:
     registry = _ensure_builtins()
     if template.name in registry and not overwrite:
         raise ValueError(
-            f"Template {template.name!r} already registered. " f"Use overwrite=True to replace it."
+            f"Template {template.name!r} already registered. Use overwrite=True to replace it."
         )
     registry[template.name] = template
 

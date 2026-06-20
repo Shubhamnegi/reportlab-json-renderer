@@ -239,7 +239,9 @@ def _build_document(
         if header_enabled:
             # Subtle header background.
             canvas.setFillColor(_hex_color(theme.resolve_tone("light") if theme else "#F5F5F5"))
-            canvas.rect(0, page_h - top_margin - 5, page_w, top_margin + 5, fill=True, stroke=False)
+            canvas.rect(
+                0, page_h - top_margin - 5, page_w, top_margin + 5, fill=True, stroke=False
+            )
 
             canvas.setFont(theme.font_bold if theme else "Helvetica-Bold", 8)
             canvas.setFillColor(_hex_color(theme.resolve_tone("muted") if theme else "#757575"))
@@ -263,7 +265,9 @@ def _build_document(
         # Footer.
         if footer_enabled:
             # Footer separator line.
-            canvas.setStrokeColor(_hex_color(theme.resolve_tone("primary") if theme else "#7CB518"))
+            canvas.setStrokeColor(
+                _hex_color(theme.resolve_tone("primary") if theme else "#7CB518")
+            )
             canvas.setLineWidth(0.5)
             canvas.line(left_margin, bottom_margin, page_w - right_margin, bottom_margin)
 

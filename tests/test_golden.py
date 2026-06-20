@@ -63,12 +63,12 @@ class TestTemplateGolden:
 
         assert result["success"] is True
         assert out.exists()
-        assert (
-            out.stat().st_size >= min_bytes
-        ), f"{fixture}: {out.stat().st_size} bytes < {min_bytes} minimum"
-        assert (
-            result["pages"] >= min_pages
-        ), f"{fixture}: {result['pages']} pages < {min_pages} minimum"
+        assert out.stat().st_size >= min_bytes, (
+            f"{fixture}: {out.stat().st_size} bytes < {min_bytes} minimum"
+        )
+        assert result["pages"] >= min_pages, (
+            f"{fixture}: {result['pages']} pages < {min_pages} minimum"
+        )
 
     def test_result_metadata(
         self, tmp_path: Path, fixture: str, min_pages: int, min_bytes: int
@@ -189,9 +189,9 @@ class TestBytesOnlyRendering:
         # Size may differ slightly due to metadata, but should be in the same ballpark
         file_size = out.stat().st_size
         bytes_size = len(result_bytes["bytes"])
-        assert (
-            abs(file_size - bytes_size) < file_size * 0.1
-        ), f"File ({file_size}) and bytes ({bytes_size}) sizes differ significantly"
+        assert abs(file_size - bytes_size) < file_size * 0.1, (
+            f"File ({file_size}) and bytes ({bytes_size}) sizes differ significantly"
+        )
 
 
 # ── Parsed PDF verification ──────────────────────────────────────────────

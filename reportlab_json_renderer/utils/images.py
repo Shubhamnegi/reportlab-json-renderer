@@ -94,7 +94,7 @@ def load_local_image(
     supported = {".png", ".jpg", ".jpeg", ".gif", ".bmp", ".tiff", ".tif", ".webp"}
     if p.suffix.lower() not in supported:
         raise RenderError(
-            f"Unsupported image format {p.suffix!r}. " f"Supported: {', '.join(sorted(supported))}"
+            f"Unsupported image format {p.suffix!r}. Supported: {', '.join(sorted(supported))}"
         )
 
     # Verify the file can actually be opened as an image.
@@ -107,7 +107,7 @@ def load_local_image(
     width, height = get_image_dimensions(p)
     if width > MAX_IMAGE_DIMENSION or height > MAX_IMAGE_DIMENSION:
         raise RenderError(
-            f"Image dimensions exceed limit: {width}x{height} > " f"{MAX_IMAGE_DIMENSION}px"
+            f"Image dimensions exceed limit: {width}x{height} > {MAX_IMAGE_DIMENSION}px"
         )
     if width * height > MAX_IMAGE_PIXELS:
         raise RenderError(

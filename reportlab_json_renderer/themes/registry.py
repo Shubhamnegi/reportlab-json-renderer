@@ -66,7 +66,7 @@ def register_theme(theme: Theme, *, overwrite: bool = False) -> None:
     registry = _ensure_builtins()
     if theme.name in registry and not overwrite:
         raise ValueError(
-            f"Theme {theme.name!r} already registered. " f"Use overwrite=True to replace it."
+            f"Theme {theme.name!r} already registered. Use overwrite=True to replace it."
         )
     registry[theme.name] = theme
 

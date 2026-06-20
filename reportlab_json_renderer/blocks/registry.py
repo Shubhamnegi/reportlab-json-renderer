@@ -48,7 +48,7 @@ def get_renderer(block_type: str) -> BaseBlock:
     if block_type not in _REGISTRY:
         available = ", ".join(sorted(_REGISTRY))
         raise RenderError(
-            f"No renderer for block type {block_type!r}. " f"Registered types: {available}"
+            f"No renderer for block type {block_type!r}. Registered types: {available}"
         )
     return _REGISTRY[block_type]
 
