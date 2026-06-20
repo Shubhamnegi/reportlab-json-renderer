@@ -82,6 +82,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] — 2026-06-20
+
+### Added
+
+#### New Block Renderers (7 types)
+- `comparison_card` — side-by-side comparison of two items with optional delta indicators.
+- `metric_delta` — single metric with value, delta/change indicator, and subtitle.
+- `timeline` — vertical timeline with dated milestones and descriptions.
+- `milestone_list` — project milestone tracking with status indicators.
+- `risk_register` — risk register table with impact, likelihood, and mitigation columns.
+- `status_table` — component status tracking with status badges.
+- `markdown_block` — rich text via standard Markdown with code block support.
+
+#### Schema
+- Added Pydantic models for all 7 new block types with strict validation.
+- Updated `Block` union type and `SUPPORTED_BLOCK_TYPES` registry.
+
+#### Testing
+- 62 block renderer tests including edge-case coverage for all new block types.
+- Test PDF demonstrating all 7 new components with sample data.
+
+#### Documentation
+- Updated implementation checklist marking all 7 new block types as complete.
+- Updated component guide with usage documentation for new blocks.
+
+### Fixed
+- Prevented `metric_delta` overlap for large values by adjusting font sizing and line leading.
+
 ## [0.1.1] — 2026-06-20
 
 ### Fixed

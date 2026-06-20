@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Generate a test PDF exercising all 7 new block components."""
 
-import json
 import sys
 import zipfile
 from pathlib import Path
@@ -79,10 +78,30 @@ SPEC = {
             "type": "timeline",
             "title": "Project Milestones",
             "items": [
-                {"date": "2026-01-15", "title": "Kickoff", "description": "Project planning completed", "tone": "primary"},
-                {"date": "2026-03-01", "title": "Alpha Release", "description": "Internal testing phase", "tone": "info"},
-                {"date": "2026-05-10", "title": "Beta Launch", "description": "Public beta with 500 users", "tone": "warning"},
-                {"date": "2026-06-20", "title": "GA Release", "description": "Full production rollout", "tone": "success"},
+                {
+                    "date": "2026-01-15",
+                    "title": "Kickoff",
+                    "description": "Project planning completed",
+                    "tone": "primary",
+                },
+                {
+                    "date": "2026-03-01",
+                    "title": "Alpha Release",
+                    "description": "Internal testing phase",
+                    "tone": "info",
+                },
+                {
+                    "date": "2026-05-10",
+                    "title": "Beta Launch",
+                    "description": "Public beta with 500 users",
+                    "tone": "warning",
+                },
+                {
+                    "date": "2026-06-20",
+                    "title": "GA Release",
+                    "description": "Full production rollout",
+                    "tone": "success",
+                },
             ],
         },
         # ── milestone_list ────────────────────────────────────────
@@ -95,10 +114,30 @@ SPEC = {
             "type": "milestone_list",
             "title": "Release Milestones",
             "items": [
-                {"title": "Schema Validation", "description": "Pydantic models finalized", "status": "completed", "date": "2026-01-20"},
-                {"title": "Core Renderers", "description": "All block types implemented", "status": "completed", "date": "2026-03-15"},
-                {"title": "Documentation", "description": "API docs and examples", "status": "in_progress", "date": "2026-06-01"},
-                {"title": "Performance Tuning", "description": "Optimize render pipeline", "status": "pending", "date": "2026-07-01"},
+                {
+                    "title": "Schema Validation",
+                    "description": "Pydantic models finalized",
+                    "status": "completed",
+                    "date": "2026-01-20",
+                },
+                {
+                    "title": "Core Renderers",
+                    "description": "All block types implemented",
+                    "status": "completed",
+                    "date": "2026-03-15",
+                },
+                {
+                    "title": "Documentation",
+                    "description": "API docs and examples",
+                    "status": "in_progress",
+                    "date": "2026-06-01",
+                },
+                {
+                    "title": "Performance Tuning",
+                    "description": "Optimize render pipeline",
+                    "status": "pending",
+                    "date": "2026-07-01",
+                },
             ],
         },
         {"type": "page_break"},
@@ -118,9 +157,24 @@ SPEC = {
                 {"key": "mitigation", "label": "Mitigation", "width": 0.35},
             ],
             "rows": [
-                {"risk": "Schema instability", "impact": "High", "likelihood": "Medium", "mitigation": "Strict validation, versioning"},
-                {"risk": "Render failures", "impact": "High", "likelihood": "Low", "mitigation": "Comprehensive test suite"},
-                {"risk": "Dependency drift", "impact": "Medium", "likelihood": "Medium", "mitigation": "Pin versions, Dependabot"},
+                {
+                    "risk": "Schema instability",
+                    "impact": "High",
+                    "likelihood": "Medium",
+                    "mitigation": "Strict validation, versioning",
+                },
+                {
+                    "risk": "Render failures",
+                    "impact": "High",
+                    "likelihood": "Low",
+                    "mitigation": "Comprehensive test suite",
+                },
+                {
+                    "risk": "Dependency drift",
+                    "impact": "Medium",
+                    "likelihood": "Medium",
+                    "mitigation": "Pin versions, Dependabot",
+                },
             ],
         },
         # ── status_table ──────────────────────────────────────────
@@ -139,13 +193,48 @@ SPEC = {
                 {"key": "notes", "label": "Notes", "width": 0.2},
             ],
             "rows": [
-                {"component": "comparison_card", "status": "complete", "owner": "Python Dev", "notes": "Merged"},
-                {"component": "metric_delta", "status": "complete", "owner": "Python Dev", "notes": "Merged"},
-                {"component": "timeline", "status": "complete", "owner": "Python Dev", "notes": "Merged"},
-                {"component": "milestone_list", "status": "complete", "owner": "Python Dev", "notes": "Merged"},
-                {"component": "risk_register", "status": "complete", "owner": "Python Dev", "notes": "Merged"},
-                {"component": "status_table", "status": "complete", "owner": "Python Dev", "notes": "Merged"},
-                {"component": "markdown_block", "status": "complete", "owner": "Python Dev", "notes": "Merged"},
+                {
+                    "component": "comparison_card",
+                    "status": "complete",
+                    "owner": "Python Dev",
+                    "notes": "Merged",
+                },
+                {
+                    "component": "metric_delta",
+                    "status": "complete",
+                    "owner": "Python Dev",
+                    "notes": "Merged",
+                },
+                {
+                    "component": "timeline",
+                    "status": "complete",
+                    "owner": "Python Dev",
+                    "notes": "Merged",
+                },
+                {
+                    "component": "milestone_list",
+                    "status": "complete",
+                    "owner": "Python Dev",
+                    "notes": "Merged",
+                },
+                {
+                    "component": "risk_register",
+                    "status": "complete",
+                    "owner": "Python Dev",
+                    "notes": "Merged",
+                },
+                {
+                    "component": "status_table",
+                    "status": "complete",
+                    "owner": "Python Dev",
+                    "notes": "Merged",
+                },
+                {
+                    "component": "markdown_block",
+                    "status": "complete",
+                    "owner": "Python Dev",
+                    "notes": "Merged",
+                },
             ],
         },
         {"type": "page_break"},
@@ -171,7 +260,7 @@ SPEC = {
                 "### Migration\n\n"
                 "All new blocks are **backward compatible**. No existing specs will break.\n\n"
                 "```python\n"
-                'from reportlab_json_renderer import render_pdf\n'
+                "from reportlab_json_renderer import render_pdf\n"
                 'result = render_pdf(spec, output_path="report.pdf")\n'
                 "print(result['pages'])\n"
                 "```\n\n"
