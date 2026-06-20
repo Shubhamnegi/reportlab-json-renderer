@@ -46,7 +46,9 @@ class MetricDeltaBlock(BaseBlock):
         if label:
             inner_parts.append(f'<font size="9" color="{muted_hex}">{label}</font><br/>')
         if value:
-            inner_parts.append(f'<font size="20"><b>{value}</b></font>')
+            # Use slightly smaller font for very long values to prevent overlap
+            value_font_size = 20 if len(str(value)) <= 10 else 16
+            inner_parts.append(f'<font size="{value_font_size}"><b>{value}</b></font>')
         if delta:
             delta_color = theme.resolve_tone(delta_tone) if theme and delta_tone else dark_hex
             inner_parts.append(f'<br/><font size="10" color="{delta_color}">{delta}</font>')
@@ -59,7 +61,7 @@ class MetricDeltaBlock(BaseBlock):
             "MetricDeltaText",
             fontName=theme.font_body if theme else "Helvetica",
             fontSize=10,
-            leading=14,
+            leading=16,
             textColor=colors.HexColor(dark_hex),
         )
 
