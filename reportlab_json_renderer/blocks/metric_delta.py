@@ -15,6 +15,7 @@ from reportlab.platypus import Flowable, Paragraph, Spacer, Table, TableStyle
 from reportlab_json_renderer.blocks.base import BaseBlock
 from reportlab_json_renderer.utils.colors import tone_tint
 from reportlab_json_renderer.utils.text import safe_paragraph_text
+from reportlab_json_renderer.visual.constants import BORDER_MUTED
 
 
 class MetricDeltaBlock(BaseBlock):
@@ -76,7 +77,8 @@ class MetricDeltaBlock(BaseBlock):
                     ("RIGHTPADDING", (0, 0), (-1, -1), 14),
                     ("TOPPADDING", (0, 0), (-1, -1), 10),
                     ("BOTTOMPADDING", (0, 0), (-1, -1), 10),
-                    ("BOX", (0, 0), (-1, -1), 2, colors.HexColor(border_color)),
+                    ("BOX", (0, 0), (-1, -1), 0.7, colors.HexColor(BORDER_MUTED)),
+                    ("LINEBEFORE", (0, 0), (0, -1), 3, colors.HexColor(border_color)),
                     ("ROUNDEDCORNERS", [4, 4, 4, 4]),
                 ]
             )

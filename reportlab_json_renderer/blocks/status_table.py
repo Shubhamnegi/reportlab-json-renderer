@@ -13,6 +13,12 @@ from reportlab.platypus import Flowable, Paragraph, Spacer, Table, TableStyle
 
 from reportlab_json_renderer.blocks.base import BaseBlock
 from reportlab_json_renderer.utils.text import safe_paragraph_text
+from reportlab_json_renderer.visual.constants import TABLE_HEADER_TEXT
+from reportlab_json_renderer.visual.tables import (
+    table_grid_color,
+    table_header_background,
+    table_stripe_colors,
+)
 
 
 class StatusTableBlock(BaseBlock):
@@ -63,6 +69,7 @@ class StatusTableBlock(BaseBlock):
             "StatusTableHeader",
             fontName=theme.font_bold if theme else "Helvetica-Bold",
             fontSize=9,
+            textColor=colors.HexColor(TABLE_HEADER_TEXT),
         )
         cell_style = ParagraphStyle(
             "StatusTableCell",
@@ -131,6 +138,7 @@ class StatusTableBlock(BaseBlock):
             col_widths.append(available_width * width_pct)
 
         table = Table(all_data, colWidths=col_widths, hAlign="LEFT")
+        header_bg = table_header_background(theme)
 
         style_cmds = [
             ("VALIGN", (0, 0), (-1, -1), "TOP"),
@@ -142,22 +150,19 @@ class StatusTableBlock(BaseBlock):
                 "BACKGROUND",
                 (0, 0),
                 (-1, 0),
-                colors.HexColor(theme.table_header_bg if theme else "#F0F0F0"),
+                colors.HexColor(header_bg),
             ),
             (
                 "GRID",
                 (0, 0),
                 (-1, -1),
                 0.5,
-                colors.HexColor(theme.resolve_tone("primary") if theme else "#7CB518"),
+                table_grid_color(),
             ),
         ]
 
         # Striping via ROWBACKGROUNDS.
-        stripe_color = theme.resolve_tone("light") if theme else "#F5F5F5"
-        style_cmds.append(
-            ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor(stripe_color)])
-        )
+        style_cmds.append(("ROWBACKGROUNDS", (0, 1), (-1, -1), table_stripe_colors(theme)))
 
         # Repeat header row on multi-page tables.
         style_cmds.append(("REPEATROWS", (0, 0), (-1, 0)))

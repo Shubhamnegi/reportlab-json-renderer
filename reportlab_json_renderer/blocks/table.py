@@ -10,6 +10,11 @@ from reportlab.platypus import Flowable, Paragraph, Spacer, Table, TableStyle
 
 from reportlab_json_renderer.blocks.base import BaseBlock
 from reportlab_json_renderer.utils.text import safe_paragraph_text
+from reportlab_json_renderer.visual.constants import (
+    BORDER_MUTED,
+    TABLE_HEADER_TEXT,
+)
+from reportlab_json_renderer.visual.tables import table_header_background, table_stripe_colors
 
 
 class TableBlock(BaseBlock):
@@ -46,6 +51,7 @@ class TableBlock(BaseBlock):
             return flowables
 
         # Build header row.
+        header_bg = table_header_background(theme)
         header = [
             Paragraph(
                 f"<b>{safe_paragraph_text(str(col.get('label', '')))}</b>",
@@ -53,7 +59,7 @@ class TableBlock(BaseBlock):
                     "TableHeader",
                     fontName=theme.font_bold if theme else "Helvetica-Bold",
                     fontSize=9,
-                    textColor=colors.HexColor(theme.resolve_tone("dark") if theme else "#2D2D2D"),
+                    textColor=colors.HexColor(TABLE_HEADER_TEXT),
                 ),
             )
             for col in columns
@@ -98,23 +104,20 @@ class TableBlock(BaseBlock):
                 "BACKGROUND",
                 (0, 0),
                 (-1, 0),
-                colors.HexColor(theme.table_header_bg if theme else "#F0F0F0"),
+                colors.HexColor(header_bg),
             ),
             (
                 "LINEBELOW",
                 (0, 0),
                 (-1, 0),
-                1,
-                colors.HexColor(theme.resolve_tone("primary") if theme else "#7CB518"),
+                0.8,
+                colors.HexColor(header_bg),
             ),
         ]
 
         # Striping via ROWBACKGROUNDS.
-        if style == "striped":
-            stripe_color = theme.resolve_tone("light") if theme else "#F5F5F5"
-            style_cmds.append(
-                ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor(stripe_color)])
-            )
+        if style != "plain":
+            style_cmds.append(("ROWBACKGROUNDS", (0, 1), (-1, -1), table_stripe_colors(theme)))
 
         # Repeat header row on multi-page tables.
         style_cmds.append(("REPEATROWS", (0, 0), (-1, 0)))
@@ -126,7 +129,7 @@ class TableBlock(BaseBlock):
                 (0, 0),
                 (-1, -1),
                 0.5,
-                colors.HexColor(theme.resolve_tone("primary") if theme else "#7CB518"),
+                colors.HexColor(BORDER_MUTED),
             )
         )
 

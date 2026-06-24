@@ -10,6 +10,7 @@ from reportlab.platypus import Flowable, Paragraph, Spacer
 
 from reportlab_json_renderer.blocks.base import BaseBlock
 from reportlab_json_renderer.utils.text import safe_paragraph_text
+from reportlab_json_renderer.visual.constants import LIGHT_RULE
 
 
 class SectionHeaderBlock(BaseBlock):
@@ -60,7 +61,7 @@ class _SectionLine(Flowable):
         self._theme = theme
 
     def draw(self) -> None:
-        hex_color = self._theme.resolve_tone("primary") if self._theme else "#7CB518"
+        hex_color = LIGHT_RULE
         self.canv.setStrokeColor(colors.HexColor(hex_color))
-        self.canv.setLineWidth(0.5)
+        self.canv.setLineWidth(0.7)
         self.canv.line(0, 0, self.width, 0)

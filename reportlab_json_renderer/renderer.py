@@ -16,9 +16,9 @@ from typing import Any
 from reportlab.lib.pagesizes import A3, A4, LEGAL, LETTER
 from reportlab.pdfgen.canvas import Canvas
 from reportlab.platypus import (
+    BaseDocTemplate,
     Frame,
     PageTemplate,
-    SimpleDocTemplate,
     Spacer,
 )
 
@@ -30,6 +30,12 @@ from reportlab_json_renderer.utils.errors import RenderError, ValidationError
 from reportlab_json_renderer.utils.fonts import ensure_unicode_fonts
 from reportlab_json_renderer.utils.images import load_local_image
 from reportlab_json_renderer.utils.units import cm_to_pt
+from reportlab_json_renderer.visual.constants import (
+    FOOTER_TEXT,
+    HEADER_BAND_HEIGHT,
+    HEADER_RULE_WIDTH,
+    LIGHT_RULE,
+)
 
 # Page size mapping.
 _PAGE_SIZES: dict[str, tuple[float, float]] = {
@@ -202,8 +208,8 @@ def _build_document(
     footer_config: Any,
     metadata: Any,
     theme: Any,
-) -> SimpleDocTemplate:
-    """Create a ReportLab SimpleDocTemplate with header/footer page templates."""
+) -> BaseDocTemplate:
+    """Create a ReportLab document with header/footer page templates."""
     header_enabled = header_config.enabled if header_config else True
     footer_enabled = footer_config.enabled if footer_config else True
     show_page_num = footer_config.show_page_number if footer_config else True
@@ -212,7 +218,7 @@ def _build_document(
     header_h = 30.0 if header_enabled else 0.0
     footer_h = 25.0 if footer_enabled else 0.0
 
-    doc = SimpleDocTemplate(
+    doc = BaseDocTemplate(
         buf,
         pagesize=page_size,
         leftMargin=left_margin,
@@ -237,42 +243,41 @@ def _build_document(
 
         # Header.
         if header_enabled:
-            # Subtle header background.
-            canvas.setFillColor(_hex_color(theme.resolve_tone("light") if theme else "#F5F5F5"))
+            canvas.setFillColor(_hex_color(theme.resolve_tone("primary") if theme else "#7CB518"))
             canvas.rect(
-                0, page_h - top_margin - 5, page_w, top_margin + 5, fill=True, stroke=False
+                0,
+                page_h - HEADER_BAND_HEIGHT,
+                page_w,
+                HEADER_BAND_HEIGHT,
+                fill=True,
+                stroke=False,
             )
 
             canvas.setFont(theme.font_bold if theme else "Helvetica-Bold", 8)
-            canvas.setFillColor(_hex_color(theme.resolve_tone("muted") if theme else "#757575"))
+            canvas.setFillColor(_hex_color(theme.resolve_tone("muted") if theme else FOOTER_TEXT))
             entity = metadata.entity_name if metadata and metadata.entity_name else ""
             period = metadata.period if metadata and metadata.period else ""
-            canvas.drawString(left_margin, page_h - top_margin + 10, entity)
-            canvas.drawRightString(page_w - right_margin, page_h - top_margin + 10, period)
+            canvas.drawString(left_margin, page_h - top_margin + 4, entity)
+            canvas.drawRightString(page_w - right_margin, page_h - top_margin + 4, period)
 
-            # Header line.
-            canvas.setStrokeColor(
-                _hex_color(theme.resolve_tone("primary") if theme else "#7CB518")
-            )
-            canvas.setLineWidth(0.5)
+            canvas.setStrokeColor(_hex_color(LIGHT_RULE))
+            canvas.setLineWidth(HEADER_RULE_WIDTH)
             canvas.line(
                 left_margin,
-                page_h - top_margin + 5,
+                page_h - top_margin - 2,
                 page_w - right_margin,
-                page_h - top_margin + 5,
+                page_h - top_margin - 2,
             )
 
         # Footer.
         if footer_enabled:
             # Footer separator line.
-            canvas.setStrokeColor(
-                _hex_color(theme.resolve_tone("primary") if theme else "#7CB518")
-            )
+            canvas.setStrokeColor(_hex_color(LIGHT_RULE))
             canvas.setLineWidth(0.5)
             canvas.line(left_margin, bottom_margin, page_w - right_margin, bottom_margin)
 
             canvas.setFont(theme.font_body if theme else "Helvetica", 8)
-            canvas.setFillColor(_hex_color(theme.resolve_tone("muted") if theme else "#757575"))
+            canvas.setFillColor(_hex_color(theme.resolve_tone("muted") if theme else FOOTER_TEXT))
             if show_page_num:
                 canvas.drawCentredString(
                     page_w / 2, bottom_margin - 12, f"Page {canvas.getPageNumber()}"

@@ -15,6 +15,7 @@ from reportlab.platypus import Flowable, Paragraph, Spacer
 
 from reportlab_json_renderer.blocks.base import BaseBlock
 from reportlab_json_renderer.utils.text import safe_paragraph_text
+from reportlab_json_renderer.visual.constants import TITLE_RULE_WIDTH
 
 
 class TitleBlock(BaseBlock):
@@ -52,10 +53,10 @@ class TitleBlock(BaseBlock):
             title_style = ParagraphStyle(
                 "TitleMain",
                 fontName=theme.font_bold if theme else "Helvetica-Bold",
-                fontSize=18,
-                leading=22,
+                fontSize=22,
+                leading=27,
                 textColor=colors.HexColor(theme.resolve_tone("dark")) if theme else colors.black,
-                spaceAfter=4,
+                spaceAfter=6,
             )
             flowables.append(Paragraph(title, title_style))
 
@@ -66,7 +67,7 @@ class TitleBlock(BaseBlock):
                 fontName=theme.font_body if theme else "Helvetica",
                 fontSize=11,
                 textColor=colors.HexColor(theme.resolve_tone("muted")) if theme else colors.grey,
-                spaceAfter=2,
+                spaceAfter=4,
             )
             flowables.append(Paragraph(subtitle, sub_style))
 
@@ -83,10 +84,10 @@ class TitleBlock(BaseBlock):
             flowables.append(Paragraph(right_text, right_style))
 
         # Bottom separator line
-        flowables.append(Spacer(1, 12))
+        flowables.append(Spacer(1, 8))
         line = _HorizontalLine(available_width, theme)
         flowables.append(line)
-        flowables.append(Spacer(1, 12))
+        flowables.append(Spacer(1, 14))
 
         return flowables
 
@@ -97,11 +98,11 @@ class _HorizontalLine(Flowable):
     def __init__(self, width: float, theme: Any = None) -> None:
         super().__init__()
         self.width = width
-        self.height = 2
+        self.height = TITLE_RULE_WIDTH
         self.theme = theme
 
     def draw(self) -> None:
         hex_color = self.theme.resolve_tone("primary") if self.theme else "#7CB518"
         self.canv.setStrokeColor(colors.HexColor(hex_color))
-        self.canv.setLineWidth(2.0)
+        self.canv.setLineWidth(TITLE_RULE_WIDTH)
         self.canv.line(0, 0, self.width, 0)

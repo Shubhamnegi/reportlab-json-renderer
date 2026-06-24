@@ -9,7 +9,9 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.platypus import Flowable, Paragraph, Spacer, Table, TableStyle
 
 from reportlab_json_renderer.blocks.base import BaseBlock
+from reportlab_json_renderer.utils.colors import tone_tint
 from reportlab_json_renderer.utils.text import safe_paragraph_text
+from reportlab_json_renderer.visual.constants import BORDER_MUTED, CANVAS_WHITE
 
 
 class KPIGridBlock(BaseBlock):
@@ -59,35 +61,15 @@ class KPIGridBlock(BaseBlock):
         col_width = (available_width - (num_cols - 1) * 6) / num_cols
         table = Table(rows, colWidths=[col_width] * num_cols, hAlign="LEFT")
 
-        # Style: light background per card with rounded corners.
         style_cmds = [
             ("VALIGN", (0, 0), (-1, -1), "TOP"),
             ("LEFTPADDING", (0, 0), (-1, -1), 8),
             ("RIGHTPADDING", (0, 0), (-1, -1), 8),
             ("TOPPADDING", (0, 0), (-1, -1), 8),
             ("BOTTOMPADDING", (0, 0), (-1, -1), 8),
-            (
-                "BACKGROUND",
-                (0, 0),
-                (-1, -1),
-                colors.HexColor(theme.resolve_tone("light") if theme else "#F5F5F5"),
-            ),
-            (
-                "BOX",
-                (0, 0),
-                (-1, -1),
-                0.5,
-                colors.HexColor(theme.resolve_tone("primary") if theme else "#7CB518"),
-            ),
             ("ROUNDEDCORNERS", [4, 4, 4, 4]),
-            (
-                "LINEBEFORE",
-                (0, 0),
-                (0, -1),
-                3,
-                colors.HexColor(theme.resolve_tone("primary") if theme else "#7CB518"),
-            ),
         ]
+        style_cmds.extend(_build_card_style_commands(items, num_cols, theme))
         table.setStyle(TableStyle(style_cmds))
 
         flowables.append(table)
@@ -126,3 +108,31 @@ class KPIGridBlock(BaseBlock):
         )
 
         return Paragraph(html, style)
+
+
+def _build_card_style_commands(items: list[dict], num_cols: int, theme: Any) -> list[tuple]:
+    """Build per-card backgrounds, borders, and tone accents."""
+    commands: list[tuple] = []
+    for index, item in enumerate(items):
+        row = index // num_cols
+        col = index % num_cols
+        tone = item.get("tone") or "primary"
+        border_color = theme.resolve_tone(tone) if theme else "#7CB518"
+        try:
+            background = tone_tint(tone, theme.tones if theme else None, factor=0.92)
+        except Exception:
+            background = theme.resolve_tone("light") if theme else "#F5F5F5"
+        commands.extend(
+            [
+                ("BACKGROUND", (col, row), (col, row), colors.HexColor(background)),
+                ("BOX", (col, row), (col, row), 0.5, colors.HexColor(BORDER_MUTED)),
+                ("LINEBEFORE", (col, row), (col, row), 3, colors.HexColor(border_color)),
+            ]
+        )
+
+    padded_cells = ((len(items) + num_cols - 1) // num_cols) * num_cols
+    for index in range(len(items), padded_cells):
+        row = index // num_cols
+        col = index % num_cols
+        commands.append(("BACKGROUND", (col, row), (col, row), colors.HexColor(CANVAS_WHITE)))
+    return commands

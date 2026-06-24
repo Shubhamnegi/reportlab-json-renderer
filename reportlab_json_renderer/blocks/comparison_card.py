@@ -14,6 +14,7 @@ from reportlab.platypus import Flowable, Paragraph, Spacer, Table, TableStyle
 
 from reportlab_json_renderer.blocks.base import BaseBlock
 from reportlab_json_renderer.utils.text import safe_paragraph_text
+from reportlab_json_renderer.visual.constants import BORDER_MUTED
 
 
 class ComparisonCardBlock(BaseBlock):
@@ -50,7 +51,7 @@ class ComparisonCardBlock(BaseBlock):
         col_width = (available_width - 12) / 2
         table = Table([[left_cell, right_cell]], colWidths=[col_width, col_width], hAlign="LEFT")
 
-        border_color = theme.resolve_tone("primary") if theme else "#7CB518"
+        accent_color = theme.resolve_tone("primary") if theme else "#7CB518"
         style_cmds = [
             ("VALIGN", (0, 0), (-1, -1), "TOP"),
             ("LEFTPADDING", (0, 0), (-1, -1), 10),
@@ -67,16 +68,17 @@ class ComparisonCardBlock(BaseBlock):
                 "BOX",
                 (0, 0),
                 (-1, -1),
-                1,
-                colors.HexColor(border_color),
+                0.7,
+                colors.HexColor(BORDER_MUTED),
             ),
             ("ROUNDEDCORNERS", [4, 4, 4, 4]),
+            ("LINEBEFORE", (0, 0), (0, -1), 3, colors.HexColor(accent_color)),
             (
                 "LINEAFTER",
                 (0, 0),
                 (0, -1),
-                1,
-                colors.HexColor(theme.resolve_tone("muted") if theme else "#CCCCCC"),
+                0.5,
+                colors.HexColor(BORDER_MUTED),
             ),
         ]
         table.setStyle(TableStyle(style_cmds))
