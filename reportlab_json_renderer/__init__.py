@@ -7,7 +7,7 @@ from typing import Any
 
 from reportlab_json_renderer.renderer import build_pdf
 
-__version__ = "0.1.1"
+__version__ = "0.3.0"
 
 
 def render_pdf(

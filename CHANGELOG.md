@@ -82,6 +82,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] — 2026-06-24
+
+### Added
+- Added `DESIGN.md` documenting the PDF design system, visual tokens, component patterns, and font decision.
+- Added shared visual constants and table styling helpers for professional PDF rendering.
+
+### Changed
+- Polished document title hierarchy, page header/footer chrome, table headers, row striping, KPI cards, summary boxes, metric deltas, and comparison cards.
+- Standardized table-like components around high-contrast headers, muted grid lines, and consistent stripe behavior.
+
+### Fixed
+- Fixed repeated page header/footer rendering on overflow and explicit page-break pages by moving to `BaseDocTemplate`.
+- Ignored generated `output/` previews so local PDF review artifacts do not enter commits.
+
 ## [0.2.0] — 2026-06-20
 
 ### Added
