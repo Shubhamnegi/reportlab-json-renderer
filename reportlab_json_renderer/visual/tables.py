@@ -27,4 +27,3 @@ def table_stripe_colors(theme: Any) -> list[colors.Color]:
     """Return alternating row colours for data tables."""
     stripe_color = theme.resolve_tone("light") if theme else TABLE_ROW_STRIPE
     return [colors.white, colors.HexColor(stripe_color)]
-
