@@ -37,5 +37,6 @@ coverage.xml
 Thumbs.db
 
 # Generated PDFs (don't commit test output)
+output/
 *.pdf
 !tests/fixtures/*.pdf

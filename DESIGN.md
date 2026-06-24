@@ -223,6 +223,21 @@ The built-in themes use:
 
 The renderer registers Unicode fonts on import, which supports rupee symbols and broader report text better than base Helvetica.
 
+### Font Decision
+
+Keep `DejaVuSans` as the bundled default for now. It is not the most elegant business-report typeface, but it is the only font family already available through the current dependency set that covers the required report symbols:
+
+| Font Candidate | More polished than DejaVu? | Rupee `₹` | Arrows `↑ ↓` | Warning `⚠` | Default-safe? |
+|---|---|---:|---:|---:|---:|
+| `DejaVuSans` | Baseline | Yes | Yes | Yes | Yes |
+| `NotoSans` | Yes | Yes | No | No | No |
+| `Ubuntu` | Yes | Yes | No | No | No |
+| `Carlito` | Yes | Yes | Yes | No | No |
+| `LiberationSans` | Yes | No | Yes | No | No |
+| `Rubik` | Yes | No | No | No | No |
+
+Impact: preserving `DejaVuSans` avoids black boxes or missing glyphs in financial and status-heavy reports. A future font upgrade should bundle an OFL-licensed professional family plus a verified symbol fallback, or introduce explicit per-run fallback rendering before changing the default.
+
 ### Type Scale
 
 | Token | Size | Leading | Weight | Current Use |
